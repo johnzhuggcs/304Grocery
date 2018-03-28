@@ -10,14 +10,16 @@ class ApplicationController
 {
     private $SQLExecution;
     private $Utility;
+    private $EmployeeOrCustomer;
 
     //Includes all classes
 
 
-    function ApplicationController($sqlExecution, $utility){
+    function ApplicationController($sqlExecution, $utility, $whichUser){
 
         $this->SQLExecution = $sqlExecution;
         $this->Utility = $utility;
+        $this->EmployeeOrCustomer = $whichUser; //If = 1, it is Employee, if = 0, it is Customer
     }
 
     function start(){
@@ -41,75 +43,38 @@ class ApplicationController
                 echo "<br> importing existing Employees and Customers <br>";
                 $TablePopulator->insertEmployeeCustomer();
 
-                $result = $this->SQLExecution->executePlainSQL("select * from Employee");
-                $this->Utility->printResult($result);
-                $result = $this->SQLExecution->executePlainSQL("select * from Customer");
-                $this->Utility->printResult($result);
 
-            } else
-                if (array_key_exists('AddNewProduct', $_POST)) {
-
-                    //Getting the values from user and insert data into the table
-                    $tuple = array (
-                        ":bind1" => $_POST['pid'],
-                        ":bind2" => $_POST['price'],
-                        ":bind3" => $_POST['expire_date'],
-                        ":bind4" => $_POST['ingredients'],
-                        ":bind5" => $_POST['cfoot'],
-                        ":bind6" => $_POST['origin'],
-                        ":bind7" => $_POST['quantity'],
-                        ":bind8" => $_POST['name'],
-                        ":bind9" => $_POST['brand'],
-                        ":bind10" => $_POST['description'],
-                        ":bind11" => $_POST['rpoint'],
-                        ":bind12" => $_POST['weight'],
-                        ":bind13" => $_POST['allergies'],
-                        ":bind14" => $_POST['volume']
-
-                    );
-
-
-
-                    $alltuples = array (
-                        $tuple
-                    );
-                    $this->SQLExecution->executeBoundSQL("insert into product values (:bind1,:bind2,:bind3,:bind4,:bind5,:bind6,:bind7,:bind8,:bind9,:bind10,:bind11,:bind12,:bind13,:bind14)", $alltuples);
-                    OCICommit($db_conn);
-
-                } else
-                    if (array_key_exists('updatesubmit', $_POST)) {
-
-                        // Update tuple using data from user
-                        $tuple = array (
-                            ":bind1" => $_POST['id'],
-                            ":bind2" => $_POST['addq']
-                        );
-                        $alltuples = array (
-                            $tuple
-                        );
-                        $this->SQLExecution->executeBoundSQL("update product set quantity=quantity+:bind2 where pid=:bind1", $alltuples);
-                        OCICommit($db_conn);
-
-                    } else
-                        if (array_key_exists('displayall', $_POST)) {
-                            $result = $this->SQLExecution->executePlainSQL("select * from product");
-                            $this->Utility->printResult($result);
-
-                            OCICommit($db_conn);
-                        }
+            } else if($this->EmployeeOrCustomer){
+                echo "am employee \n";
+                    $CustomerExecution = new CustomerExecution();
+                    $CustomerExecution->start();
+            }else if(!$this->EmployeeOrCustomer){
+                echo "am customer \n";
+                $EmployeeExecution = new EmployeeExecution();
+                $EmployeeExecution->start();
+            }
 
             if ($_POST && $success) {
                 //POST-REDIRECT-GET -- See http://en.wikipedia.org/wiki/Post/Redirect/Get
+                $employeeResult = $this->SQLExecution->executePlainSQL("select * from Employee");
+                $this->Utility->printResult($employeeResult);
+                $customerResult = $this->SQLExecution->executePlainSQL("select * from Customer");
+                $this->Utility->printResult($customerResult);
+                $orderAllResult = $this->SQLExecution->executePlainSQL("select * from Order_placedby_shippedwith");
+                $this->Utility->printResult($orderAllResult);
                 header("location: index.php");
             }
             else {
                 // Select data...
+                echo "<p>No action Idle Page</p>";
                 $result = $this->SQLExecution->executePlainSQL("select * from product");
                 $this->Utility->printResult($result);
-                $result = $this->SQLExecution->executePlainSQL("select * from Employee");
-                $this->Utility->printResult($result);
-                $result = $this->SQLExecution->executePlainSQL("select * from Customer");
-                $this->Utility->printResult($result);
+                $employeeResult = $this->SQLExecution->executePlainSQL("select * from Employee");
+                $this->Utility->printResult($employeeResult);
+                $customerResult = $this->SQLExecution->executePlainSQL("select * from Customer");
+                $this->Utility->printResult($customerResult);
+                $orderAllResult = $this->SQLExecution->executePlainSQL("select * from Order_placedby_shippedwith");
+                $this->Utility->printResult($orderAllResult);
             }
 
             //Commit to save changes...

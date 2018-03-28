@@ -1,6 +1,6 @@
 <?php
 
-class EmployeeExecution
+class CustomerExecution
 {
     private $SQLExecution;
     private $Utility;
@@ -8,7 +8,7 @@ class EmployeeExecution
     //Includes all classes
 
 
-    function EmployeeExecution($sqlExecution, $utility){
+    function CustomerExecution($sqlExecution, $utility){
 
         $this->SQLExecution = $sqlExecution;
         $this->Utility = $utility;

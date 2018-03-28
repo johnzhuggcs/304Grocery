@@ -76,7 +76,7 @@ $connectionController = new ConnectionController(); //Initializes connection to 
 
 $SQLConnection = new SQLExecution(); //Executing SQL Statements
 $Utility = new Utility(); //To print
-$ApplicationController = new ApplicationController($SQLConnection, $Utility); //controls the application, checks when to create table/execute sql queriess
+$ApplicationController = new ApplicationController($SQLConnection, $Utility, 0); //controls the application, checks when to create table/execute sql queriess
 
 // Connect Oracle...
 $ApplicationController->start();
