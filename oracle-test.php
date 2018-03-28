@@ -137,6 +137,10 @@ function printResult($result) { //prints results from a select statement
 if ($db_conn) {
 
 	if (array_key_exists('reset', $_POST)) {
+        foreach($_POST as $result) {
+            echo "Let's go", $result, '<br>';
+        }
+        echo "Testing";
 		// Drop old table...
 		echo "<br> dropping table <br>";
 		executePlainSQL("Drop table tab1");
@@ -199,9 +203,24 @@ if ($db_conn) {
 
 	if ($_POST && $success) {
 		//POST-REDIRECT-GET -- See http://en.wikipedia.org/wiki/Post/Redirect/Get
+        echo "<p>Both are true</p>";
+        foreach($_POST as $result) {
+            echo $result, '<br>';
+        }
+        echo "\n\n";
+        echo "|";
+        echo "$success";
 		header("location: oracle-test.php");
 	} else {
 		// Select data...
+        echo "<p>so either sucess or post if false right now";
+        echo "\n\n";
+        echo "</p>";
+        foreach($_POST as $result) {
+            echo $result, '<br>';
+        }
+        echo "\n\n";
+        echo "$success";
 		$result = executePlainSQL("select * from tab1");
 		printResult($result);
 	}
