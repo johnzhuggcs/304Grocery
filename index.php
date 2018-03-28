@@ -1,77 +1,106 @@
-<p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
-<form method="POST" action="index.php">
-   
-<p><input type="submit" value="Reset" name="reset"></p>
-</form>
+<html>
+<head>
+	<link href="css/bootstrap.min.css" rel="stylesheet"/>
+	<script src="js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<h2>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</h2>
+			<form method="POST" action="index.php">
+				<input class="btn btn-primary" type="submit" value="Reset" name="reset">
+			</form>
+		</div>
+	</div>
+	<form method="POST" action="index.php">
+		<div class="container">
+			<div class="row">
+				<h4>Add Products</h4>
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Price</th>
+							<th>Expire date</th>
+							<th>Ingredients</th>
+							<th>Carbon Footprint</th>
+							<th>Origin</th>
+							<th>Stock_quantity</th>
+							<th>Name</th>
+							<th>Brand</th>
+							<th>description</th>
+							<th>Reward points</th>
+							<th>Weight</th>
+							<th>Allergies</th>
+							<th>Volume</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><input type="text" name="pid" ></td>
+							<td><input type="text" name="price" ></td>
+							<td><input type="text" name="expire_date" ></td>
+							<td><input type="text" name="ingredients" ></td>
+							<td><input type="text" name="cfoot" ></td>
+							<td><input type="text" name="origin" ></td>
+							<td><input type="text" name="quantity" ></td>
+							<td><input type="text" name="name" ></td>
+							<td><input type="text" name="brand" ></td>
+							<td><input type="text" name="description" ></td>
+							<td><input type="text" name="rpoint" ></td>
+							<td><input type="text" name="weight" ></td>
+							<td><input type="text" name="allergies" ></td>
+							<td><input type="text" name="volume" ></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<input class="btn btn-primary" type="submit" value="insert" name="AddNewProduct"></p>
+		</div>
+	</form>
+	<!-- Restock quantity by some number--> 
+	<form method="POST" action="index.php">
+		<div class="container">
+			<div class="row">
+				<h4> Restock products: </h4>
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Added Quantity</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><input type="text" name="id" ></td>
+							<td><input type="text" name="addq" ></td>
+						</tr>
+					</tbody>
+				</table>
+				<input type="submit" value="update" name="RestockProductSubmit">
+				<h4> Display all the products: </h4>
+				<input type="submit" value="display" name="displayall"></p>
+			</div>
+		</div>
+	</form>
+	</body>
+</html>
 
-<p>Insert values into product below:</p>
-<p><font size="2"> ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Expire_date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Ingredients&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Carbon_Footprint&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Origin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Stock_quantity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Brand&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Reward_points&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Weight&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Allergies&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Volume</font></p>
-<form method="POST" action="index.php">
-<!--refresh page when submit-->
-
-   <p><input type="text" name="pid" size="3">
-   <input type="text" name="price" size="4">
-   <input type="text" name="expire_date" size="11">
-   <input type="text" name="ingredients" size="10">
-   <input type="text" name="cfoot" size="14">
-   <input type="text" name="origin" size="6">
-   <input type="text" name="quantity" size="13">
-   <input type="text" name="name" size="5">
-   <input type="text" name="brand" size="6">
-   <input type="text" name="description" size="10">
-   <input type="text" name="rpoint" size="12">
-   <input type="text" name="weight" size="6">
-   <input type="text" name="allergies" size="8">
-   <input type="text" name="volume" size="8">
-	</p>
-<!--define two variables to pass the value-->
-      
-<input type="submit" value="insert" name="AddNewProduct"></p>
-</form>
-<!-- Restock quantity by some number--> 
-
-<p> Restock products: </p>
-<p><font size="2"> ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-AddedQuantity</font></p>
-<form method="POST" action="index.php">
-<!--refresh page when submit-->
-
-   <p><input type="text" name="id" size="6"><input type="text" name="addq" 
-size="18">
-<!--define two variables to pass the value-->
-      
-<input type="submit" value="update" name="RestockProductSubmit"></p>
-<p> Display all the products: </p>
-<input type="submit" value="display" name="displayall"></p>
-</form>
-
-<?php
+	<?php
 
 //this tells the system that it's no longer just parsing 
 //html; it's now parsing PHP
 
 //Includes all classes
-set_include_path ( "./classes" );
-spl_autoload_register(function ($class) {
-    include 'classes/' . $class . '.php';
-});
+	set_include_path ( "./classes" );
+	spl_autoload_register(function ($class) {
+		include 'classes/' . $class . '.php';
+	});
 
 //class is automatically loaded from ./classes/myclass.php
-$success = true;
-$db_conn;
+	$success = true;
+	$db_conn;
 $connectionController = new ConnectionController(); //Initializes connection to database
 
 $SQLConnection = new SQLExecution(); //Executing SQL Statements
@@ -94,7 +123,7 @@ $ApplicationController->start();
      statement */
 
 /* OCIParse() Prepares Oracle statement for execution
-      The two arguments are the connection and SQL query. */
+The two arguments are the connection and SQL query. */
 /* OCIExecute() executes a previously parsed statement
       The two arguments are the statement which is a valid OCI
       statement identifier, and the mode. 
@@ -119,5 +148,5 @@ $ApplicationController->start();
      OCI_RETURN_NULLS - create empty elements for the NULL fields.  
      OCI_RETURN_LOBS - return the value of a LOB of the descriptor.  
      Default mode is OCI_BOTH.  */
-?>
+     ?>
 
