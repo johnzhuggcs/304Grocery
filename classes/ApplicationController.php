@@ -38,7 +38,13 @@ class ApplicationController
                 echo "<br> creating new table <br>";
                 $TablePopulator->populateAll();
 
+                echo "<br> importing existing Employees and Customers <br>";
+                $TablePopulator->insertEmployeeCustomer();
 
+                $result = $this->SQLExecution->executePlainSQL("select * from Employee");
+                $this->Utility->printResult($result);
+                $result = $this->SQLExecution->executePlainSQL("select * from Customer");
+                $this->Utility->printResult($result);
 
             } else
                 if (array_key_exists('AddNewProduct', $_POST)) {
@@ -59,6 +65,7 @@ class ApplicationController
                         ":bind12" => $_POST['weight'],
                         ":bind13" => $_POST['allergies'],
                         ":bind14" => $_POST['volume']
+
                     );
 
 
@@ -98,6 +105,10 @@ class ApplicationController
             else {
                 // Select data...
                 $result = $this->SQLExecution->executePlainSQL("select * from product");
+                $this->Utility->printResult($result);
+                $result = $this->SQLExecution->executePlainSQL("select * from Employee");
+                $this->Utility->printResult($result);
+                $result = $this->SQLExecution->executePlainSQL("select * from Customer");
                 $this->Utility->printResult($result);
             }
 

@@ -10,180 +10,212 @@ class TablePopulation
 {
     private $SQLExecution;
     private $allCreateTables;
+    private $allDropTables;
+    private $Employees;
+    private $Customers;
 
     function TablePopulation($sqlExecution){
         $this->SQLExecution = $sqlExecution;
         $this->allCreateTables = array(
-            "create table product
-          (pid char(5),
-          price DOUBLE precision,
-          expire_date DATE,
-          ingredients CHAR(200),
-          cfoot DOUBLE precision, 
-          origin CHAR(20), 
-          quantity INTEGER NOT NULL, 
-          name CHAR(30) NOT NULL UNIQUE,
-          brand CHAR(30) NOT NULL,
-          description CHAR(100), 
-          rpoint INTEGER,
-          weight DOUBLE precision,
-          allergies CHAR(200),
-          volume DOUBLE precision,
-          PRIMARY KEY (pid))",
+            "create table Employee(
+            Employee_ID varchar2(30) primary key,
+	sin integer
+	)",
 
-          "CREATE TABLE Employee
-          (Employee_ID CHAR(7),
-          sin# INTEGER,
-          PRIMARY KEY(Employee_ID),
-          UNIQUE(sin#))",
+"create table Restock(
+            Employee_ID varchar2(7),
+	Product_ID varchar2(5),
+	primary key(Employee_ID,Product_ID),
+	foreign key(Employee_ID) references Employee
+	)",
 
-            "CREATE TABLE Deal
-            (shared_link CHAR(40),
-            start_date CHAR(10),
-            end_date CHAR(10),
-            DID CHAR(5),
-            discount CHAR(10),
-            Premium_only BIT,
-            PRIMARY KEY (DID),
-            UNIQUE(shared_link))",
 
-          "CREATE TABLE Manage
-          (Deal_ID CHAR(5),
-          Employee_ID CHAR(7),
-          PRIMARY KEY (Deal_ID, Employee_ID),
-          FOREIGN KEY (Deal_ID),
-          REFERENCES Deal(DID),
-          FOREIGN KEY (Employee_ID),
-          REFERENCES Employee(Employee_ID),
-          ON UPDATE CASCADE,
-          ON DELETE SET NULL)",
+"create TABLE Deal
+        (DID varchar2(5),
+start_date date,
+end_date date,
+shared_link varchar2(40),
+discount varchar2(10),
+Premium_only varchar2(1),
+PRIMARY KEY (DID)
+)",
 
-            "CREATE TABLE product_discount
-            (PID CHAR(5],
-            DID CHAR(5],
-            expire_date CHAR(10],
-            price DOUBLE,
-            Ingredients CHAR(200],
-            origin CHAR(20],
-            stock_quantity INTEGER,
-            description CHAR(100],
-            carbon_footprint DOUBLE[6, 2],
-            reward_points INTEGER,
-            PRIMARY KEY (PID),
-            UNIQUE (name, brand),
-            FOREIGN KEY (DID)
-            REFERENCES Deal(DID)
-            ON UPDATE CASCADE
-            ON DELETE CASCADE)
-            CREATE TABLE Food
-            (PID CHAR(5],
-            Weight DOUBLE[6, 2],
-            Allergies CHAR(100],
-            PRIMARY KEY (PID),
-            FOREIGN KEY (PID)
-            REFERENCES product_discount(PID)
-            ON UPDATE CASCADE
-            ON DELETE CASCADE)",
+"create table Manage(
+            Employee_ID varchar2(7),
+	Deal_ID varchar2(5),
+	primary key (Deal_ID, Employee_ID),
+	FOREIGN KEY (Deal_ID) REFERENCES Deal,
+	foreign key (Employee_ID) references Employee
+	)",
 
-            "CREATE TABLE Beverage
-            (PID CHAR(5],
-            Volume DOUBLE[6, 2),
-            Allergies CHAR(100),
-            PRIMARY KEY (PID),
-            UNIQUE (Weight),
-            FOREIGN KEY (PID)
-            REFERENCES product_discount(PID)
-            ON UPDATE CASCADE
-            ON DELETE CASCADE)",
+"create TABLE product_discount
+        (PID varchar2(5),
+price DOUBLE precision not null,
+expire_date date,
+Ingredients varchar2(200),
+carbon_footprint DOUBLE precision,
+origin varchar2(20),
+stock_quantity INTEGER not null,
+name  varchar2(20),
+brand varchar2(20),
+description varchar2(100),
+reward_points INTEGER,
+DID varchar2(5),
+PRIMARY KEY (PID),
+FOREIGN KEY (DID) REFERENCES Deal
+)",
 
-            "CREATE TABLE Beverage
-            (PID CHAR(5),
-            Volume DOUBLE[6, 2],
-            Allergies CHAR(100),
-            PRIMARY KEY (PID),
-            UNIQUE (Weight),
-            FOREIGN KEY (PID)
-            REFERENCES product_discount(PID)
-            ON UPDATE CASCADE
-            ON DELETE CASCADE)",
 
-            "CREATE TABLE Access_to
-            (DID CHAR(5),
-            Account_no. CAHR[5),
-            PRIMARY KEY (DID,Account_no.)
-            FOREIGN KEY (DID)
-            REFERENCES Deal,
-            ON UPDATE CASCADE
-            ON DELETE CASCADE
-            FOREIGN KEY (Account_no.)
-            REFERENCES Customer
-            ON UPDATE CASCADE
-            ON DELETE CASCADE)",
+"create TABLE Food(
+            PID varchar2(5),
+Weight DOUBLE precision,
+Allergies varchar2(100),
+PRIMARY KEY (PID),
+FOREIGN KEY (PID) REFERENCES product_discount
+)",
 
-            "CREATE TABLE Customer
-            (Name CHAR(20),
-            Email CHAR(40),
-            Reward Points INTEGER,
-            Premium BIT,
-            Account_no. CHAR(5),
-            PRIMARY KEY(Account no))",
+"create TABLE Beverage
+        (PID varchar2(5),
+Allergies varchar2(100),
+Volume DOUBLE precision,
+PRIMARY KEY (PID),
+FOREIGN KEY (PID) REFERENCES product_discount
+	)",
 
-            "CREATE TABLE Contains
-            (PID INTEGER,
-            order no CHAR(7),
-            PRIMARY KEY (PID,order no),
-            FOREIGN KEY (PID)
-            REFERENCES Product,
-            ON UPDATE CASCADE
-            ON DELETE CASCADE
-            FOREIGN KEY (order no)
-            REFERENCES Order
-            ON UPDATE CASCADE
-            ON DELETE CASCADE)",
+"create TABLE PersonalCare
+        (PID varchar2(5),
+instruction varchar2(50),
+PRIMARY KEY (PID),
+FOREIGN KEY (PID) REFERENCES product_discount
+)",
 
-            "CREATE TABLE Order_placedby_shippedwith
-            (order_no. CHAR(7),
-            Date CHAR(10),
-            Free_shipping BIT,
-            Status CHAR(10),
-            Order_total DOUBLE[9, 2],
-            Payment_method CHAR(10),
-            Poins_awarded INTEGER,
-            Account_no. CHAR(5), NOT NULL
-            Shipping_info_no. CHAR( 6), NOT NULL
-            PRIMARY KEY (order_no.)
-            FOREIGN KEY (Account_no.)
-            REFERENCES Customer
-            ON UPDATE CASCADE
-            ON DELETE CASCADE
-            FOREIGN KEY (shipping_info_no.)
-            REFERENCES Shipping_Info
-            ON UPDATE CASCADE
-            ON DELETE CASCADE)",
 
-            "CREATE TABLE owns
-            (Account_no. CHAR(5),
-            Shipping_info_no. CHAR(6),
-            PRIMARY KEY (Account_no., Shipping_info_no.)
-            FOREIGN KEY (Account_no)
-            REFERENCES Customer,
-            ON UPDATE CASCADE
-            ON DELETE ON CASCADE
-            FOREIGN KEY (Shipping_info_no.)
-            REFERENCES Shipping_Info
-            ON UPDATE CASCADE
-            ON DELETE ON CASCADE)",
+"create TABLE Customer
+        (Account_no varchar2(5),
+Name varchar2(20),
+Email varchar2(40),
+Reward_Points INTEGER NOT NULL CHECK (Reward_Points >= 0),
+Premium varchar2(1),
+PRIMARY KEY(Account_no)
+)",
 
-            "CREATE TABLE Shipping_info
-            (delivery_type CHAR(10),
-             Billing_address CHAR(50),
-             Shipping_address CHAR [50),
-             Shipping_method CHAR [10),
-             Phone_number INTEGER,
-             Shipping_info_no CHAR(6),
-            PRIMARY KEY(Shipping_info_no))"
+"create TABLE Access_to
+        (DID varchar2(5),
+Account_no varchar2(5),
+PRIMARY KEY (DID,Account_no),
+FOREIGN KEY (DID) REFERENCES Deal,
+FOREIGN KEY (Account_no) REFERENCES Customer
+)",
 
+
+
+"create TABLE Shipping_info
+        (Shipping_info_no varchar2(6),
+Phone_number INTEGER,
+ Billing_address varchar2(50),
+  Shipping_address varchar2(50),
+   Shipping_method varchar2(10),
+delivery_type varchar2(10),
+PRIMARY KEY(Shipping_info_no)
+)",
+
+"create TABLE Order_placedby_shippedwith
+        (order_no varchar2(7),
+order_date date,
+Free_shipping varchar2(1),
+Status varchar2(10),
+Order_total DOUBLE precision,
+Payment_method varchar2(10),
+Poins_awarded INTEGER,
+Account_no varchar2(5) NOT NULL,
+Shipping_info_no varchar2(6) NOT NULL,
+PRIMARY KEY (order_no),
+FOREIGN KEY (Account_no) REFERENCES Customer,
+FOREIGN KEY (shipping_info_no) REFERENCES Shipping_Info
+)",
+
+
+"create TABLE Contains
+        (PID varchar2(5),
+  order_no varchar2(7),
+PRIMARY KEY (PID,order_no),
+FOREIGN KEY (PID) REFERENCES product_discount,
+FOREIGN KEY (order_no) REFERENCES Order_placedby_shippedwith
+)",
+
+
+"create TABLE owns
+        (Account_no varchar2(5),
+Shipping_info_no varchar2(6),
+PRIMARY KEY (Account_no, Shipping_info_no),
+FOREIGN KEY (Account_no) REFERENCES Customer,
+FOREIGN KEY (Shipping_info_no) REFERENCES Shipping_Info
+)",);
+
+        $this->allDropTables = array(
+        "drop table Employee cascade constraints","drop table Restock cascade constraints",
+"drop table Deal cascade constraints",
+"drop table Manage cascade constraints",
+"drop table product_discount cascade constraints",
+"drop table Food cascade constraints",
+"drop table Beverage cascade constraints",
+"drop table PersonalCare cascade constraints",
+"drop table Access_to cascade constraints",
+"drop table Customer cascade constraints",
+"drop table Contains cascade constraints",
+"drop table Shipping_Info cascade constraints",
+
+"drop table Order_placedby_shippedwith cascade constraints",
+"drop table owns cascade constraints");
+
+        $Employee1 = array(
+            ":bind1" => "EMP0001",
+            ":bind2" => "123456789",
         );
+
+        $Employee2 = array(
+            ":bind1" => "EMP0002",
+            ":bind2" => "123456788",
+        );
+
+        $Employee3 = array(
+            ":bind1" => "EMP0003",
+            ":bind2" => "123456787",
+        );
+
+        $Customer1 = array(
+            ":bind1" => "C0001",
+            ":bind2" => "John Smith",
+            ":bind3" => "Jsmith@gmail.com",
+            ":bind4" => 13000,
+            ":bind5" => 1
+        );
+
+        $Customer2 = array(
+            ":bind1" => "C0002",
+            ":bind2" => "Ryan Reynolds",
+            ":bind3" => "Rreynolds@gmail.com",
+            ":bind4" => 1340,
+            ":bind5" => 0
+        );
+
+        $Customer3 = array(
+            ":bind1" => "C0003",
+            ":bind2" => "Emma Watson",
+            ":bind3" => "ewatson@gmail.com",
+            ":bind4" => 0,
+            ":bind5" => 0
+        );
+
+
+        $this->Employees = array(
+            $Employee1, $Employee2, $Employee3
+        );
+
+        $this->Customers = array(
+            $Customer1, $Customer2, $Customer3
+        );
+
     }
 
     function populateAll(){
@@ -194,14 +226,22 @@ class TablePopulation
             OCICommit($db_conn);
         }
 
+    }
 
+    function insertEmployeeCustomer(){
+        global $db_conn;
+
+        $this->SQLExecution->executeBoundSQL("insert into Employee values(:bind1, :bind2)", $this->Employees);
+        $this->SQLExecution->executeBoundSQL("insert into Customer values(:bind1, :bind2, :bind3, :bind4, :bind5)", $this->Customers);
     }
 
     function dropAll(){
         global $db_conn;
-        $this->SQLExecution->executePlainSQL("Drop table product");
-        $this->SQLExecution->executePlainSQL("Drop table Employee");
-        OCICommit($db_conn);
+        foreach($this->allDropTables as $dropTable){
+            $this->SQLExecution->executePlainSQL($dropTable);
+            OCICommit($db_conn);
+        }
+
     }
 
 }
