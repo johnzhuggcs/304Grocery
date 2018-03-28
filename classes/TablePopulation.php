@@ -233,6 +233,7 @@ FOREIGN KEY (Shipping_info_no) REFERENCES Shipping_Info
 
         $this->SQLExecution->executeBoundSQL("insert into Employee values(:bind1, :bind2)", $this->Employees);
         $this->SQLExecution->executeBoundSQL("insert into Customer values(:bind1, :bind2, :bind3, :bind4, :bind5)", $this->Customers);
+        OCICommit($db_conn);
     }
 
     function dropAll(){
