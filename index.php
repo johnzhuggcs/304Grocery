@@ -42,6 +42,25 @@ Volume</font></p>
 <input type="submit" value="insert" name="AddNewProduct"></p>
 </form>
 
+<form method="POST" action="index.php">
+
+    <p>
+    <input type="text" name="loggin On" size="8" value="C0001"></p>
+    <!--define two variables to pass the value-->
+
+    <input type="submit" value="Log On" name="logon"></p>
+</form>
+
+<form method="POST" action="index.php">
+
+
+    </p>
+    <!--define two variables to pass the value-->
+
+    <input type="submit" value="Log Off" name="logoff"></p>
+</form>
+
+
 <p><font size="2"> Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         Reward Points&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -69,13 +88,13 @@ size="18">
 </form>
 
 <?php
-//error_reporting(-1);
-//ini_set('display_errors', 1);
-//ini_set('display_startup_errors', 1);
-//error_reporting(E_ALL);
-//ini_set('session.save_path',realpath(dirname($_SERVER['DOCUMENT_ROOT']) . '/../session'));
-//session_start();
-phpinfo();
+error_reporting(-1);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+ini_set('session.save_path',realpath(dirname($_SERVER['DOCUMENT_ROOT']) . '/../session'));
+session_start();
+//phpinfo();
 
 //debugging info
 
@@ -83,15 +102,10 @@ phpinfo();
 //html; it's now parsing PHP
 
 //Includes all classes
-/*set_include_path ( "./classes" );
+set_include_path ( "./classes" );
 spl_autoload_register(function ($class) {
     include 'classes/' . $class . '.php';
 });
-
-unset($_SESSION['Begin_App']);
-unset($_SESSION['AccountID']);
-unset($_SESSION['Initialized_table']);
-unset($_SESSION['customerNo']);
 //class is automatically loaded from ./classes/myclass.php
 $success = true;
 $db_conn;
@@ -100,8 +114,9 @@ $connectionController = ConnectionController::getConnectionInstance(); //Initial
 $SQLConnection = new SQLExecution(); //Executing SQL Statements
 $Utility = new Utility(); //To print
 
-
+echo "before begin app\n\n";
 if (!isset($_SESSION['Begin_App'])){
+    echo "begin app \n\n";
     $_SESSION['Begin_App'] = 1;
     $AccountInitializer = new AccountInitializer($SQLConnection, $Utility);
     $AccountInitializer->start();
@@ -111,11 +126,17 @@ if (!isset($_SESSION['Begin_App'])){
 //$customer should be C0001 or some other
 //Pretend we chose some account in the front end for $customer
     $customer = $customerArray[0];
+
     $_SESSION["AccountID"] = $customer;
 
 }else if($_SESSION['Begin_App'] == 1){
     if($db_conn){
         if(array_key_exists('logon', $_POST)){
+            $_SESSION["AccountID"] = $_POST['logon'];
+            echo "<p>";
+            echo $_SESSION["AccountID"];
+            echo "</p>";
+
             $_SESSION['Begin_App'] = 2;
             $ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, $_SESSION["AccountID"]);//controls the application, checks when to create table/execute sql queriess
         }
@@ -125,13 +146,14 @@ if (!isset($_SESSION['Begin_App'])){
         echo htmlentities($e['message']);
     }
 } else{
+    echo "application start";
     $ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, $_SESSION["AccountID"]);
 }
 
-//$ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, "C0001"); //controls the application, checks when to create table/execute sql queriess
+$ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, "C0001"); //controls the application, checks when to create table/execute sql queriess
 
 // Connect Oracle...
-$ApplicationController->start();*/
+$ApplicationController->start();
 
 
 
