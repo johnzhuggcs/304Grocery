@@ -56,6 +56,12 @@ Volume</font></p>
     </p>
     <input type = "submit" value = "Create Customer" name = 'create_customer'></form>
 
+
+<form method = "POST" action = "index.php">
+    <input type = "submit" value = "Logoff" name = "logoff">
+</form>
+
+
 <!-- Restock quantity by some number--> 
 
 <p> Restock products: </p>
@@ -77,9 +83,9 @@ size="18">
 ini_set('session.save_path',realpath(dirname($_SERVER['DOCUMENT_ROOT']) . '/../session'));
 session_start();
 
-/*ini_set('display_errors', 1);
+ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);*/
+error_reporting(E_ALL);
 //debugging info
 
 //this tells the system that it's no longer just parsing 
@@ -91,6 +97,10 @@ spl_autoload_register(function ($class) {
     include 'classes/' . $class . '.php';
 });
 
+session_unset();
+session_destroy();
+session_write_close();
+
 //class is automatically loaded from ./classes/myclass.php
 $success = true;
 $db_conn;
@@ -98,8 +108,36 @@ $connectionController = ConnectionController::getConnectionInstance(); //Initial
 
 $SQLConnection = new SQLExecution(); //Executing SQL Statements
 $Utility = new Utility(); //To print
-//whichUser, if 1 = employer, if 0 = customer
-$ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, "C0001"); //controls the application, checks when to create table/execute sql queriess
+
+
+if (!isset($_SESSION['Begin_App'])){
+    $_SESSION['Begin_App'] = 1;
+    $AccountInitializer = new AccountInitializer($SQLConnection, $Utility);
+    $AccountInitializer->start();
+    $customerArray = OCI_Fetch_Array($AccountInitializer->getAllCustomers(), OCI_BOTH);
+    $employeeArray = OCI_Fetch_Array($AccountInitializer->getAllEmployees(), OCI_BOTH);
+
+//$customer should be C0001 or some other
+//Pretend we chose some account in the front end for $customer
+    $customer = $customerArray[0];
+    $_SESSION["AccountID"] = $customer;
+
+}else if($_SESSION['Begin_App'] == 1){
+    if($db_conn){
+        if(array_key_exists('logon', $_POST)){
+            $_SESSION['Begin_App'] = 2;
+            $ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, $_SESSION["AccountID"]);//controls the application, checks when to create table/execute sql queriess
+        }
+    }else{
+        echo "cannot connect";
+        $e = OCI_Error(); // For OCILogon errors pass no handle
+        echo htmlentities($e['message']);
+    }
+} else{
+    $ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, $_SESSION["AccountID"]);
+}
+
+//$ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, "C0001"); //controls the application, checks when to create table/execute sql queriess
 
 // Connect Oracle...
 $ApplicationController->start();

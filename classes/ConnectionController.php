@@ -22,7 +22,6 @@ class ConnectionController
 
     public static function getConnectionInstance(){
         if(!isset(self::$instance)){
-            echo "recreate Connection";
             self::$instance = new ConnectionController();
         }
         return self::$instance;

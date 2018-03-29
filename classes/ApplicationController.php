@@ -52,14 +52,24 @@ class ApplicationController
 
         if ($db_conn) {
 
-            if (array_key_exists('reset', $_POST)) {
+            echo "<p>Session begin";
+            echo $_SESSION['Begin_App'];
+            echo "</p>";
 
+
+            if(array_key_exists('logoff', $_POST)){
+                echo "<p>Log off</p>";
+                //$_SESSION['Begin_App'] = null;
+            }
+            else if (array_key_exists('reset', $_POST)) {
+                $_SESSION['Initialized_table'] = null;
+                $_SESSION['Begin_App'] = null;
                 $TablePopulator = new TablePopulation($this->SQLExecution);
 
                 // Drop old table...
                 echo "<br> dropping table <br>";
                 $TablePopulator->dropAll();
-
+                $_SESSION['customerNo'] = null;
                 // Create new table...
                 echo "<br> creating new table <br>";
                 $TablePopulator->populateAll();
