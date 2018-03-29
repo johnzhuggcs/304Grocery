@@ -48,18 +48,7 @@ Volume</font></p>
         Premium&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </font></p>
 
-<form method = "POST" action = "index.php">
-    <p><input type="text" name="Name" size="3">
-        <input type="email" name="Email" size="4">
-        <input type="number" name="Reward_Points" size="11">
-        <input type="number" name="Premium" size="10">
-    </p>
-    <input type = "submit" value = "Create Customer" name = 'create_customer'></form>
 
-
-<form method = "POST" action = "index.php">
-    <input type = "submit" value = "Logoff" name = "logoff">
-</form>
 
 
 <!-- Restock quantity by some number--> 
@@ -80,23 +69,29 @@ size="18">
 </form>
 
 <?php
-ini_set('session.save_path',realpath(dirname($_SERVER['DOCUMENT_ROOT']) . '/../session'));
-session_start();
+//error_reporting(-1);
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
+//ini_set('session.save_path',realpath(dirname($_SERVER['DOCUMENT_ROOT']) . '/../session'));
+//session_start();
+phpinfo();
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 //debugging info
 
 //this tells the system that it's no longer just parsing 
 //html; it's now parsing PHP
 
 //Includes all classes
-set_include_path ( "./classes" );
+/*set_include_path ( "./classes" );
 spl_autoload_register(function ($class) {
     include 'classes/' . $class . '.php';
 });
 
+unset($_SESSION['Begin_App']);
+unset($_SESSION['AccountID']);
+unset($_SESSION['Initialized_table']);
+unset($_SESSION['customerNo']);
 //class is automatically loaded from ./classes/myclass.php
 $success = true;
 $db_conn;
@@ -136,7 +131,7 @@ if (!isset($_SESSION['Begin_App'])){
 //$ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, "C0001"); //controls the application, checks when to create table/execute sql queriess
 
 // Connect Oracle...
-$ApplicationController->start();
+$ApplicationController->start();*/
 
 
 
