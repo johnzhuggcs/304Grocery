@@ -33,23 +33,24 @@ class ApplicationController
                 $TablePopulator = new TablePopulation($this->SQLExecution);
 
                 // Drop old table...
-                echo "<br> dropping table <br>";
+                echo ('<div class="card container text-center" ><div class="card-body"><h5>dropping table</h5></div></div>');
                 $TablePopulator->dropAll();
 
                 // Create new table...
-                echo "<br> creating new table <br>";
+                echo ('<div class="card container text-center" ><div class="card-body"><h5>creating new table</h5></div></div>');
                 $TablePopulator->populateAll();
 
-                echo "<br> importing existing Employees and Customers <br>";
+                echo ('<div class="card container text-center" ><div class="card-body"><h5>importing existing Employees and Customers</h5></div></div>');
                 $TablePopulator->insertEmployeeCustomer();
 
 
             } else if($this->EmployeeOrCustomer){
-                echo "am employee \n";
+                echo ('<div class="card container text-center" ><div class="card-body"><h5>am employee</h5></div></div>');
                     $CustomerExecution = new CustomerExecution();
                     $CustomerExecution->start();
             }else if(!$this->EmployeeOrCustomer){
-                echo "am customer \n";
+                echo ('<div class="card container text-center" ><div class="card-body"><h5>am customer</h5></div></div>');
+
                 $EmployeeExecution = new EmployeeExecution();
                 $EmployeeExecution->start();
             }
@@ -66,7 +67,7 @@ class ApplicationController
             }
             else {
                 // Select data...
-                echo "<p>No action Idle Page</p>";
+                echo ('<div class="card container text-center" ><div class="card-body"><h5>No action Idle Page</h5></div></div>');
                 $result = $this->SQLExecution->executePlainSQL("select * from product");
                 $this->Utility->printResult($result);
                 $employeeResult = $this->SQLExecution->executePlainSQL("select * from Employee");
@@ -80,9 +81,11 @@ class ApplicationController
             //Commit to save changes...
             OCILogoff($db_conn);
         } else {
-            echo "cannot connect";
+            echo ('<div class="card container text-center" ><div class="card-body"><h5>cannot connect</h5></div></div>');
+
             $e = OCI_Error(); // For OCILogon errors pass no handle
-            echo htmlentities($e['message']);
+            echo ('<div class="card container text-center" ><div class="card-body"><h5>'.htmlentities($e['message']).'</h5></div></div>');
+
         }
     }
 
