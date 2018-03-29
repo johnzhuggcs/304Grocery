@@ -1,7 +1,7 @@
 
 <html>
 <?php
-
+phpinfo();
 if ($c=OCILogon("ora_f8s0b", "a40642100", "dbhost.ugrad.cs.ubc.ca:1522/ug")) {
   echo "Successfully connected to Oracle.\n";
   OCILogoff($c);
