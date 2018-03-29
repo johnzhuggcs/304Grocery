@@ -20,6 +20,9 @@
 			$('#Account').toggle();
 		}
 		OpenAccount
+		function OpenRestockProducts(){
+			$('#restockProducts').toggle();
+		}
 
 
 	</script>
@@ -35,6 +38,9 @@
 			</li>
 			<li class="nav-item">
 				<a class="nav-link"><button class="btn btn-primary" onclick="OpenBuyProducts()">Buy Products</button></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link"><button class="btn btn-primary" onclick="OpenRestockProducts()">Restock Products</button></a>
 			</li>
 		</ul>
 		<ul class="navbar-nav ml-auto">
@@ -209,11 +215,11 @@
 								</thead> 
 								<tbody>
 									<tr>
-										<td><input type="text" name="pid" ></td>
-										<td><input type="text" name="price" ></td>
-										<td><input type="text" name="expire_date" ></td>
-										<td><input type="text" name="ingredients" ></td>
-										<td><input type="text" name="cfoot" ></td>
+										<td><input class="form-control" type="text" name="pid" ></td>
+										<td><input class="form-control" type="text" name="price" ></td>
+										<td><input class="form-control" type="text" name="expire_date" ></td>
+										<td><input class="form-control" type="text" name="ingredients" ></td>
+										<td><input class="form-control" type="text" name="cfoot" ></td>
 									</tr>
 								</tbody>
 							</table>
@@ -233,11 +239,11 @@
 								</thead>
 								<tbody>
 									<tr>
-										<td><input type="text" name="origin" ></td>
-										<td><input type="text" name="quantity" ></td>
-										<td><input type="text" name="name" ></td>
-										<td><input type="text" name="brand" ></td>
-										<td><input type="text" name="description" ></td>
+										<td><input class="form-control" type="text" name="origin" ></td>
+										<td><input class="form-control" type="text" name="quantity" ></td>
+										<td><input class="form-control" type="text" name="name" ></td>
+										<td><input class="form-control" type="text" name="brand" ></td>
+										<td><input class="form-control" type="text" name="description" ></td>
 									</tr>
 								</tbody>
 							</table>
@@ -256,10 +262,10 @@
 								</thead>
 								<tbody>
 									<tr>
-										<td><input type="text" name="rpoint" ></td>
-										<td><input type="text" name="weight" ></td>
-										<td><input type="text" name="allergies" ></td>
-										<td><input type="text" name="volume" ></td>
+										<td><input class="form-control" type="text" name="rpoint" ></td>
+										<td><input class="form-control" type="text" name="weight" ></td>
+										<td><input class="form-control" type="text" name="allergies" ></td>
+										<td><input class="form-control" type="text" name="volume" ></td>
 									</tr>
 								</tbody>
 							</table>
@@ -271,7 +277,7 @@
 		</div>
 	</div>
 	
-	<div class=" card container">
+	<div id="restockProducts" class=" card container" style="display: none;">
 		<div class="card-header">
 			<h4> Restock products: </h4>
 		</div>
@@ -288,8 +294,8 @@
 							</thead>
 							<tbody>
 								<tr>
-									<td><input type="text" name="id" ></td>
-									<td><input type="text" name="addq" ></td>
+									<td><input class="form-control" type="text" name="id" ></td>
+									<td><input class="form-control" type="text" name="addq" ></td>
 								</tr>
 							</tbody>
 						</table>
