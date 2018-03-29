@@ -1,11 +1,19 @@
 <html>
 <head>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 	
 	<script type="text/javascript">
+		var user;
+
+		$(function() { //run on document.ready
+			$("#userSelect").change(function() { //this occurs when select 1 changes
+				$("#nameSelect").val($(this).val());
+			});
+		});
 
 		function AddProducts() {
     		$('#addProducts').toggle();
@@ -19,28 +27,45 @@
 		function OpenAccount(){
 			$('#Account').toggle();
 		}
-		OpenAccount
 		function OpenRestockProducts(){
 			$('#restockProducts').toggle();
 		}
-
+		function setUser(){
+			user =  document.getElementById("userSelect").value;
+			if(user == 1){
+				$('#CustomerNav').show();
+				$('#EmployeeNav').hide();
+			}else if(user ==2){
+				$('#CustomerNav').hide();
+				$('#EmployeeNav').show();
+			}
+		}
 
 	</script>
 </head>
 <body>
 	<nav class="navbar navbar-expand-sm bg-dark">
 		<ul class="navbar-nav">
-			<li class="nav-item">
-				<a class="nav-link"><button class="btn btn-primary" onclick="AddProducts()">Add Products</button></a>
+			<li id="EmployeeNav" class="nav-item dropdown" style="display: none;">
+				<a class="nav-link" data-toggle="dropdown">
+					<button class="btn btn-danger fa fa-bars"></button>
+				</a>
+				<div class="dropdown-menu">
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenBuyProducts()">Buy Products</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="AddProducts()">Add Products</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="CustomerPremium()">Customer Premium</button></a>	
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenRestockProducts()">Restock Products</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenAccount()">Account</button></a>
+				</div>
 			</li>
-			<li class="nav-item">
-				<a class="nav-link"><button class="btn btn-primary" onclick="CustomerPremium()">Customer Premium</button></a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link"><button class="btn btn-primary" onclick="OpenBuyProducts()">Buy Products</button></a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link"><button class="btn btn-primary" onclick="OpenRestockProducts()">Restock Products</button></a>
+			<li id="CustomerNav" class="nav-item dropdown" style="display: none;">
+				<a class="nav-link" data-toggle="dropdown">
+					<button class="btn btn-primary fa fa-bars"></button>
+				</a>
+				<div class="dropdown-menu">
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenBuyProducts()">Buy Products</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenAccount()">Account</button></a>
+				</div>
 			</li>
 		</ul>
 		<ul class="navbar-nav ml-auto">
@@ -57,9 +82,6 @@
 						<input class="btn btn-primary" type="submit" value="Reset" name="reset">
 					</form>
 				</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link"><button class="btn btn-primary" onclick="OpenAccount()">Account</button></a>
 			</li>
 		</ul>
 	</nav>
@@ -84,28 +106,26 @@
 					<h5>&nbsp; </h5>
 				</div>
 			</div>
-			<form method="POST" action="index.php">
-				<div class="row">
-					<div class="col-md-5">
-						<Select class="form-control">
-							<option>&nbsp;</option>
-							<option>Customer</option>
-							<option>Employee</option>
-						</Select>
-					</div>
-					<div class="col-md-5">
-						<Select class="form-control">
-							<option>&nbsp;</option>
-							<option>John Smith</option>
-							<option>Ryan Reynolds</option>
-							<option>Emma Watson</option>
-						</Select>
-					</div>
-					<div class="col-md-2">
-						<input class="btn btn-primary" type="submit" value="Submit" name="UserSubmit">
-					</div>
+			<div class="row">
+				<div class="col-md-5">
+					<Select id="userSelect" class="form-control">
+						<option value="0">&nbsp;</option>
+						<option value="1">Customer</option>
+						<option value="2">Employee</option>
+					</Select>
 				</div>
-			</form>
+				<div class="col-md-5">
+					<Select id="nameSelect" class="form-control">
+						<option>&nbsp;</option>
+						<option>John Smith</option>
+						<option>Ryan Reynolds</option>
+						<option>Emma Watson</option>
+					</Select>
+				</div>
+				<div class="col-md-2">
+					<button class="btn btn-primary" onclick="setUser()">Submit</button>
+				</div>
+			</div>
 		</div>
 	</div>
 
@@ -165,7 +185,7 @@
 							<input class="btn btn-success" type="submit" value="Save" name="AccountSave">
 						</div>
 						<div class="col-md-3">
-							<input class="btn btn-danger" type="Submit" value="Cancel" name="Account Cancel">
+							<input class="btn btn-danger" type="Submit" value="Cancel" name="AccountCancel">
 						</div>
 						<div class="col-md-3">&nbsp;</div>
 					</div>
