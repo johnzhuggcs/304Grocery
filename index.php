@@ -41,6 +41,21 @@ Volume</font></p>
       
 <input type="submit" value="insert" name="AddNewProduct"></p>
 </form>
+
+<p><font size="2"> Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        Reward Points&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        Premium&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </font></p>
+
+<form method = "POST" action = "index.php">
+    <p><input type="text" name="Name" size="3">
+        <input type="email" name="Email" size="4">
+        <input type="number" name="Reward_Points" size="11">
+        <input type="number" name="Premium" size="10">
+    </p>
+    <input type = "submit" value = "Create Customer" name = 'create_customer'></form>
+
 <!-- Restock quantity by some number--> 
 
 <p> Restock products: </p>
@@ -59,6 +74,13 @@ size="18">
 </form>
 
 <?php
+ini_set('session.save_path',realpath(dirname($_SERVER['DOCUMENT_ROOT']) . '/../session'));
+session_start();
+
+/*ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);*/
+//debugging info
 
 //this tells the system that it's no longer just parsing 
 //html; it's now parsing PHP
@@ -72,11 +94,12 @@ spl_autoload_register(function ($class) {
 //class is automatically loaded from ./classes/myclass.php
 $success = true;
 $db_conn;
-$connectionController = new ConnectionController(); //Initializes connection to database
+$connectionController = ConnectionController::getConnectionInstance(); //Initializes connection to database
 
 $SQLConnection = new SQLExecution(); //Executing SQL Statements
 $Utility = new Utility(); //To print
-$ApplicationController = new ApplicationController($SQLConnection, $Utility, 0); //controls the application, checks when to create table/execute sql queriess
+//whichUser, if 1 = employer, if 0 = customer
+$ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, "C0001"); //controls the application, checks when to create table/execute sql queriess
 
 // Connect Oracle...
 $ApplicationController->start();

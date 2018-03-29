@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: johnz
@@ -11,6 +12,7 @@ class ApplicationController
     private $SQLExecution;
     private $Utility;
     private $EmployeeOrCustomer;
+    private static $instance;
 
     //Includes all classes
 
@@ -19,7 +21,29 @@ class ApplicationController
 
         $this->SQLExecution = $sqlExecution;
         $this->Utility = $utility;
-        $this->EmployeeOrCustomer = $whichUser; //If = 1, it is Employee, if = 0, it is Customer
+        $this->accountNoToBool($whichUser);
+        $_SESSION["AccountID"] = $whichUser;
+    }
+
+    // Takes in account number chosen and determines whether employee or customer
+    private function accountNoToBool($whichUser){
+        $cOrE = substr($whichUser, 0);
+        switch($cOrE){ //If = 1, it is Employee, if = 0, it is Customer
+            case "C":
+                $this->EmployeeOrCustomer = 0;
+                break;
+            case "E":
+                $this->EmployeeOrCustomer = 1;
+                break;
+        }
+
+    }
+
+    public static function getApplicationInstance($sqlExecution, $utility, $whichUser){
+        if(!isset(self::$instance)){
+            self::$instance = new ApplicationController($sqlExecution, $utility, $whichUser);
+        }
+        return self::$instance;
     }
 
     function start(){
@@ -45,13 +69,14 @@ class ApplicationController
 
 
             } else if($this->EmployeeOrCustomer){
-                echo "am employee \n";
-                    $CustomerExecution = new CustomerExecution();
-                    $CustomerExecution->start();
-            }else if(!$this->EmployeeOrCustomer){
-                echo "am customer \n";
-                $EmployeeExecution = new EmployeeExecution();
+
+                $EmployeeExecution = EmployeeExecution::getEmployeeInstance($this->SQLExecution, $this->Utility);
                 $EmployeeExecution->start();
+            }else if(!$this->EmployeeOrCustomer){
+
+
+                $CustomerExecution = CustomerExecution::getCustomerInstance($this->SQLExecution, $this->Utility);
+                $CustomerExecution->start();
             }
 
             if ($_POST && $success) {

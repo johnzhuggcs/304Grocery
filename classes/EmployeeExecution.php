@@ -1,5 +1,6 @@
 
 <?php
+
 /**
  * Created by PhpStorm.
  * User: johnz
@@ -11,6 +12,7 @@ class EmployeeExecution
 {
     private $SQLExecution;
     private $Utility;
+    private static $instance;
 
     //Includes all classes
 
@@ -19,6 +21,13 @@ class EmployeeExecution
 
         $this->SQLExecution = $sqlExecution;
         $this->Utility = $utility;
+    }
+
+    public static function getEmployeeInstance($sqlExecution, $utility){
+        if(!isset(self::$instance)){
+            self::$instance = new EmployeeExecution($sqlExecution, $utility);
+        }
+        return self::$instance;
     }
 
     function start(){
@@ -30,7 +39,7 @@ class EmployeeExecution
 
                     //Getting the values from user and insert data into the table
                     $tuple = array (
-                        ":bind1" => $_POST['PID'],
+                        ":bind1" => $_SESSION["AccountID"],
                         ":bind2" => $_POST['price'],
                         ":bind3" => $_POST['expire_date'],
                         ":bind4" => $_POST['Ingredients'],
