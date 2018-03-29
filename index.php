@@ -1,83 +1,240 @@
-<p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
-<form method="POST" action="index.php">
-   
-<p><input type="submit" value="Reset" name="reset"></p>
-</form>
+<html>
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	
+	<script type="text/javascript">
 
-<p>Insert values into product below:</p>
-<p><font size="2"> ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Price&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Expire_date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Ingredients&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Carbon_Footprint&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Origin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Stock_quantity&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Brand&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-description&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Reward_points&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Weight&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Allergies&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-Volume</font></p>
-<form method="POST" action="index.php">
-<!--refresh page when submit-->
-
-   <p><input type="text" name="pid" size="3">
-   <input type="text" name="price" size="4">
-   <input type="text" name="expire_date" size="11">
-   <input type="text" name="ingredients" size="10">
-   <input type="text" name="cfoot" size="14">
-   <input type="text" name="origin" size="6">
-   <input type="text" name="quantity" size="13">
-   <input type="text" name="name" size="5">
-   <input type="text" name="brand" size="6">
-   <input type="text" name="description" size="10">
-   <input type="text" name="rpoint" size="12">
-   <input type="text" name="weight" size="6">
-   <input type="text" name="allergies" size="8">
-   <input type="text" name="volume" size="8">
-	</p>
-<!--define two variables to pass the value-->
-      
-<input type="submit" value="insert" name="AddNewProduct"></p>
-</form>
-
-<p><font size="2"> Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        Reward Points&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        Premium&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        </font></p>
-
-<form method = "POST" action = "index.php">
-    <p><input type="text" name="Name" size="3">
-        <input type="email" name="Email" size="4">
-        <input type="number" name="Reward_Points" size="11">
-        <input type="number" name="Premium" size="10">
-    </p>
-    <input type = "submit" value = "Create Customer" name = 'create_customer'></form>
+		function AddProducts() {
+    		$('#addProducts').toggle();
+		}
+		function CustomerPremium(){
+			$('#CustomerPremium').toggle();
+		}
 
 
-<form method = "POST" action = "index.php">
-    <input type = "submit" value = "Logoff" name = "logoff">
-</form>
+	</script>
+</head>
+<body>
+	<nav class="navbar navbar-expand-sm bg-dark">
+		<ul class="navbar-nav">
+			<li class="nav-item">
+				<a class="nav-link"><button class="btn btn-primary" onclick="AddProducts()">Add Products</button></a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link"><button class="btn btn-primary" onclick="CustomerPremium()">Customer Premium</button></a>
+			</li>
+		</ul>
+		<ul class="navbar-nav ml-auto">
+			<li class="nav-item ">
+				<a class="nav-link">
+					<form method="POST" action="index.php">
+					<input class="btn btn-primary" type="submit" value="Display All Products" name="displayall"></p>
+				</form>
+				</a>
+			</li>
+			<li class="nav-item ">
+				<a class="nav-link">
+					<form method="POST" action="index.php">
+						<input class="btn btn-primary" type="submit" value="Reset" name="reset">
+					</form>
+				</a>
+			</li>
+		</ul>
+	</nav>
 
+	<div class="container card text-center">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-md-12">
+					<h4>Select User </h4>
+				</div>
+			</div>
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-6">
+					<h5>User Type</h5>
+				</div>
+				<div class="col-md-6">
+					<h5>Name </h5>
+				</div>
+			</div>
+			<form method="POST" action="index.php">
+				<div class="row">
+					<div class="col-md-6">
+						<Select class="col-md-6">
+							<option>&nbsp;</option>
+							<option>Customer</option>
+							<option>Employee</option>
+						</Select>
+					</div>
+					<div class="col-md-6">
+						<Select class="col-md-6">
+							<option>&nbsp;</option>
+							<option>John Smith</option>
+							<option>Ryan Reynolds</option>
+							<option>Emma Watson</option>
+						</Select>
+					</div>
+					<input class="btn btn-primary" type="submit" value="Submit" name="UserSubmit">
+				</div>
+			</form>
+		</div>
+	</div>
 
-<!-- Restock quantity by some number--> 
+	<div id="CustomerPremium" class="container card text-center" style="display: none;">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-md-12">
+					<h4>Upgrade Customer Accounts To Premium </h4>
+				</div>
+			</div>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="row">
+					<div class="col-md-12">
+						<input class="btn btn-primary" type="submit" value="Submit" name="CustomerPremium">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 
-<p> Restock products: </p>
-<p><font size="2"> ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-AddedQuantity</font></p>
-<form method="POST" action="index.php">
-<!--refresh page when submit-->
+	<div id="addProducts" class="card container text-center" style="display: none;" >
+		<div class="card-header">
+			<h4>Add Products</h4>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Price</th>
+										<th>Expire date</th>
+										<th>Ingredients</th>
+										<th>Carbon Footprint</th>
+									</tr>
+								</thead> 
+								<tbody>
+									<tr>
+										<td><input type="text" name="pid" ></td>
+										<td><input type="text" name="price" ></td>
+										<td><input type="text" name="expire_date" ></td>
+										<td><input type="text" name="ingredients" ></td>
+										<td><input type="text" name="cfoot" ></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Origin</th>
+										<th>Stock_quantity</th>
+										<th>Name</th>
+										<th>Brand</th>
+										<th>description</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><input type="text" name="origin" ></td>
+										<td><input type="text" name="quantity" ></td>
+										<td><input type="text" name="name" ></td>
+										<td><input type="text" name="brand" ></td>
+										<td><input type="text" name="description" ></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Reward Points</th>
+										<th>Weight</th>
+										<th>Allergies</th>
+										<th>Volume</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><input type="text" name="rpoint" ></td>
+										<td><input type="text" name="weight" ></td>
+										<td><input type="text" name="allergies" ></td>
+										<td><input type="text" name="volume" ></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<input class="btn btn-primary" type="submit" value="insert" name="AddNewProduct"></p>
+				</div>
+			</form>
+		</div>
+	</div>
+	
+	<div class=" card container">
+		<div class="card-header">
+			<h4> Restock products: </h4>
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-12">
+					<form method="POST" action="index.php">
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>Added Quantity</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><input type="text" name="id" ></td>
+									<td><input type="text" name="addq" ></td>
+								</tr>
+							</tbody>
+						</table>
 
-   <p><input type="text" name="id" size="6"><input type="text" name="addq" 
-size="18">
-<!--define two variables to pass the value-->
-      
-<input type="submit" value="update" name="RestockProductSubmit"></p>
-<p> Display all the products: </p>
-<input type="submit" value="display" name="displayall"></p>
-</form>
+						<input class="btn btn-primary" type="submit" value="update" name="RestockProductSubmit">
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class=" card container">
+		<div class="card-header">
+			<h4> Display all the products: </h4>
+		</div>
+		<div class="card-body">
+			<div class="row">
+				<form method="POST" action="index.php">
+				<div class="col-md-12"
+					<h4> Display all the products: </h4>
+					<input class="btn btn-primary" type="submit" value="display" name="displayall">
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
 
 <?php
 //error_reporting(-1);
@@ -96,7 +253,7 @@ phpinfo();
 //Includes all classes
 /*set_include_path ( "./classes" );
 spl_autoload_register(function ($class) {
-    include 'classes/' . $class . '.php';
+	include 'classes/' . $class . '.php';
 });
 
 unset($_SESSION['Begin_App']);
@@ -157,7 +314,7 @@ $ApplicationController->start();*/
      statement */
 
 /* OCIParse() Prepares Oracle statement for execution
-      The two arguments are the connection and SQL query. */
+The two arguments are the connection and SQL query. */
 /* OCIExecute() executes a previously parsed statement
       The two arguments are the statement which is a valid OCI
       statement identifier, and the mode. 
@@ -182,5 +339,5 @@ $ApplicationController->start();*/
      OCI_RETURN_NULLS - create empty elements for the NULL fields.  
      OCI_RETURN_LOBS - return the value of a LOB of the descriptor.  
      Default mode is OCI_BOTH.  */
-?>
+     ?>
 

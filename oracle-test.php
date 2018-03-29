@@ -56,7 +56,7 @@ size="18">
 //html; it's now parsing PHP
 
 $success = True; //keep track of errors so it redirects the page only if there are no errors
-$db_conn = OCILogon("ora_f8s0b", "a40642100", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+$db_conn = OCILogon("ora_i8m0b", "a49726152", "dbhost.ugrad.cs.ubc.ca:1522/ug");
 
 function executePlainSQL($cmdstr) { //takes a plain (no bound variables) SQL command and executes it
 	//echo "<br>running ".$cmdstr."<br>";
