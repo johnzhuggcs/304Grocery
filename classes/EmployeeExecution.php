@@ -33,7 +33,7 @@ class EmployeeExecution
     function start(){
         global $db_conn, $success;
 
-
+            $_SESSION['OrderNumber'] = $success;
 
             if(array_key_exists('AddProduct', $_POST)) {
 

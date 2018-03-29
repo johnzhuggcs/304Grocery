@@ -58,18 +58,8 @@ class ApplicationController
                 $_SESSION['Begin_App'] = null;
             }
             else if (array_key_exists('reset', $_POST)) {
-                $_SESSION['Initialized_table'] = null;
-                $_SESSION['Begin_App'] = null;
-                $_SESSION['customerNo'] = null;
-                $TablePopulator = new TablePopulation($this->SQLExecution);
-
-                // Drop old table...
-                $TablePopulator->dropAll();
-
-                // Create new table...
-                $TablePopulator->populateAll();
-
-                $TablePopulator->insertEmployeeCustomer();
+                $AccountInitializer = new AccountInitializer($this->SQLExecution, $this->Utility);
+                $AccountInitializer->reset();
 
 
             } else if($this->EmployeeOrCustomer){
@@ -96,8 +86,6 @@ class ApplicationController
             else {
                 // Select data...
 
-                $result = $this->SQLExecution->executePlainSQL("select * from product");
-                $this->Utility->printResult($result);
                 $employeeResult = $this->SQLExecution->executePlainSQL("select * from Employee");
                 $this->Utility->printResult($employeeResult);
                 $customerResult = $this->SQLExecution->executePlainSQL("select * from Customer");
