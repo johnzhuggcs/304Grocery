@@ -97,10 +97,6 @@ spl_autoload_register(function ($class) {
     include 'classes/' . $class . '.php';
 });
 
-session_unset();
-session_destroy();
-session_write_close();
-
 //class is automatically loaded from ./classes/myclass.php
 $success = true;
 $db_conn;
