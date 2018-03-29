@@ -30,16 +30,16 @@ class AccountInitializer
                 $TablePopulator = new TablePopulation($this->SQLExecution);
 
                 // Drop old table...
-                echo "<br> New Session <br>";
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>New Session</h5></div></div>');
                 $TablePopulator->dropAll();
 
-                echo "<br> Delete Session Variables <br>";
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>Delete Session Variables</h5></div></div>');
                 $_SESSION['customerNo'] = null;
                 // Create new table...
-                echo "<br> creating new table <br>";
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>Create New Table</h5></div></div>');
                 $TablePopulator->populateAll();
 
-                echo "<br> importing existing Employees and Customers <br>";
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>Import Existing Customers and Employers</h5></div></div>');
                 $TablePopulator->insertEmployeeCustomer();
 
 
@@ -53,7 +53,7 @@ class AccountInitializer
 
                 header("location: index.php");
             }else{
-                echo "<p>In the AccountInitializer</p>";
+                
             }
             //Commit to save changes...
             OCILogoff($db_conn);

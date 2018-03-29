@@ -52,31 +52,24 @@ class ApplicationController
 
         if ($db_conn) {
 
-            echo "<p>Session begin";
-            echo $_SESSION['Begin_App'];
-            echo "</p>";
-
 
             if(array_key_exists('logoff', $_POST)){
-                echo "<p>Log off</p>";
+                echo ('<div class="card container text-center" ><div class="card-body"><h5>Log Off</h5></div></div>');
                 $_SESSION['Begin_App'] = null;
             }
             else if (array_key_exists('reset', $_POST)) {
                 $_SESSION['Initialized_table'] = null;
                 $_SESSION['Begin_App'] = null;
                 $_SESSION['customerNo'] = null;
-                /*$TablePopulator = new TablePopulation($this->SQLExecution);
+                $TablePopulator = new TablePopulation($this->SQLExecution);
 
                 // Drop old table...
-                echo "<br> dropping table <br>";
                 $TablePopulator->dropAll();
 
                 // Create new table...
-                echo "<br> creating new table <br>";
                 $TablePopulator->populateAll();
 
-                echo "<br> importing existing Employees and Customers <br>";
-                $TablePopulator->insertEmployeeCustomer();*/
+                $TablePopulator->insertEmployeeCustomer();
 
 
             } else if($this->EmployeeOrCustomer){
@@ -102,7 +95,7 @@ class ApplicationController
             }
             else {
                 // Select data...
-                echo "<p>No action Idle Page</p>";
+
                 $result = $this->SQLExecution->executePlainSQL("select * from product");
                 $this->Utility->printResult($result);
                 $employeeResult = $this->SQLExecution->executePlainSQL("select * from Employee");

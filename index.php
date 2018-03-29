@@ -67,6 +67,13 @@ Volume</font></p>
         Premium&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </font></p>
 
+<form method = "POST" action = "index.php">
+    <p><input type="text" name="Name" size="3">
+        <input type="email" name="Email" size="4">
+        <input type="number" name="Reward_Points" size="11">
+        <input type="number" name="Premium" size="10">
+    </p>
+    <input type = "submit" value = "Create Customer" name = 'create_customer'></form>
 
 
 
@@ -132,10 +139,10 @@ if (!isset($_SESSION['Begin_App'])){
 }else if($_SESSION['Begin_App'] == 1){
     if($db_conn){
         if(array_key_exists('logon', $_POST)){
-            $_SESSION["AccountID"] = $_POST['logon'];
-            echo "<p>";
-            echo $_SESSION["AccountID"];
-            echo "</p>";
+
+            $_SESSION["AccountID"] = $_POST['loggin On'];
+            //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$_SESSION["AccountID"].'</h5></div></div>');
+
 
             $_SESSION['Begin_App'] = 2;
             $ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, $_SESSION["AccountID"]);//controls the application, checks when to create table/execute sql queriess
