@@ -48,7 +48,18 @@ Volume</font></p>
         Premium&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         </font></p>
 
+<form method = "POST" action = "index.php">
+    <p><input type="text" name="Name" size="3">
+        <input type="email" name="Email" size="4">
+        <input type="number" name="Reward_Points" size="11">
+        <input type="number" name="Premium" size="10">
+    </p>
+    <input type = "submit" value = "Create Customer" name = 'create_customer'></form>
 
+
+<form method = "POST" action = "index.php">
+    <input type = "submit" value = "Logoff" name = "logoff">
+</form>
 
 
 <!-- Restock quantity by some number--> 
