@@ -13,6 +13,13 @@
 		function CustomerPremium(){
 			$('#CustomerPremium').toggle();
 		}
+		function OpenBuyProducts(){
+			$('#BuyProducts').toggle();
+		}
+		function OpenAccount(){
+			$('#Account').toggle();
+		}
+		OpenAccount
 
 
 	</script>
@@ -26,13 +33,16 @@
 			<li class="nav-item">
 				<a class="nav-link"><button class="btn btn-primary" onclick="CustomerPremium()">Customer Premium</button></a>
 			</li>
+			<li class="nav-item">
+				<a class="nav-link"><button class="btn btn-primary" onclick="OpenBuyProducts()">Buy Products</button></a>
+			</li>
 		</ul>
 		<ul class="navbar-nav ml-auto">
 			<li class="nav-item ">
 				<a class="nav-link">
 					<form method="POST" action="index.php">
-					<input class="btn btn-primary" type="submit" value="Display All Products" name="displayall"></p>
-				</form>
+						<input class="btn btn-primary" type="submit" value="Display All Products" name="displayall">
+					</form>
 				</a>
 			</li>
 			<li class="nav-item ">
@@ -41,6 +51,9 @@
 						<input class="btn btn-primary" type="submit" value="Reset" name="reset">
 					</form>
 				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link"><button class="btn btn-primary" onclick="OpenAccount()">Account</button></a>
 			</li>
 		</ul>
 	</nav>
@@ -55,35 +68,106 @@
 		</div>
 		<div class="card-body">
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-5">
 					<h5>User Type</h5>
 				</div>
-				<div class="col-md-6">
+				<div class="col-md-5">
 					<h5>Name </h5>
+				</div>
+				<div class="col-md-2">
+					<h5>&nbsp; </h5>
 				</div>
 			</div>
 			<form method="POST" action="index.php">
 				<div class="row">
-					<div class="col-md-6">
-						<Select class="col-md-6">
+					<div class="col-md-5">
+						<Select class="form-control">
 							<option>&nbsp;</option>
 							<option>Customer</option>
 							<option>Employee</option>
 						</Select>
 					</div>
-					<div class="col-md-6">
-						<Select class="col-md-6">
+					<div class="col-md-5">
+						<Select class="form-control">
 							<option>&nbsp;</option>
 							<option>John Smith</option>
 							<option>Ryan Reynolds</option>
 							<option>Emma Watson</option>
 						</Select>
 					</div>
-					<input class="btn btn-primary" type="submit" value="Submit" name="UserSubmit">
+					<div class="col-md-2">
+						<input class="btn btn-primary" type="submit" value="Submit" name="UserSubmit">
+					</div>
 				</div>
 			</form>
 		</div>
 	</div>
+
+	<div id="Account" class="card container" style="display: none;" >
+		<div class="card-header">
+			<h4>Account Settings</h4>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="container form-group">
+					<div class="row">
+						<div class="col-md-4">
+							<h5>ID:</h5>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control" type="text" name="UserID">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Name:</h5>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control" type="text"  name="UserName">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Email:</h5>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control" type="text"  name="UserEmail">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Reward Points:</h5>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control" type="text" name="UserPoints">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Premium Status:</h5>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control" type="text" name="PremiumStatus">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">&nbsp;</div>
+					</div>
+					<div class="row text-center">
+						<div class="col-md-3">&nbsp;</div>
+						<div class="col-md-3">
+							<input class="btn btn-success" type="submit" value="Save" name="AccountSave">
+						</div>
+						<div class="col-md-3">
+							<input class="btn btn-danger" type="Submit" value="Cancel" name="Account Cancel">
+						</div>
+						<div class="col-md-3">&nbsp;</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
 
 	<div id="CustomerPremium" class="container card text-center" style="display: none;">
 		<div class="card-header">
@@ -217,19 +301,59 @@
 		</div>
 	</div>
 
-	<div class=" card container">
+	<div id="BuyProducts" class="card container text-center" style="display: none;" >
 		<div class="card-header">
-			<h4> Display all the products: </h4>
+			<h4>Add Products</h4>
 		</div>
 		<div class="card-body">
-			<div class="row">
-				<form method="POST" action="index.php">
-				<div class="col-md-12"
-					<h4> Display all the products: </h4>
-					<input class="btn btn-primary" type="submit" value="display" name="displayall"></p>
+			<form method="POST" action="index.php">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12" style="overflow-x: auto;">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Add To Cart</th>
+										<th>ID</th>
+										<th>Price</th>
+										<th>Expire date</th>
+										<th>Ingredients</th>
+										<th>Carbon Footprint</th>
+										<th>Origin</th>
+										<th>Stock_quantity</th>
+										<th>Name</th>
+										<th>Brand</th>
+										<th>description</th>
+										<th>Reward Points</th>
+										<th>Weight</th>
+										<th>Allergies</th>
+										<th>Volume</th>
+									</tr>
+								</thead> 
+								<tbody>
+									<tr>
+										<td><input class="btn btn-primary" type="submit" value="Add" name="AddToCart"></td>
+										<td><input type="text" name="pid" ></td>
+										<td><input type="text" name="price" ></td>
+										<td><input type="text" name="expire_date" ></td>
+										<td><input type="text" name="ingredients" ></td>
+										<td><input type="text" name="cfoot" ></td>
+										<td><input type="text" name="origin" ></td>
+										<td><input type="text" name="quantity" ></td>
+										<td><input type="text" name="name" ></td>
+										<td><input type="text" name="brand" ></td>
+										<td><input type="text" name="description" ></td>
+										<td><input type="text" name="rpoint" ></td>
+										<td><input type="text" name="weight" ></td>
+										<td><input type="text" name="allergies" ></td>
+										<td><input type="text" name="volume" ></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
 				</div>
-				</form>
-			</div>
+			</form>
 		</div>
 	</div>
 
