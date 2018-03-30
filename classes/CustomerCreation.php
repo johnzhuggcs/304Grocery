@@ -35,7 +35,6 @@ class CustomerCreation
         global $db_conn, $success;
         // reset all the tables
 
-
             $tempAccountNum = strval($this->accountNoCounter);
             $tempAccountNum = str_pad($tempAccountNum, 4, '0', STR_PAD_LEFT);
             $newCustomerID = "C" . $tempAccountNum;
