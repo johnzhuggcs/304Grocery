@@ -481,10 +481,10 @@ session_start();
 
 
 <?php
-error_reporting(-1);
+/*error_reporting(-1);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+error_reporting(E_ALL);*/
 // ini_set('session.save_path',realpath(dirname($_SERVER['DOCUMENT_ROOT']) . '/../session'));
 // session_start();
 //phpinfo();
@@ -517,31 +517,19 @@ if (!isset($_SESSION['Begin_App']) || array_key_exists('reset', $_POST)){
     //echo "<p>begin app is now == ".$_SESSION['Begin_App']."</p>";
     $AccountInitializer->start();
 
-    $customerArray = array();
-    $employeeArray = array();
-    $counter = 0;
-    while($tempEmployeeArray = OCI_Fetch_Array($AccountInitializer->getAllEmployees(), OCI_BOTH)){
-        $employeeArray[$counter] = $tempEmployeeArray[0];
-        $counter++;
-    }
-    $counter = 0;
-    while($tempCustomerArray = OCI_Fetch_Array($AccountInitializer->getAllCustomers(), OCI_BOTH)){
-        $customerArray[$counter] = $tempCustomerArray[0];
-        $counter++;
-    }
-
-    $_SESSION['customerArray'] = $customerArray;
-    $_SESSION['employeeArray'] = $employeeArray;
+    $_SESSION['customerArray'] = $Utility->sessionResult($AccountInitializer->getAllCustomers());
+    $_SESSION['employeeArray'] = $Utility->sessionResult($AccountInitializer->getAllEmployees());
 
 
-    echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$_SESSION['customerArray'].'</h5></div></div>');
+    //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$_SESSION['customerArray'].'</h5></div></div>');
 
     // echo $customerArray[0];
 //$customer should be C0001 or some other
 //Pretend we chose some account in the front end for $customer
-    $customer = $customerArray[0];
+    $customer = $_SESSION['customerArray'][0];
 
     $_SESSION["AccountID"] = $customer;
+
 
     header("location: index.php");
 

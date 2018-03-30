@@ -44,10 +44,18 @@ class CustomerExecution
         global $db_conn, $success;
 			// reset all the tables
 
+        $tempOrderNum = strval($this->orderCounter);
+        $tempOrderNum = str_pad($tempOrderNum, 4, '0', STR_PAD_LEFT);
+        $newOrderID = "O" . $tempOrderNum;
+
+        $tempShippingNum = strval($this->orderCounter);
+        $tempShippingNum = str_pad($tempShippingNum, 4, '0', STR_PAD_LEFT);
+        $newShippingID = "S" . $tempShippingNum;
+
         if(array_key_exists('create_shipinfo', $_POST)){
             $tuple = array (
                 //this needs shipping info no
-                ":bind0" => $_SESSION["shipping_info_no"],
+                ":bind0" => $newShippingID,
                 ":bind1" => $_POST['Phone_number'],
                 ":bind2" => $_POST['Billing_address'],
                 ":bind3" => $_POST['Shipping_address'],
@@ -60,7 +68,7 @@ class CustomerExecution
 
             $shippingArray = array(
                 ":bind0" => $_SESSION['AccountID'],
-                ":bind1" => $_SESSION["shipping_info_no"]
+                ":bind1" => $tempShippingNum
             );
 
             $bigShippingTuple = array(
@@ -159,16 +167,17 @@ class CustomerExecution
 
             // Modify Customer Premium qualification
         } else if(array_key_exists('modify_prem', $_POST)){
+
             //TODO: must do on specific customer
-            $this->SQLExecution->executeBoundSQL("Update Customer set Premium = 1 where Reward_Points >= 1000", $alltuples);
-            $this->SQLExecution->executeBoundSQL("Update Customer set Premium = 0 where Reward_Points < 1000", $alltuples);
+            $this->SQLExecution->executePlainSQL("Update Customer set Premium = 1 where Reward_Points >= 1000 and Account_no = ".$_SESSION['AccountID']." ");
+            $this->SQLExecution->executePlainSQL("Update Customer set Premium = 0 where Reward_Points < 1000 and Account_no = ".$_SESSION['AccountID']."");
 
 
             // Select product into shopping cart
         } else if(array_key_exists('add_to_cart', $_POST)){
 
             $tuple = array (
-                ":bind1" => $_POST['pid'],
+                ":bind1" => $_POST['pid']
             );
             $alltuples = array (
                 $tuple
