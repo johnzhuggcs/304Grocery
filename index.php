@@ -13,18 +13,19 @@ session_start();
 	
 	<script type="text/javascript">
 		var user;
+		var BuyProductsView;
 		var customerArray_js = <?php echo json_encode($_SESSION['customerArray']); ?>;
 		var employeeArray_js = <?php echo json_encode($_SESSION['employeeArray']); ?>;
 
 		$(function() { //run on document.ready
 			if(localStorage.getItem("userType", user) !== undefined){
-	   			if(localStorage.getItem("userType", user) == 1){
+	   			if(localStorage.getItem("userType") == 1){
 			    	$('#CustomerNav').show();
 			    	$('#EmployeeNav').hide();
 			    	$('#createUser').hide();
 			    	$('#logon').hide();
 					$('#logoutButton').show();
-				}else if (localStorage.getItem("userType", user) == 2){
+				}else if (localStorage.getItem("userType") == 2){
 					$('#CustomerNav').hide();
 					$('#EmployeeNav').show();
 					$('#createUser').hide();
@@ -37,6 +38,10 @@ session_start();
 					$('#logon').show();
 					$('#logoutButton').hide();
 				}
+			}
+
+			if(localStorage.getItem("BuyProductsView") == 1){
+				$('#BuyProducts').show();
 			}
 
 			$("#userSelect").change(function() { //this occurs when select 1 changes
@@ -76,6 +81,7 @@ session_start();
 		}
 		function OpenBuyProducts(){
 			$('#BuyProducts').toggle();
+			localStorage.setItem("BuyProductsView",1);
 		}
 		function OpenAccount(){
 			$('#Account').toggle();
