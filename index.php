@@ -425,7 +425,7 @@ session_start();
 		<div class="card-header">
 			<div class="row">
 				<div class="col-md-12">
-					<h4>Upgrade Customer Accounts To Premium </h4>
+					<h4>Upgrade Customers Accounts To Premium </h4>
 				</div>
 			</div>
 		</div>
@@ -433,7 +433,7 @@ session_start();
 			<form method="POST" action="index.php">
 				<div class="row">
 					<div class="col-md-12">
-						<input class="btn btn-primary" type="submit" value="Submit" name="CustomerPremium">
+						<input class="btn btn-primary" type="submit" value="Submit" name="modify_prem">
 					</div>
 				</div>
 			</form>
