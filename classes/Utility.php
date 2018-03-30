@@ -33,9 +33,6 @@ class Utility
 										<th>Brand</th>
 										<th>description</th>
 										<th>Reward Points</th>
-										<th>Weight</th>
-										<th>Allergies</th>
-										<th>Volume</th>
 									</tr>
 								</thead>');
 
@@ -54,9 +51,6 @@ class Utility
 		<td>' . $row[8] . '</td>
 		<td>' . $row[9] . '</td>
 		<td>' . $row[10] . '</td>
-		<td>' . $row[11] . '</td>
-		<td>' . $row[12] . '</td>
-		<td>' . $row[13] . '</td>
 		</tr>'); //or just use "echo $row[0]"
         }
         echo('</tbody>
@@ -68,5 +62,4 @@ class Utility
 	</div>');
 
     }
-
 }
