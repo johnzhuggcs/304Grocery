@@ -1,3 +1,7 @@
+<?php 
+ini_set('session.save_path',realpath(dirname($_SERVER['DOCUMENT_ROOT']) . '/../session'));
+session_start();
+?>
 <html>
 <head>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -8,10 +12,33 @@
 	
 	<script type="text/javascript">
 		var user;
-
+		var customerArray_js = <?php echo json_encode($_SESSION['customerArray']); ?>;
+		var employeeArray_js = <?php echo json_encode($_SESSION['employeeArray']); ?>;
+    
 		$(function() { //run on document.ready
 			$("#userSelect").change(function() { //this occurs when select 1 changes
-				$("#nameSelect").val($(this).val());
+				console.log("detect");
+				user =  document.getElementById("userSelect").value;
+				if(user == 1){
+					console.log("Customer");
+					console.log(customerArray_js.length);
+					var sel = document.getElementById('nameSelect');
+					for(var i = 0; i < customerArray_js.length; i++) {
+			    		var opt = document.createElement('option');
+			    		opt.innerHTML = customerArray_js[i].ACCOUNT_NO;
+			    		opt.value = customerArray_js[i].ACCOUNT_NO;
+			    		sel.appendChild(opt);
+					}
+				}else if(user == 2){
+					console.log("Employee");
+					var sel = document.getElementById('nameSelect');
+					for(var i = 0; i < employeeArray_js.length; i++) {
+			    		var opt = document.createElement('option');
+			    		opt.innerHTML = employeeArray_js[i].EMPLOYEE_ID;
+			    		opt.value = employeeArray_js[i].EMPLOYEE_ID;
+			    		sel.appendChild(opt);
+					}
+				}
 			});
 		});
 
@@ -39,8 +66,11 @@
 				$('#CustomerNav').hide();
 				$('#EmployeeNav').show();
 			}
+			var customerArray_js = <?php echo json_encode($_SESSION['customerArray']); ?>;
+			var employeeArray_js = <?php echo json_encode($_SESSION['employeeArray']); ?>;
+			console.log(customerArray_js);
+			console.log(employeeArray_js);
 		}
-
 	</script>
 </head>
 <body>
@@ -100,7 +130,7 @@
 					<h5>User Type</h5>
 				</div>
 				<div class="col-md-5">
-					<h5>Name </h5>
+					<h5>User ID</h5>
 				</div>
 				<div class="col-md-2">
 					<h5>&nbsp; </h5>
@@ -116,10 +146,6 @@
 				</div>
 				<div class="col-md-5">
 					<Select id="nameSelect" class="form-control">
-						<option>&nbsp;</option>
-						<option>John Smith</option>
-						<option>Ryan Reynolds</option>
-						<option>Emma Watson</option>
 					</Select>
 				</div>
 				<div class="col-md-2">
@@ -329,7 +355,7 @@
 
 	<div id="BuyProducts" class="card container text-center" style="display: none;" >
 		<div class="card-header">
-			<h4>Add Products</h4>
+			<h4>Add Products To Cart</h4>
 		</div>
 		<div class="card-body">
 			<form method="POST" action="index.php">
@@ -392,8 +418,8 @@
 // ini_set('display_errors', 1);
 // ini_set('display_startup_errors', 1);
 // error_reporting(E_ALL);
-ini_set('session.save_path',realpath(dirname($_SERVER['DOCUMENT_ROOT']) . '/../session'));
-session_start();
+// ini_set('session.save_path',realpath(dirname($_SERVER['DOCUMENT_ROOT']) . '/../session'));
+// session_start();
 //phpinfo();
 
 //debugging info
@@ -414,15 +440,29 @@ $connectionController = ConnectionController::getConnectionInstance(); //Initial
 $SQLConnection = new SQLExecution(); //Executing SQL Statements
 $Utility = new Utility(); //To print
 
-echo "before begin app\n\n";
+// echo "before begin app\n\n";
 if (!isset($_SESSION['Begin_App'])){
     // echo "begin app \n\n";
     $_SESSION['Begin_App'] = 1;
     $AccountInitializer = new AccountInitializer($SQLConnection, $Utility);
     $AccountInitializer->start();
-    $customerArray = OCI_Fetch_Array($AccountInitializer->getAllCustomers(), OCI_BOTH);
-    $employeeArray = OCI_Fetch_Array($AccountInitializer->getAllEmployees(), OCI_BOTH);
 
+    
+    while($customerArray = OCI_Fetch_Array($AccountInitializer->getAllCustomers(), OCI_BOTH)){
+
+    }
+    while($employeeArray = OCI_Fetch_Array($AccountInitializer->getAllEmployees(), OCI_BOTH)){
+    	
+    }
+
+    $_SESSION['customerArray'] = $customerArray;
+    $_SESSION['employeeArray'] = $employeeArray;
+
+    echo $_SESSION['customerArray'][0];
+    echo $_SESSION['customerArray'][1];
+
+
+    // echo $customerArray[0];
 //$customer should be C0001 or some other
 //Pretend we chose some account in the front end for $customer
     $customer = $customerArray[0];

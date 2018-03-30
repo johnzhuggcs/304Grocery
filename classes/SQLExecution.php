@@ -56,14 +56,14 @@ class SQLExecution
             // echo "<div class='card'><br>Cannot parse the following command: " . $cmdstr . "<br></div>";
             echo ('<div class="card container text-center" ><div class="card-body"><h5>Cannot parse the following command:'.$cmdstr.'</h5></div></div>');
             $e = OCI_Error($db_conn);
-            echo htmlentities($e['message']);
+            echo ('<div class="card container text-center" ><div class="card-body"><h5>Cannot parse the following command:'.htmlentities($e['message']).'</h5></div></div>');
             $success = False;
         }
         foreach ($list as $tuple) {
             foreach ($tuple as $bind => $val) {
-                echo $val;
+                // echo $val;
 
-                echo "<div class='card'><br>".$bind."<br></div>";
+                echo ('<div class="card container text-center" ><div class="card"><br>".$bind."<br></div></div>');
                 echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$bind.'</h5></div></div>');
                 OCIBindByName($statement, $bind, $val);
                 unset ($val); //make sure you do not remove this. Otherwise $val will remain in an array object wrapper which will not be recognized by Oracle as a proper datatype
