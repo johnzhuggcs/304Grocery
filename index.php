@@ -26,8 +26,8 @@ session_start();
 					var sel = document.getElementById('nameSelect');
 					for(var i = 0; i < customerArray_js.length; i++) {
 			    		var opt = document.createElement('option');
-			    		opt.innerHTML = customerArray_js[i].ACCOUNT_NO;
-			    		opt.value = customerArray_js[i].ACCOUNT_NO;
+			    		opt.innerHTML = customerArray_js[i];
+			    		opt.value = customerArray_js[i];
 			    		sel.appendChild(opt);
 					}
 				}else if(user == 2){
@@ -35,8 +35,8 @@ session_start();
 					var sel = document.getElementById('nameSelect');
 					for(var i = 0; i < employeeArray_js.length; i++) {
 			    		var opt = document.createElement('option');
-			    		opt.innerHTML = employeeArray_js[i].EMPLOYEE_ID;
-			    		opt.value = employeeArray_js[i].EMPLOYEE_ID;
+			    		opt.innerHTML = employeeArray_js[i];
+			    		opt.value = employeeArray_js[i];
 			    		sel.appendChild(opt);
 					}
 				}
@@ -150,7 +150,9 @@ session_start();
 					</Select>
 				</div>
 				<div class="col-md-2">
-					<button class="btn btn-primary" onclick="setUser()">Submit</button>
+                    <form method = "POST" action = "index.php">
+                        <input class="btn btn-primary" type = "submit" name = "selectAccount" value = "submit" onclick="setUser()">
+                    </form>
 				</div>
 			</div>
 		</div>
@@ -466,21 +468,12 @@ if (!isset($_SESSION['Begin_App']) || array_key_exists('reset', $_POST)){
         $counter++;
     }
 
-    
-    while($customerArray = OCI_Fetch_Array($AccountInitializer->getAllCustomers(), OCI_BOTH)){
-
-    }
-    while($employeeArray = OCI_Fetch_Array($AccountInitializer->getAllEmployees(), OCI_BOTH)){
-    	
-    }
 
     $_SESSION['customerArray'] = $customerArray;
     $_SESSION['employeeArray'] = $employeeArray;
 
-    echo $_SESSION['customerArray'][0];
-    echo $_SESSION['customerArray'][1];
 
-
+    echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$_SESSION['customerArray'].'</h5></div></div>');
     // echo $customerArray[0];
 //$customer should be C0001 or some other
 //Pretend we chose some account in the front end for $customer
@@ -493,11 +486,18 @@ if (!isset($_SESSION['Begin_App']) || array_key_exists('reset', $_POST)){
 
 }else if($_SESSION['Begin_App'] == 1){
     if($db_conn){
-        if(array_key_exists('logon', $_POST)){
+        if(array_key_exists("create_customer", $_POST)){
+            $CustomerCreator = new CustomerCreation($SQLConnection, $Utility);
+            $CustomerCreator->start();
+            $_SESSION['Begin_App'] = 2;
+            $ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, $_SESSION["AccountID"]);//controls the application, checks when to create table/execute sql queriess
+            $ApplicationController->start();
+        }else
+        if(array_key_exists('selectAccount', $_POST)){
             //echo "loggin on in index.php\n\n";
            /* echo "<p>Logged On: </p>";
             echo "<p>".$_POST["accountNum"]." is the Logged On account </p>";*/
-            $_SESSION["AccountID"] = $_POST["accountNum"];
+            $_SESSION["AccountID"] = $_POST["nameSelect"];
             //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$_SESSION["AccountID"].'</h5></div></div>');
 
 
