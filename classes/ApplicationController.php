@@ -71,7 +71,11 @@ class ApplicationController
                 $productArray = array();
                 $counter = 0;
                 while($tempResultArray = OCI_Fetch_Array($productResult, OCI_BOTH)){
-                    $productArray[$counter] = $tempResultArray[0];
+                    $productArrayX = array();
+                    for($x = 0; $x < sizeof($tempResultArray); $x++){
+                        $productArrayX[$x] = $tempResultArray[$x];
+                    }
+                    $productArray[$counter] = $productArrayX;
                     $counter++;
                     //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$tempResultArray[0].'</h5></div></div>');
                 }
