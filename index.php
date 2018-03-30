@@ -195,7 +195,7 @@ session_start();
 							<h5>Name:</h5>
 						</div>
 						<div class="col-md-8">
-							<input class="form-control" type="text"  name="UserName">
+							<input class="form-control" type="text"  name="Name">
 						</div>
 					</div>
 					<div class="row">
@@ -203,7 +203,7 @@ session_start();
 							<h5>Email:</h5>
 						</div>
 						<div class="col-md-8">
-							<input class="form-control" type="text"  name="UserEmail">
+							<input class="form-control" type="text"  name="Email">
 						</div>
 					</div>
 					<div class="row">
@@ -212,10 +212,10 @@ session_start();
 					<div class="row text-center">
 						<div class="col-md-3">&nbsp;</div>
 						<div class="col-md-3">
-							<input class="btn btn-success" type="submit" value="Save" name="AccountSave">
+							<input class="btn btn-success" type="submit" value="Save" name="create_customer">
 						</div>
 						<div class="col-md-3">
-							<input class="btn btn-danger" type="Submit" value="Cancel" name="AccountCancel">
+							<input class="btn btn-danger" type="Submit" value="Cancel" onclick="OpenAccount()">
 						</div>
 						<div class="col-md-3">&nbsp;</div>
 					</div>
