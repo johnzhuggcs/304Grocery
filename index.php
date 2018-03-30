@@ -2,7 +2,7 @@
 ini_set('session.save_path',realpath(dirname($_SERVER['DOCUMENT_ROOT']) . '/../session'));
 session_start();
 ?>
-
+<!DOCTYPE html>
 <html>
 <head>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -17,8 +17,9 @@ session_start();
 		var customerArray_js = <?php echo json_encode($_SESSION['customerArray']); ?>;
 		var employeeArray_js = <?php echo json_encode($_SESSION['employeeArray']); ?>;
 		var productArray_js = <?php echo json_encode($_SESSION['products']); ?>;
-
+		
 		console.log(productArray_js);
+		console.log(productArray_js[0][1]);
 
 		$(function() { //run on document.ready
 			if(localStorage.getItem("userType", user) !== undefined){
@@ -83,23 +84,6 @@ session_start();
 			$('#CustomerPremium').toggle();
 		}
 		function OpenBuyProducts(){
-			var productArray_js = <?php echo json_encode($_SESSION['products']); ?>;
-			table = document.getElementById("BuyProductsTable");
-
-			// body = document.getElementsByTagName('body')[0];
-			// tab = document.createElement('table');
-			// for (row = 0; row < arr.length; row++){
-			// 	tr = document.creatdeElement('tr');
-			// 	for (col = 0; col < arr[row].length; col++){
-			// 		td = document.createElement('td');
-			// 		tn = document.createTextNode(arr[row][col]);
-			// 		td.appendChild(tn);
-			// 		tr.appendChild(td);
-			// 	}
-			// 	tab.appendChild(tr);
-			// }
-			// body.appendChild(tab);
-
 			$('#BuyProducts').toggle();
 			localStorage.setItem("BuyProductsView",1);
 		}
@@ -618,9 +602,7 @@ session_start();
 										<th>description</th>
 										<th>Reward Points</th>
 									</tr>
-								</thead> 
-								<tbody>
-								</tbody>
+								</thead>
 							</table>
 						</div>
 					</div>
@@ -712,7 +694,32 @@ session_start();
 	</div>
 </body>
 </html>
+<script type="text/javascript">
+	
+function fillProductTable(){
+	var productArray_js = <?php echo json_encode($_SESSION['products']); ?>;
+	var table = document.getElementById("BuyProductsTable");
+	var tbody = document.createElement("tbody");
 
+
+	for (var i = 0 ; i < 1; i++) {
+		var tr = document.createElement("tr");
+		var td = document.createElement("td");
+		var txt = document.createTextNode('<input class="form-control" type="text" name="volume" >');
+		td.appendChild(txt);
+		tr.appendChild(td);
+		for (var j = 0; j < 12; j++) {
+			var td = document.createElement("td");
+			var txt = document.createTextNode(productArray_js[i][j]);
+			td.appendChild(txt);
+			tr.appendChild(td);
+		}
+	tbody.appendChild(tr);
+	table.appendChild(tbody);
+	}
+}
+
+</script>
 
 <?php
 // orting(-1);
