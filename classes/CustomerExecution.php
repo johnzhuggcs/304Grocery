@@ -4,7 +4,6 @@ class CustomerExecution
 {
     private $SQLExecution;
     private $Utility;
-    private $accountNoCounter;
     private static $instance;
 
     //Includes all classes
@@ -14,13 +13,7 @@ class CustomerExecution
 
         $this->SQLExecution = $sqlExecution;
         $this->Utility = $utility;
-        if(isset($_SESSION['customerNo'])){
 
-            $this->accountNoCounter = $_SESSION['customerNo'];
-        }else{
-            $_SESSION['customerNo'] = 4;
-            $this->accountNoCounter = $_SESSION['customerNo'];
-        }
     }
 
     public static function getCustomerInstance($sqlExecution, $utility){
@@ -34,27 +27,7 @@ class CustomerExecution
         global $db_conn, $success;
 			// reset all the tables
 
-            if(array_key_exists('create_customer', $_POST)){
-                    $tempAccountNum = strval($this->accountNoCounter);
-                    $tempAccountNum = str_pad($tempAccountNum, 4, '0', STR_PAD_LEFT);
-                    $newCustomerID = "C".$tempAccountNum;
-					$tuple = array (
-                            ":bind1" => $newCustomerID,
-                            ":bind2" => $_POST["Name"],
-                            ":bind3" => $_POST["Email"],
-                            ":bind4" => $_POST["Reward_Points"],
-                            ":bind5" => $_POST["Premium"]
-                        );
-                        $alltuples = array (
-                            $tuple
-                        );
-                        $this->SQLExecution->executeBoundSQL("insert into customer values (:bind1,:bind2,:bind3,:bind4,:bind5)", $alltuples);
-                        OCICommit($db_conn);
-                        $_SESSION['customerNo'] = $_SESSION['customerNo']+1;
-                        $_SESSION["AccountID"] = $newCustomerID;
-
-				// create shipping info
-				} else if(array_key_exists('create_shipinfo', $_POST)){
+            if(array_key_exists('create_shipinfo', $_POST)){
 					$tuple = array (
                             ":bind1" => $_POST['Shipping_info_no'],
                             ":bind2" => $_POST['Phone_number'],

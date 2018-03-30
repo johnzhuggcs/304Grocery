@@ -175,9 +175,15 @@ session_start();
 					</Select>
 				</div>
 				<div class="col-md-2">
+<<<<<<< HEAD
 					<form method="POST" action="index.php">
 						<input class="btn btn-primary" Type="submit" name="selectAccount" value="Submit" onclick="setUser()">
 					</form>
+=======
+                    <form method = "POST" action = "index.php">
+                        <input class="btn btn-primary" type = "submit" name = "selectAccount" value = "submit" onclick="setUser()">
+                    </form>
+>>>>>>> Jonathan
 				</div>
 			</div>
 		</div>
@@ -533,6 +539,9 @@ if (!isset($_SESSION['Begin_App']) || array_key_exists('reset', $_POST)){
     $_SESSION['customerArray'] = $customerArray;
     $_SESSION['employeeArray'] = $employeeArray;
 
+
+    echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$_SESSION['customerArray'].'</h5></div></div>');
+
     // echo $customerArray[0];
 //$customer should be C0001 or some other
 //Pretend we chose some account in the front end for $customer
@@ -545,6 +554,14 @@ if (!isset($_SESSION['Begin_App']) || array_key_exists('reset', $_POST)){
 
 }else if($_SESSION['Begin_App'] == 1){
     if($db_conn){
+
+        if(array_key_exists("create_customer", $_POST)){
+            $CustomerCreator = new CustomerCreation($SQLConnection, $Utility);
+            $CustomerCreator->start();
+            $_SESSION['Begin_App'] = 2;
+            $ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, $_SESSION["AccountID"]);//controls the application, checks when to create table/execute sql queriess
+            $ApplicationController->start();
+        }else
         if(array_key_exists('selectAccount', $_POST)){
             //echo "loggin on in index.php\n\n";
            /* echo "<p>Logged On: </p>";
