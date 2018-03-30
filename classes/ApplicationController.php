@@ -52,45 +52,20 @@ class ApplicationController
 
         if ($db_conn) {
 
-            echo "<p>Session begin";
-            echo $_SESSION['Begin_App'];
-            echo "</p>";
-
 
             if(array_key_exists('logoff', $_POST)){
-                echo "<p>Log off</p>";
-                //$_SESSION['Begin_App'] = null;
+                echo ('<div class="card container text-center" ><div class="card-body"><h5>Log Off</h5></div></div>');
+                $_SESSION['Begin_App'] = null;
             }
             else if (array_key_exists('reset', $_POST)) {
-                //$_SESSION['Initialized_table'] = null;
-                //$_SESSION['Begin_App'] = null;
-                $TablePopulator = new TablePopulation($this->SQLExecution);
 
-                // Drop old table...
-                echo ('<div class="card container text-center" ><div class="card-body"><h5>dropping table</h5></div></div>');
-                $TablePopulator->dropAll();
-                //$_SESSION['customerNo'] = null;
-                // Create new table...
-                echo ('<div class="card container text-center" ><div class="card-body"><h5>creating new table</h5></div></div>');
-                $TablePopulator->populateAll();
 
-                echo ('<div class="card container text-center" ><div class="card-body"><h5>importing existing Employees and Customers</h5></div></div>');
-                $TablePopulator->insertEmployeeCustomer();
-
+                $AccountInitializer = new AccountInitializer($this->SQLExecution, $this->Utility);
+                $AccountInitializer->reset();
 
             } else if($this->EmployeeOrCustomer){
 
-
                 $EmployeeExecution = EmployeeExecution::getEmployeeInstance($this->SQLExecution, $this->Utility);
-/*=======
-                echo ('<div class="card container text-center" ><div class="card-body"><h5>am employee</h5></div></div>');
-                    $CustomerExecution = new CustomerExecution();
-                    $CustomerExecution->start();
-            }else if(!$this->EmployeeOrCustomer){
-                echo ('<div class="card container text-center" ><div class="card-body"><h5>am customer</h5></div></div>');
-
-                $EmployeeExecution = new EmployeeExecution();
->>>>>>> 9266fc2936ffd57fb0263a47f51d5802478e0195*/
                 $EmployeeExecution->start();
             }else if(!$this->EmployeeOrCustomer){
 
@@ -111,9 +86,6 @@ class ApplicationController
             }
             else {
                 // Select data...
-                echo ('<div class="card container text-center" ><div class="card-body"><h5>No action Idle Page</h5></div></div>');
-                $result = $this->SQLExecution->executePlainSQL("select * from product");
-                $this->Utility->printResult($result);
                 $employeeResult = $this->SQLExecution->executePlainSQL("select * from Employee");
                 $this->Utility->printResult($employeeResult);
                 $customerResult = $this->SQLExecution->executePlainSQL("select * from Customer");
