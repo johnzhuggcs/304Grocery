@@ -16,6 +16,9 @@ session_start();
 		var BuyProductsView;
 		var customerArray_js = <?php echo json_encode($_SESSION['customerArray']); ?>;
 		var employeeArray_js = <?php echo json_encode($_SESSION['employeeArray']); ?>;
+		var productArray_js = <?php echo json_encode($_SESSION['products']); ?>;
+
+		console.log(productArray_js);
 
 		$(function() { //run on document.ready
 			if(localStorage.getItem("userType", user) !== undefined){
@@ -80,6 +83,23 @@ session_start();
 			$('#CustomerPremium').toggle();
 		}
 		function OpenBuyProducts(){
+			var productArray_js = <?php echo json_encode($_SESSION['products']); ?>;
+			table = document.getElementById("BuyProductsTable");
+
+			// body = document.getElementsByTagName('body')[0];
+			// tab = document.createElement('table');
+			// for (row = 0; row < arr.length; row++){
+			// 	tr = document.creatdeElement('tr');
+			// 	for (col = 0; col < arr[row].length; col++){
+			// 		td = document.createElement('td');
+			// 		tn = document.createTextNode(arr[row][col]);
+			// 		td.appendChild(tn);
+			// 		tr.appendChild(td);
+			// 	}
+			// 	tab.appendChild(tr);
+			// }
+			// body.appendChild(tab);
+
 			$('#BuyProducts').toggle();
 			localStorage.setItem("BuyProductsView",1);
 		}
@@ -127,6 +147,8 @@ session_start();
 		function resetLS() {
 			delete localStorage.clear();
 		}
+
+
 	</script>
 </head>
 <body>
@@ -580,7 +602,7 @@ session_start();
 				<div class="container">
 					<div class="row">
 						<div class="col-md-12" style="overflow-x: auto;">
-							<table class="table table-bordered">
+							<table name="BuyProductsTable" class="table table-bordered">
 								<thead>
 									<tr>
 										<th>Add To Cart</th>
@@ -598,20 +620,6 @@ session_start();
 									</tr>
 								</thead> 
 								<tbody>
-									<tr>
-										<td><input class="btn btn-primary" type="submit" value="Add" name="AddToCart"></td>
-										<td><input type="text" name="pid" ></td>
-										<td><input type="text" name="price" ></td>
-										<td><input type="text" name="expire_date" ></td>
-										<td><input type="text" name="ingredients" ></td>
-										<td><input type="text" name="cfoot" ></td>
-										<td><input type="text" name="origin" ></td>
-										<td><input type="text" name="quantity" ></td>
-										<td><input type="text" name="name" ></td>
-										<td><input type="text" name="brand" ></td>
-										<td><input type="text" name="description" ></td>
-										<td><input type="text" name="rpoint" ></td>
-									</tr>
 								</tbody>
 							</table>
 						</div>
