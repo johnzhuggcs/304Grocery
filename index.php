@@ -105,6 +105,10 @@ session_start();
 		function OpenViewCart(){
 			$('#viewCart').toggle();
 		}
+		function closeBuyProduct(){
+			$('#BuyProducts').toggle();
+			localStorage.setItem("BuyProductsView",0);
+		}
 		function logout(){
 			delete localStorage.clear();
 			location.reload();
@@ -614,6 +618,14 @@ session_start();
 					</div>
 				</div>
 			</form>
+			<div class="row">
+				<div class="col-md-12">&nbsp;</div>
+			</div>
+			<div class="row text-center">
+				<div class="col-md-12">
+					<input class="btn btn-danger" type="Submit" value="Cancel" onclick="closeBuyProduct()">
+				</div>
+			</div>
 		</div>
 	</div>
 
