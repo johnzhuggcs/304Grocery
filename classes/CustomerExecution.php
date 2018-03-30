@@ -7,6 +7,7 @@ class CustomerExecution
     private static $instance;
     private $shippingCounter;
     private $orderCounter;
+    private $accountNoCounter;
 
     //Includes all classes
 
@@ -31,6 +32,14 @@ class CustomerExecution
             $this->shippingCounter = $_SESSION['shipping_info_no'];
         }
 
+        if (isset($_SESSION['customerNo'])) {
+
+            $this->accountNoCounter = $_SESSION['customerNo'];
+        } else {
+            $_SESSION['customerNo'] = 4;
+            $this->accountNoCounter = $_SESSION['customerNo'];
+        }
+
     }
 
     public static function getCustomerInstance($sqlExecution, $utility){
@@ -48,9 +57,13 @@ class CustomerExecution
         $tempOrderNum = str_pad($tempOrderNum, 4, '0', STR_PAD_LEFT);
         $newOrderID = "O" . $tempOrderNum;
 
-        $tempShippingNum = strval($this->orderCounter);
+        $tempShippingNum = strval($this->shippingCounter);
         $tempShippingNum = str_pad($tempShippingNum, 4, '0', STR_PAD_LEFT);
         $newShippingID = "S" . $tempShippingNum;
+
+        $tempAccountNum = strval($this->accountNoCounter);
+        $tempAccountNum = str_pad($tempAccountNum, 4, '0', STR_PAD_LEFT);
+        $newCustomerID = "C" . $tempAccountNum;
 
         if(array_key_exists('create_shipinfo', $_POST)){
             $tuple = array (
@@ -101,36 +114,45 @@ class CustomerExecution
             ("Select shipping_info_no from Owns Where Account_no = ".$_SESSION['AccountID']."");
             $ship = OCI_Fetch_Array($shipping_info);
 
-            $tuple = array (
-                //this needs shipping info no
-                ":bind0" => $_SESSION["order_no"],
-                ":bind1" => 18-04-04,
-                ":bind2" => $_POST['Free_shipping'],
-                ":bind3" => $_POST['Status'],
-                ":bind4" => $_POST['Payment_method'],
-                ":bind5" => $_POST['delivery_type']
-            );
-
             if($price>100){
                 $freeshipping = 1;
                 //needs both cid and order no
-                $this->SQLExecution->executeBoundSQL
-                ("insert into Order_placedby_shippedwith values(".$_SESSION["order_no"].",:bind1,'1','Processing',price[0],price[0],:bind2,".$_SESSION['AccountID'].",$ship[0])", $alltuples);
+
             }else{
                 $freeshipping = 0;
                 //needs both cid and order no
-                $this->SQLExecution->executeBoundSQL
-                ("insert into Order_placedby_shippedwith values(".$_SESSION["order_no"].",:bind1,'0','Processing',price[0],price[0],:bind2,".$_SESSION['AccountID'].",$ship[0])", $alltuples);
+
             }
+
+            $orderTotal = array();
+            $counter = 0;
+            while($tempResultArray = OCI_Fetch_Array($original_price, OCI_BOTH)){
+                $orderTotal[$counter] = $tempResultArray[0];
+                $counter++;
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$tempResultArray[0].'</h5></div></div>');
+            }
+
+            $customerShipping = array();
+            $counter = 0;
+            while($tempResultArray = OCI_Fetch_Array($shipping_info, OCI_BOTH)){
+                $customerShipping[$counter] = $tempResultArray[0];
+                $counter++;
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$tempResultArray[0].'</h5></div></div>');
+            }
+
+
 
             $tuple = array (
                 //this needs shipping info no
-                ":bind0" => $_SESSION["order_no"],
+                ":bind0" => $newOrderID,
                 ":bind1" => 18-04-04,
                 ":bind2" => $freeshipping,
                 ":bind3" => "processing",
-                ":bind4" => $_POST['Payment_method'],
-                ":bind5" => $_POST['delivery_type']
+                ":bind4" => $orderTotal[0],
+                ":bind5" => $_POST['Payment_method'],
+                ":bind6" => $orderTotal[0] * 0.5,
+                ":bind7" => $_SESSION['AccountID'],
+                ":bind8" => $customerShipping
             );
 
             $alltuples = array (
@@ -138,22 +160,22 @@ class CustomerExecution
             );
 
             $this->SQLExecution->executeBoundSQL
-            ("insert into Order_placedby_shippedwith values(:bind0,:bind1,:bind2,:bind3,:bind4,:bind5)", $alltuples);
+            ("insert into Order_placedby_shippedwith values(:bind0,:bind1,:bind2,:bind3,:bind4,:bind5, :bind6, :bind7, :bind8, :bind9)", $alltuples);
 
             //update stock_quantity after decrement
             //needs order no ???
             $this->SQLExecution->executeBoundSQL
             ("update Product_discount set stock_quantity=stock_quantity-1
-					where pid in(select pid from Contains where Order_no =".$_SESSION["order_no"].")");
+					where pid in(select pid from Contains where Order_no =$newOrderID)");
             $_SESSION["order_no"] = $_SESSION["order_no"]+1;
             OCICommit($db_conn);
 
             //update shipping address
-            //TODO: Get shipping_info_no from the customer
+
         } else if(array_key_exists('update_shipping_address', $_POST)){
             $tuple = array (
                 ":bind1" => $_POST['new_address'],
-                ":bind2" => $_POST['shipping_info_no']
+                ":bind2" => $newShippingID
             );
             $alltuples = array (
                 $tuple
@@ -163,7 +185,7 @@ class CustomerExecution
             $tempCustomer = OCI_Fetch_Array($tempCustomerArray, OCI_BOTH);
             ;
 
-            $this->SQLExecution->executeBoundSQL("update Shipping_info set shipping_address=".$_POST['new_address']." where shipping_info_no=$tempCustomer[0]", $alltuples);
+            $this->SQLExecution->executePlainSQL("update Shipping_info set shipping_address=".$_POST['new_address']." where shipping_info_no=$tempCustomer[0]");
 
             // Modify Customer Premium qualification
         } else if(array_key_exists('modify_prem', $_POST)){
@@ -178,7 +200,7 @@ class CustomerExecution
 
             $tuple = array (
                 ":bind1" => $_POST['pid'],
-                ":bind2" => $_POST['pid']
+                ":bind2" => $newOrderID
             );
             $alltuples = array (
                 $tuple
@@ -188,14 +210,10 @@ class CustomerExecution
         }
         //select an attribute where the products are lower than selected price
         else if(array_key_exists('select_view', $_POST)){
-            $tuple = array (
-                ":bind1" => $_POST['attr'],
-                ":bind2" => $_POST['sel_price'],
-            );
-            $alltuples = array (
-                $tuple
-            );
-            $result= $this->SQLExecution->executePlainSQL("select :bind1 from product_discount where price< :bind2", $alltuples);
+            $bind1 = $_POST['attr'];
+            $bind2 = $_POST['sel_price'];
+
+            $_SESSION['select_view']= $this->SQLExecution->executePlainSQL("select $bind1 from product_discount where price< $bind2");
             //print result
 
             OCICommit($db_conn);
