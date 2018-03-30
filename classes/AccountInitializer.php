@@ -25,6 +25,7 @@ class AccountInitializer
         global $db_conn, $success;
         if($db_conn){
 
+            //Also checks if tables have been created already, if so it won't try to recreate them
             if (!isset($_SESSION['Initialized_table'])){
                 $_SESSION['Initialized_table'] = 1;
                 $TablePopulator = new TablePopulation($this->SQLExecution);
@@ -46,14 +47,13 @@ class AccountInitializer
             }
             $this->EmployeeResults = $this->SQLExecution->executePlainSQL("select Employee_ID from Employee");
             $this->CustomerResults = $this->SQLExecution->executePlainSQL("select Account_no from Customer");
-
+            //$this->Utility->printResult($this->CustomerResults);
             OCICommit($db_conn);
 
             if ($_POST && $success) {
 
-                header("location: index.php");
             }else{
-                
+
             }
             //Commit to save changes...
             OCILogoff($db_conn);
@@ -71,5 +71,21 @@ class AccountInitializer
 
     function getAllCustomers(){
         return $this->CustomerResults;
+
+    }
+
+    function reset(){
+        $_SESSION['Initialized_table'] = null;
+        $_SESSION['Begin_App'] = null;
+        $_SESSION['customerNo'] = null;
+        $TablePopulator = new TablePopulation($this->SQLExecution);
+
+        // Drop old table...
+        $TablePopulator->dropAll();
+
+        // Create new table...
+        $TablePopulator->populateAll();
+
+        $TablePopulator->insertEmployeeCustomer();
     }
 }
