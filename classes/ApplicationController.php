@@ -93,6 +93,7 @@ class ApplicationController
                 $this->Utility->printResult($customerResult);
                 $employeeResult = $this->SQLExecution->executePlainSQL("select * from product_discount");
                 $this->Utility->printResult($employeeResult);
+                $_SESSION['products'] = $this->Utility->sessionResult($employeeResult);
                 $orderAllResult = $this->SQLExecution->executePlainSQL("select * from Order_placedby_shippedwith");
                 $this->Utility->printResult($orderAllResult);
             }
