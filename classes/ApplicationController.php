@@ -52,7 +52,6 @@ class ApplicationController
 
         if ($db_conn) {
 
-
             if(array_key_exists('logoff', $_POST)){
                 echo ('<div class="card container text-center" ><div class="card-body"><h5>Log Off</h5></div></div>');
                 $_SESSION['Begin_App'] = null;
@@ -80,6 +79,8 @@ class ApplicationController
                 $this->Utility->printResult($employeeResult);
                 $customerResult = $this->SQLExecution->executePlainSQL("select * from Customer");
                 $this->Utility->printResult($customerResult);
+                $employeeResult = $this->SQLExecution->executePlainSQL("select * from product_discount");
+                $this->Utility->printResult($employeeResult);
                 $orderAllResult = $this->SQLExecution->executePlainSQL("select * from Order_placedby_shippedwith");
                 $this->Utility->printResult($orderAllResult);
                 header("location: index.php");
@@ -90,6 +91,8 @@ class ApplicationController
                 $this->Utility->printResult($employeeResult);
                 $customerResult = $this->SQLExecution->executePlainSQL("select * from Customer");
                 $this->Utility->printResult($customerResult);
+                $employeeResult = $this->SQLExecution->executePlainSQL("select * from product_discount");
+                $this->Utility->printResult($employeeResult);
                 $orderAllResult = $this->SQLExecution->executePlainSQL("select * from Order_placedby_shippedwith");
                 $this->Utility->printResult($orderAllResult);
             }

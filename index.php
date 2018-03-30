@@ -608,10 +608,10 @@ session_start();
 
 
 <?php
-// error_reporting(-1);
-// ini_set('display_errors', 1);
-// ini_set('display_startup_errors', 1);
-// error_reporting(E_ALL);
+error_reporting(-1);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 // ini_set('session.save_path',realpath(dirname($_SERVER['DOCUMENT_ROOT']) . '/../session'));
 // session_start();
 //phpinfo();
@@ -677,8 +677,12 @@ if (!isset($_SESSION['Begin_App']) || array_key_exists('reset', $_POST)){
     if($db_conn){
 
         if(array_key_exists("create_customer", $_POST)){
+
             $CustomerCreator = new CustomerCreation($SQLConnection, $Utility);
             $CustomerCreator->start();
+            echo "loggin on in index.php\n\n";
+            echo "<p>Logged On: </p>";
+            echo "<p>".$_SESSION["AccountID"]." is the Logged On account </p>";
             $_SESSION['Begin_App'] = 2;
             $ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, $_SESSION["AccountID"]);//controls the application, checks when to create table/execute sql queriess
             $ApplicationController->start();
