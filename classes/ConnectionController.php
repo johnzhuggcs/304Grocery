@@ -17,7 +17,7 @@ class ConnectionController
     function ConnectionController(){
         global $db_conn, $success;
         $success = True;
-        $db_conn = OCILogon("ora_f8s0b", "a40642100", "dbhost.ugrad.cs.ubc.ca:1522/ug");
+        $db_conn = OCILogon("ora_i8m0b", "a49726152", "dbhost.ugrad.cs.ubc.ca:1522/ug");
     }
 
     public static function getConnectionInstance(){
