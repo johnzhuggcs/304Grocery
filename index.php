@@ -422,7 +422,6 @@ session_start();
 // session_start();
 //phpinfo();
 
-
 //debugging info
 
 //this tells the system that it's no longer just parsing 
@@ -442,7 +441,11 @@ $SQLConnection = new SQLExecution(); //Executing SQL Statements
 $Utility = new Utility(); //To print
 $AccountInitializer = new AccountInitializer($SQLConnection, $Utility);
 
-
+//echo "before begin app\n\n";
+if (!isset($_SESSION['Begin_App']) || array_key_exists('reset', $_POST)){
+    if(array_key_exists('reset', $_POST)){
+        $_SESSION['Initialized_table'] = null;
+    }
     $_SESSION['Begin_App'] = 1;
     //echo "<p>begin app is now == ".$_SESSION['Begin_App']."</p>";
     $AccountInitializer->start();
@@ -460,6 +463,14 @@ $AccountInitializer = new AccountInitializer($SQLConnection, $Utility);
         $customerArray[$counter] = $tempCustomerArray[0];
         $customer = $tempCustomerArray[0];
         $counter++;
+    }
+
+    
+    while($customerArray = OCI_Fetch_Array($AccountInitializer->getAllCustomers(), OCI_BOTH)){
+
+    }
+    while($employeeArray = OCI_Fetch_Array($AccountInitializer->getAllEmployees(), OCI_BOTH)){
+    	
     }
 
     $_SESSION['customerArray'] = $customerArray;
@@ -506,6 +517,7 @@ $AccountInitializer = new AccountInitializer($SQLConnection, $Utility);
 
 
 //$ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, "C0001"); //controls the application, checks when to create table/execute sql queriess
+
 
 // Connect Oracle...
 
