@@ -80,6 +80,10 @@ session_start();
 		function OpenShippingInfo(){
 			$('#shippingInfo').toggle();
 		}
+		function createUser(){
+			user = 1;
+			localStorage.setItem("userType",user);
+		}
 		function setUser(){
 			user =  document.getElementById("userSelect").value;
 			if(user == 1){
@@ -142,7 +146,7 @@ session_start();
 		</ul>
 	</nav>
 
-	<div class="container card text-center">
+	<div id="logon" class="container card text-center">
 		<div class="card-header">
 			<div class="row">
 				<div class="col-md-12">
@@ -212,7 +216,7 @@ session_start();
 					<div class="row text-center">
 						<div class="col-md-3">&nbsp;</div>
 						<div class="col-md-3">
-							<input class="btn btn-success" type="submit" value="Save" name="create_customer">
+							<input class="btn btn-success" type="submit" value="Save" onclick="createUser()" name="create_customer">
 						</div>
 						<div class="col-md-3">
 							<input class="btn btn-danger" type="Submit" value="Cancel" onclick="OpenAccount()">
