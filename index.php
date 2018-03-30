@@ -139,7 +139,11 @@ session_start();
 					<button class="btn btn-primary fa fa-bars"></button>
 				</a>
 				<div class="dropdown-menu">
-					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenBuyProducts()">Buy Products</button></a>
+					<form method="POST" action="index.php">
+						<a class="dropdown-item nav-link">
+							<input class="btn btn-primary" Type="submit" name="getProducts" value="Buy Products" onclick="OpenBuyProducts()">
+						</a>
+					</form>
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenViewCart()">View Cart</button></a>
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenShippingInfo()">Shipping Info</button></a>
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenUpdateShippingInfo()">Update Shipping Info</button></a>
