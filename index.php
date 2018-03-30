@@ -22,14 +22,20 @@ session_start();
 			    	$('#CustomerNav').show();
 			    	$('#EmployeeNav').hide();
 			    	$('#createUser').hide();
+			    	$('#logon').hide();
+					$('#logoutButton').show();
 				}else if (localStorage.getItem("userType", user) == 2){
 					$('#CustomerNav').hide();
 					$('#EmployeeNav').show();
 					$('#createUser').hide();
+					$('#logon').hide();
+					$('#logoutButton').show();
 				}else{
 					$('#CustomerNav').hide();
 					$('#EmployeeNav').hide();
 					$('#createUser').show();
+					$('#logon').show();
+					$('#logoutButton').hide();
 				}
 			}
 
@@ -80,6 +86,23 @@ session_start();
 		function OpenShippingInfo(){
 			$('#shippingInfo').toggle();
 		}
+		function OpenUpdateShippingInfo(){
+			$('#UpdateShippingInfo').toggle();
+		}
+		function createUser(){
+			user = 1;
+			localStorage.setItem("userType",user);
+		}
+		function OpenFilter(){
+			$('#Filter').toggle();
+		}
+		function OpenViewCart(){
+			$('#viewCart').toggle();
+		}
+		function logout(){
+			delete localStorage.clear();
+			location.reload();
+		}
 		function setUser(){
 			user =  document.getElementById("userSelect").value;
 			if(user == 1){
@@ -116,8 +139,15 @@ session_start();
 					<button class="btn btn-primary fa fa-bars"></button>
 				</a>
 				<div class="dropdown-menu">
-					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenBuyProducts()">Buy Products</button></a>
+					<form method="POST" action="index.php">
+						<a class="dropdown-item nav-link">
+							<input class="btn btn-primary" Type="submit" name="getProducts" value="Buy Products" onclick="OpenBuyProducts()">
+						</a>
+					</form>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenViewCart()">View Cart</button></a>
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenShippingInfo()">Shipping Info</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenUpdateShippingInfo()">Update Shipping Info</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenFilter()">Filter Attribute</button></a>
 				</div>
 			</li>
 			<li id="createUser">
@@ -139,10 +169,17 @@ session_start();
 					</form>
 				</a>
 			</li>
+			<li class="nav-item " id="logoutButton" >
+				<a class="nav-link">
+					<form method="POST" action="index.php">
+						<input class="btn btn-danger" type="submit" onclick="logout()" value="Logout" name="logoff">
+					</form>
+				</a>
+			</li>
 		</ul>
 	</nav>
 
-	<div class="container card text-center">
+	<div id="logon" class="container card text-center">
 		<div class="card-header">
 			<div class="row">
 				<div class="col-md-12">
@@ -183,6 +220,60 @@ session_start();
 		</div>
 	</div>
 
+	<div id="Filter" class="card container" style="display: none;" >
+		<div class="card-header">
+			<h4>Create User</h4>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="container form-group">
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Attribute:</h5>
+						</div>
+						<div class="col-md-8">
+							<Select name="attr" class="form-control">
+								<option value="0">&nbsp;</option>
+								<option value="pid">ID</option>
+								<option value="price">Price</option>
+								<option value="expire_date">Expire Date</option>
+								<option value="ingredients">Ingredients</option>
+								<option value="cfoot">Carbon Footprint</option>
+								<option value="origin">Origin</option>
+								<option value="quantity">Stock Quantity</option>
+								<option value="name">Name</option>
+								<option value="brand">Brand</option>
+								<option value="description">Description</option>
+								<option value="rpoint">Reward Points</option>
+							</Select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Price <  :</h5>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control" type="text"  name="sel_price">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">&nbsp;</div>
+					</div>
+					<div class="row text-center">
+						<div class="col-md-3">&nbsp;</div>
+						<div class="col-md-3">
+							<input class="btn btn-success" type="submit" value="Save" name="select_view">
+						</div>
+						<div class="col-md-3">
+							<input class="btn btn-danger" type="Submit" value="Cancel" onclick="OpenFilter()">
+						</div>
+						<div class="col-md-3">&nbsp;</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
 	<div id="Account" class="card container" style="display: none;" >
 		<div class="card-header">
 			<h4>Create User</h4>
@@ -212,10 +303,52 @@ session_start();
 					<div class="row text-center">
 						<div class="col-md-3">&nbsp;</div>
 						<div class="col-md-3">
-							<input class="btn btn-success" type="submit" value="Save" name="create_customer">
+							<input class="btn btn-success" type="submit" value="Save" onclick="createUser()" name="create_customer">
 						</div>
 						<div class="col-md-3">
-							<input class="btn btn-danger" type="Submit" value="Cancel" name="AccountCancel">
+							<input class="btn btn-danger" type="Submit" value="Cancel" onclick="OpenAccount()">
+						</div>
+						<div class="col-md-3">&nbsp;</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div id="UpdateShippingInfo" class="card container" style="display: none;" >
+		<div class="card-header">
+			<h4>Add Shipping Info</h4>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="container form-group">
+					<div class="row">
+						<div class="col-md-4">
+							<h5>New Shipping Address:</h5>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control" type="text"  name="new_address">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Shipping Info Number:</h5>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control" type="text"  name="shipping_info_no">
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">&nbsp;</div>
+					</div>
+					<div class="row text-center">
+						<div class="col-md-3">&nbsp;</div>
+						<div class="col-md-3">
+							<input class="btn btn-success" type="submit" value="Save" name="update_shipping_address">
+						</div>
+						<div class="col-md-3">
+							<input class="btn btn-danger" type="Submit" value="Cancel" onclick="OpenUpdateShippingInfo()">
 						</div>
 						<div class="col-md-3">&nbsp;</div>
 					</div>
@@ -236,7 +369,7 @@ session_start();
 							<h5>Billing Adress:</h5>
 						</div>
 						<div class="col-md-8">
-							<input class="form-control" type="text"  name="UserBillingAddress">
+							<input class="form-control" type="text"  name="Billing_address">
 						</div>
 					</div>
 					<div class="row">
@@ -244,7 +377,15 @@ session_start();
 							<h5>Shipping Address:</h5>
 						</div>
 						<div class="col-md-8">
-							<input class="form-control" type="text"  name="UserEmail">
+							<input class="form-control" type="text"  name="Shipping_address">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Phone Number:</h5>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control" type="text"  name="Phone_number">
 						</div>
 					</div>
 					<div class="row">
@@ -252,7 +393,7 @@ session_start();
 							<h5>Shipping Method:</h5>
 						</div>
 						<div class="col-md-8">
-							<select class="form-control">
+							<select name="Shipping_method" class="form-control">
 								<option>Express (1-2 Days)</option>
 								<option>Business (3-5 Days)</option>
 								<option>Ground (10-20 Days)</option>
@@ -264,7 +405,7 @@ session_start();
 							<h5>Delivery Type:</h5>
 						</div>
 						<div class="col-md-8">
-							<select class="form-control">
+							<select name="delivery_type" class="form-control">
 								<option>Home Delivery</option>
 								<option>In Store Pick Up</option>
 							</select>
@@ -276,10 +417,10 @@ session_start();
 					<div class="row text-center">
 						<div class="col-md-3">&nbsp;</div>
 						<div class="col-md-3">
-							<input class="btn btn-success" type="submit" value="Save" name="AccountSave">
+							<input class="btn btn-success" type="submit" value="Save" name="create_shipinfo">
 						</div>
 						<div class="col-md-3">
-							<input class="btn btn-danger" type="Submit" value="Cancel" name="AccountCancel">
+							<input class="btn btn-danger" type="Submit" value="Cancel" onclick="OpenShippingInfo()">
 						</div>
 						<div class="col-md-3">&nbsp;</div>
 					</div>
@@ -292,7 +433,7 @@ session_start();
 		<div class="card-header">
 			<div class="row">
 				<div class="col-md-12">
-					<h4>Upgrade Customer Accounts To Premium </h4>
+					<h4>Upgrade Customers Accounts To Premium </h4>
 				</div>
 			</div>
 		</div>
@@ -300,7 +441,7 @@ session_start();
 			<form method="POST" action="index.php">
 				<div class="row">
 					<div class="col-md-12">
-						<input class="btn btn-primary" type="submit" value="Submit" name="CustomerPremium">
+						<input class="btn btn-primary" type="submit" value="Submit" name="modify_prem">
 					</div>
 				</div>
 			</form>
@@ -444,9 +585,6 @@ session_start();
 										<th>Brand</th>
 										<th>description</th>
 										<th>Reward Points</th>
-										<th>Weight</th>
-										<th>Allergies</th>
-										<th>Volume</th>
 									</tr>
 								</thead> 
 								<tbody>
@@ -463,9 +601,6 @@ session_start();
 										<td><input type="text" name="brand" ></td>
 										<td><input type="text" name="description" ></td>
 										<td><input type="text" name="rpoint" ></td>
-										<td><input type="text" name="weight" ></td>
-										<td><input type="text" name="allergies" ></td>
-										<td><input type="text" name="volume" ></td>
 									</tr>
 								</tbody>
 							</table>
@@ -476,15 +611,89 @@ session_start();
 		</div>
 	</div>
 
+	<div id="viewCart" class="card container" style="display: none;" >
+		<div class="card-header text-center">
+			<h4>Veiw Cart</h4>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Date:</h5>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control" type="text"  name="order_date">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Purchase Method:</h5>
+						</div>
+						<div class="col-md-8">
+							<select class="form-control" name="Payment_method">
+								<option>Visa</option>
+								<option>Mastercard</option>
+								<option>American Express</option>
+								<option>PayPal</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12" style="overflow-x: auto;">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Price</th>
+										<th>Expire date</th>
+										<th>Name</th>
+										<th>Brand</th>
+										<th>description</th>
+										<th>Reward Points</th>
+									</tr>
+								</thead> 
+								<tbody>
+									<tr>
+										<td><input type="text" name="pid" ></td>
+										<td><input type="text" name="price" ></td>
+										<td><input type="text" name="expire_date" ></td>
+										<td><input type="text" name="name" ></td>
+										<td><input type="text" name="brand" ></td>
+										<td><input type="text" name="description" ></td>
+										<td><input type="text" name="rpoint" ></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+						<div class="col-md-12">&nbsp;</div>
+				</div>
+				<div class="row text-center">
+					<div class="col-md-3">&nbsp;</div>
+					<div class="col-md-3">
+						<input class="btn btn-success" type="submit" value="Submit Order" name="place_order">
+					</div>
+					<div class="col-md-3">
+						<input class="btn btn-danger" type="Submit" value="Cancel" onclick="OpenViewCart()">
+					</div>
+					<div class="col-md-3">&nbsp;</div>
+				</div>
+			</form>
+		</div>
+	</div>
 </body>
 </html>
 
 
 <?php
-/*error_reporting(-1);
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);*/
+// orting(-1);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);*/
+
 // ini_set('session.save_path',realpath(dirname($_SERVER['DOCUMENT_ROOT']) . '/../session'));
 // session_start();
 //phpinfo();
