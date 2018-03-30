@@ -51,17 +51,32 @@ class ApplicationController
 
 
         if ($db_conn) {
-
+            echo ('<div class="card container text-center" ><div class="card-body"><h5>Waiting</h5></div></div>');
             if(array_key_exists('logoff', $_POST)){
                 echo ('<div class="card container text-center" ><div class="card-body"><h5>Log Off</h5></div></div>');
                 $_SESSION['Begin_App'] = null;
             }
             else if (array_key_exists('reset', $_POST)) {
 
-
+                echo ('<div class="card container text-center" ><div class="card-body"><h5>Waiting</h5></div></div>');
                 $AccountInitializer = new AccountInitializer($this->SQLExecution, $this->Utility);
                 $AccountInitializer->reset();
 
+            } else if (array_key_exists('getProducts', $_POST)){
+                echo ('<div class="card container text-center" ><div class="card-body"><h5>Waiting</h5></div></div>');
+                $productResult = $this->SQLExecution->executePlainSQL("select * from product_discount");
+                OCICommit($db_conn);
+                echo ('<div class="card container text-center" ><div class="card-body"><h5>Waiting</h5></div></div>');
+
+                $productArray = array();
+                $counter = 0;
+                while($tempResultArray = OCI_Fetch_Array($productResult, OCI_BOTH)){
+                    $productArray[$counter] = $tempResultArray[0];
+                    $counter++;
+                    //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$tempResultArray[0].'</h5></div></div>');
+                }
+
+                $_SESSION['products'] = $productArray;
             } else if($this->EmployeeOrCustomer){
 
                 $EmployeeExecution = EmployeeExecution::getEmployeeInstance($this->SQLExecution, $this->Utility);
@@ -83,6 +98,7 @@ class ApplicationController
                 $this->Utility->printResult($employeeResult);
                 $orderAllResult = $this->SQLExecution->executePlainSQL("select * from Order_placedby_shippedwith");
                 $this->Utility->printResult($orderAllResult);
+                OCICommit($db_conn);
                 header("location: index.php");
             }
             else {
@@ -91,11 +107,11 @@ class ApplicationController
                 $this->Utility->printResult($employeeResult);
                 $customerResult = $this->SQLExecution->executePlainSQL("select * from Customer");
                 $this->Utility->printResult($customerResult);
-                $employeeResult = $this->SQLExecution->executePlainSQL("select * from product_discount");
-                $this->Utility->printResult($employeeResult);
-                $_SESSION['products'] = $this->Utility->sessionResult($employeeResult);
+                $productResult = $this->SQLExecution->executePlainSQL("select * from product_discount");
+                $this->Utility->printResult($productResult);
                 $orderAllResult = $this->SQLExecution->executePlainSQL("select * from Order_placedby_shippedwith");
                 $this->Utility->printResult($orderAllResult);
+                OCICommit($db_conn);
             }
 
             //Commit to save changes...

@@ -511,14 +511,35 @@ $AccountInitializer = new AccountInitializer($SQLConnection, $Utility);
 //echo "before begin app\n\n";
 if (!isset($_SESSION['Begin_App']) || array_key_exists('reset', $_POST)){
     if(array_key_exists('reset', $_POST)){
+        echo ('<div class="card container text-center" ><div class="card-body"><h5>Reset</h5></div></div>');
         $_SESSION['Initialized_table'] = null;
     }
     $_SESSION['Begin_App'] = 1;
     //echo "<p>begin app is now == ".$_SESSION['Begin_App']."</p>";
     $AccountInitializer->start();
 
-    $_SESSION['customerArray'] = $Utility->sessionResult($AccountInitializer->getAllCustomers());
-    $_SESSION['employeeArray'] = $Utility->sessionResult($AccountInitializer->getAllEmployees());
+    $employeeArray = array();
+    $counter = 0;
+    while($tempResultArray = OCI_Fetch_Array($AccountInitializer->getAllEmployees(), OCI_BOTH)){
+        $employeeArray[$counter] = $tempResultArray[0];
+        $counter++;
+        //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$tempResultArray[0].'</h5></div></div>');
+    }
+
+    //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$resultArray.'</h5></div></div>');
+
+    $customerArray = array();
+    $counter = 0;
+    while($tempResultArray = OCI_Fetch_Array($AccountInitializer->getAllCustomers(), OCI_BOTH)){
+        $customerArray[$counter] = $tempResultArray[0];
+        $counter++;
+        //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$tempResultArray[0].'</h5></div></div>');
+    }
+
+    //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$resultArray.'</h5></div></div>');
+
+    $_SESSION['customerArray'] = $customerArray;
+    $_SESSION['employeeArray'] = $employeeArray;
 
 
     //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$_SESSION['customerArray'].'</h5></div></div>');
@@ -526,9 +547,9 @@ if (!isset($_SESSION['Begin_App']) || array_key_exists('reset', $_POST)){
     // echo $customerArray[0];
 //$customer should be C0001 or some other
 //Pretend we chose some account in the front end for $customer
-    $customer = $_SESSION['customerArray'][0];
+    //$customer = $_SESSION['customerArray'][0];
 
-    $_SESSION["AccountID"] = $customer;
+    //$_SESSION["AccountID"] = $customer;
 
 
     header("location: index.php");
@@ -545,17 +566,18 @@ if (!isset($_SESSION['Begin_App']) || array_key_exists('reset', $_POST)){
             echo "<p>Logged On: </p>";
             echo "<p>".$_SESSION["AccountID"]." is the Logged On account </p>";
             $_SESSION['Begin_App'] = 2;
+            //$productResult = $this->SQLExecution->executePlainSQL("select * from product_discount");
+            //$_SESSION['products'] = $this->Utility->sessionResult($productResult);
             $ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, $_SESSION["AccountID"]);//controls the application, checks when to create table/execute sql queriess
             $ApplicationController->start();
         }else
         if(array_key_exists('selectAccount', $_POST)){
             //echo "loggin on in index.php\n\n";
-           /* echo "<p>Logged On: </p>";
-            echo "<p>".$_POST["accountNum"]." is the Logged On account </p>";*/
+            echo "<p>Logged On: </p>";
+            echo "<p>".$_POST["nameSelect"]." is the Logged On account </p>";
             $_SESSION["AccountID"] = $_POST["nameSelect"];
-            //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$_SESSION["AccountID"].'</h5></div></div>');
 
-
+            echo ('<div class="card container text-center" ><div class="card-body"><h5>Waiting</h5></div></div>');
             $_SESSION['Begin_App'] = 2;
             $ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, $_SESSION["AccountID"]);//controls the application, checks when to create table/execute sql queriess
             $ApplicationController->start();

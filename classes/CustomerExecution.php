@@ -92,7 +92,7 @@ class CustomerExecution
             //get orginal price
             $original_price = $this->SQLExecution->executePlainSQL
             ("Select sum(price) from Product_discount p,Contain c,Order_placedby_shippedwith os 
-					Where p.pid = c.pid and c.Order_no=os.Order_no and os.Order_no =".$_SESSION["order_no"]."");
+					Where p.pid = c.pid and c.Order_no=os.Order_no and os.Order_no =".$newOrderID."");
             $price = OCI_Fetch_Array($original_price);
 
             //get shipping info no
@@ -177,7 +177,8 @@ class CustomerExecution
         } else if(array_key_exists('add_to_cart', $_POST)){
 
             $tuple = array (
-                ":bind1" => $_POST['pid']
+                ":bind1" => $_POST['pid'],
+                ":bind2" => $_POST['pid']
             );
             $alltuples = array (
                 $tuple
