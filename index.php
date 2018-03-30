@@ -96,6 +96,9 @@ session_start();
 		function OpenFilter(){
 			$('#Filter').toggle();
 		}
+		function OpenViewCart(){
+			$('#viewCart').toggle();
+		}
 		function logout(){
 			delete localStorage.clear();
 			location.reload();
@@ -137,6 +140,7 @@ session_start();
 				</a>
 				<div class="dropdown-menu">
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenBuyProducts()">Buy Products</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenViewCart()">View Cart</button></a>
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenShippingInfo()">Shipping Info</button></a>
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenUpdateShippingInfo()">Update Shipping Info</button></a>
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenFilter()">Filter Attribute</button></a>
@@ -603,6 +607,79 @@ session_start();
 		</div>
 	</div>
 
+	<div id="viewCart" class="card container" style="display: none;" >
+		<div class="card-header text-center">
+			<h4>Veiw Cart</h4>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Date:</h5>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control" type="text"  name="order_date">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Purchase Method:</h5>
+						</div>
+						<div class="col-md-8">
+							<select class="form-control" name="Payment_method">
+								<option>Visa</option>
+								<option>Mastercard</option>
+								<option>American Express</option>
+								<option>PayPal</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12" style="overflow-x: auto;">
+							<table class="table table-bordered">
+								<thead>
+									<tr>
+										<th>ID</th>
+										<th>Price</th>
+										<th>Expire date</th>
+										<th>Name</th>
+										<th>Brand</th>
+										<th>description</th>
+										<th>Reward Points</th>
+									</tr>
+								</thead> 
+								<tbody>
+									<tr>
+										<td><input type="text" name="pid" ></td>
+										<td><input type="text" name="price" ></td>
+										<td><input type="text" name="expire_date" ></td>
+										<td><input type="text" name="name" ></td>
+										<td><input type="text" name="brand" ></td>
+										<td><input type="text" name="description" ></td>
+										<td><input type="text" name="rpoint" ></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+						<div class="col-md-12">&nbsp;</div>
+				</div>
+				<div class="row text-center">
+					<div class="col-md-3">&nbsp;</div>
+					<div class="col-md-3">
+						<input class="btn btn-success" type="submit" value="Submit Order" name="place_order">
+					</div>
+					<div class="col-md-3">
+						<input class="btn btn-danger" type="Submit" value="Cancel" onclick="OpenViewCart()">
+					</div>
+					<div class="col-md-3">&nbsp;</div>
+				</div>
+			</form>
+		</div>
+	</div>
 </body>
 </html>
 
