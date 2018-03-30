@@ -175,15 +175,9 @@ session_start();
 					</Select>
 				</div>
 				<div class="col-md-2">
-<<<<<<< HEAD
 					<form method="POST" action="index.php">
 						<input class="btn btn-primary" Type="submit" name="selectAccount" value="Submit" onclick="setUser()">
 					</form>
-=======
-                    <form method = "POST" action = "index.php">
-                        <input class="btn btn-primary" type = "submit" name = "selectAccount" value = "submit" onclick="setUser()">
-                    </form>
->>>>>>> Jonathan
 				</div>
 			</div>
 		</div>
