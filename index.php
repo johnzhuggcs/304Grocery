@@ -1,3 +1,7 @@
+<?php
+ini_set('session.save_path',realpath(dirname($_SERVER['DOCUMENT_ROOT']) . '/../session'));
+session_start();
+?>
 <p>If you wish to reset the table press on the reset button. If this is the first time you're running this page, you MUST use reset</p>
 <form method="POST" action="index.php">
    
@@ -45,7 +49,7 @@ Volume</font></p>
 <form method="POST" action="index.php">
 
     <p>
-    <input type="text" name="loggin On" size="8" value="C0001"></p>
+    <input type="text" name="accountNum" size="8"></p>
     <!--define two variables to pass the value-->
 
     <input type="submit" value="Log On" name="logon"></p>
@@ -99,9 +103,7 @@ error_reporting(-1);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-ini_set('session.save_path',realpath(dirname($_SERVER['DOCUMENT_ROOT']) . '/../session'));
-session_start();
-//phpinfo();
+
 
 //debugging info
 
@@ -120,12 +122,15 @@ $connectionController = ConnectionController::getConnectionInstance(); //Initial
 
 $SQLConnection = new SQLExecution(); //Executing SQL Statements
 $Utility = new Utility(); //To print
+$AccountInitializer = new AccountInitializer($SQLConnection, $Utility);
 
 echo "before begin app\n\n";
-if (!isset($_SESSION['Begin_App'])){
-    echo "begin app \n\n";
+if (!isset($_SESSION['Begin_App']) || array_key_exists('reset', $_POST)){
+    if(array_key_exists('reset', $_POST)){
+        $_SESSION['Initialized_table'] = null;
+    }
     $_SESSION['Begin_App'] = 1;
-    $AccountInitializer = new AccountInitializer($SQLConnection, $Utility);
+    echo "<p>begin app is now == ".$_SESSION['Begin_App']."</p>";
     $AccountInitializer->start();
     $customerArray = OCI_Fetch_Array($AccountInitializer->getAllCustomers(), OCI_BOTH);
     $employeeArray = OCI_Fetch_Array($AccountInitializer->getAllEmployees(), OCI_BOTH);
@@ -134,18 +139,29 @@ if (!isset($_SESSION['Begin_App'])){
 //Pretend we chose some account in the front end for $customer
     $customer = $customerArray[0];
 
+    print_r($customerArray);
+    echo "<p></p>";
+    echo "<p>Customer '.$customerArray.' </p>";
+    echo "<p>Customer '.$customer.' </p>";
+
     $_SESSION["AccountID"] = $customer;
+
+    header("location: index.php");
+
 
 }else if($_SESSION['Begin_App'] == 1){
     if($db_conn){
         if(array_key_exists('logon', $_POST)){
-
-            $_SESSION["AccountID"] = $_POST['loggin On'];
+            //echo "loggin on in index.php\n\n";
+            echo "<p>Logged On: </p>";
+            echo "<p>".$_POST["accountNum"]." is the Logged On account </p>";
+            $_SESSION["AccountID"] = $_POST["accountNum"];
             //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$_SESSION["AccountID"].'</h5></div></div>');
 
 
             $_SESSION['Begin_App'] = 2;
             $ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, $_SESSION["AccountID"]);//controls the application, checks when to create table/execute sql queriess
+            $ApplicationController->start();
         }
     }else{
         echo "cannot connect";
@@ -155,12 +171,13 @@ if (!isset($_SESSION['Begin_App'])){
 } else{
     echo "application start";
     $ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, $_SESSION["AccountID"]);
+    $ApplicationController->start();
 }
 
-$ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, "C0001"); //controls the application, checks when to create table/execute sql queriess
+//$ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, "C0001"); //controls the application, checks when to create table/execute sql queriess
 
 // Connect Oracle...
-$ApplicationController->start();
+
 
 
 
