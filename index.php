@@ -15,19 +15,38 @@ session_start();
 		var user;
 		var customerArray_js = <?php echo json_encode($_SESSION['customerArray']); ?>;
 		var employeeArray_js = <?php echo json_encode($_SESSION['employeeArray']); ?>;
-    
+
 		$(function() { //run on document.ready
+			if(localStorage.getItem("userType", user) !== undefined){
+	   			if(localStorage.getItem("userType", user) == 1){
+			    	$('#CustomerNav').show();
+			    	$('#EmployeeNav').hide();
+			    	$('#createUser').hide();
+				}else if (localStorage.getItem("userType", user) == 2){
+					$('#CustomerNav').hide();
+					$('#EmployeeNav').show();
+					$('#createUser').hide();
+				}else{
+					$('#CustomerNav').hide();
+					$('#EmployeeNav').hide();
+					$('#createUser').show();
+				}
+			}
+
 			$("#userSelect").change(function() { //this occurs when select 1 changes
 				console.log("detect");
 				user =  document.getElementById("userSelect").value;
+				$('#nameSelect')
+    				.find('option')
+    				.remove();
 				if(user == 1){
 					console.log("Customer");
 					console.log(customerArray_js.length);
 					var sel = document.getElementById('nameSelect');
 					for(var i = 0; i < customerArray_js.length; i++) {
 			    		var opt = document.createElement('option');
-			    		opt.innerHTML = customerArray_js[i].ACCOUNT_NO;
-			    		opt.value = customerArray_js[i].ACCOUNT_NO;
+			    		opt.innerHTML = customerArray_js[i];
+			    		opt.value = customerArray_js[i];
 			    		sel.appendChild(opt);
 					}
 				}else if(user == 2){
@@ -35,8 +54,8 @@ session_start();
 					var sel = document.getElementById('nameSelect');
 					for(var i = 0; i < employeeArray_js.length; i++) {
 			    		var opt = document.createElement('option');
-			    		opt.innerHTML = employeeArray_js[i].EMPLOYEE_ID;
-			    		opt.value = employeeArray_js[i].EMPLOYEE_ID;
+			    		opt.innerHTML = employeeArray_js[i];
+			    		opt.value = employeeArray_js[i];
 			    		sel.appendChild(opt);
 					}
 				}
@@ -58,19 +77,22 @@ session_start();
 		function OpenRestockProducts(){
 			$('#restockProducts').toggle();
 		}
+		function OpenShippingInfo(){
+			$('#shippingInfo').toggle();
+		}
 		function setUser(){
 			user =  document.getElementById("userSelect").value;
 			if(user == 1){
 				$('#CustomerNav').show();
 				$('#EmployeeNav').hide();
-			}else if(user ==2){
+			}else if(user == 2){
 				$('#CustomerNav').hide();
 				$('#EmployeeNav').show();
 			}
-			var customerArray_js = <?php echo json_encode($_SESSION['customerArray']); ?>;
-			var employeeArray_js = <?php echo json_encode($_SESSION['employeeArray']); ?>;
-			console.log(customerArray_js);
-			console.log(employeeArray_js);
+			localStorage.setItem("userType", user);
+		}
+		function resetLS() {
+			delete localStorage.clear();
 		}
 	</script>
 </head>
@@ -95,8 +117,11 @@ session_start();
 				</a>
 				<div class="dropdown-menu">
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenBuyProducts()">Buy Products</button></a>
-					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenAccount()">Account</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenShippingInfo()">Shipping Info</button></a>
 				</div>
+			</li>
+			<li id="createUser">
+				<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenAccount()">Create User</button></a>
 			</li>
 		</ul>
 		<ul class="navbar-nav ml-auto">
@@ -110,7 +135,7 @@ session_start();
 			<li class="nav-item ">
 				<a class="nav-link">
 					<form method="POST" action="index.php">
-						<input class="btn btn-primary" type="submit" value="Reset" name="reset">
+						<input class="btn btn-primary" type="submit" onclick="resetLS()" value="Reset" name="reset">
 					</form>
 				</a>
 			</li>
@@ -150,7 +175,9 @@ session_start();
 					</Select>
 				</div>
 				<div class="col-md-2">
-					<button class="btn btn-primary" onclick="setUser()">Submit</button>
+					<form method="POST" action="index.php">
+						<input class="btn btn-primary" Type="submit" name="selectAccount" value="Submit" onclick="setUser()">
+					</form>
 				</div>
 			</div>
 		</div>
@@ -158,19 +185,11 @@ session_start();
 
 	<div id="Account" class="card container" style="display: none;" >
 		<div class="card-header">
-			<h4>Account Settings</h4>
+			<h4>Create User</h4>
 		</div>
 		<div class="card-body">
 			<form method="POST" action="index.php">
 				<div class="container form-group">
-					<div class="row">
-						<div class="col-md-4">
-							<h5>ID:</h5>
-						</div>
-						<div class="col-md-8">
-							<input class="form-control" type="text" name="UserID">
-						</div>
-					</div>
 					<div class="row">
 						<div class="col-md-4">
 							<h5>Name:</h5>
@@ -185,22 +204,6 @@ session_start();
 						</div>
 						<div class="col-md-8">
 							<input class="form-control" type="text"  name="UserEmail">
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">
-							<h5>Reward Points:</h5>
-						</div>
-						<div class="col-md-8">
-							<input class="form-control" type="text" name="UserPoints">
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">
-							<h5>Premium Status:</h5>
-						</div>
-						<div class="col-md-8">
-							<input class="form-control" type="text" name="PremiumStatus">
 						</div>
 					</div>
 					<div class="row">
@@ -221,6 +224,69 @@ session_start();
 		</div>
 	</div>
 
+	<div id="shippingInfo" class="card container" style="display: none;" >
+		<div class="card-header">
+			<h4>Add Shipping Info</h4>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="container form-group">
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Billing Adress:</h5>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control" type="text"  name="UserBillingAddress">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Shipping Address:</h5>
+						</div>
+						<div class="col-md-8">
+							<input class="form-control" type="text"  name="UserEmail">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Shipping Method:</h5>
+						</div>
+						<div class="col-md-8">
+							<select class="form-control">
+								<option>Express (1-2 Days)</option>
+								<option>Business (3-5 Days)</option>
+								<option>Ground (10-20 Days)</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<h5>Delivery Type:</h5>
+						</div>
+						<div class="col-md-8">
+							<select class="form-control">
+								<option>Home Delivery</option>
+								<option>In Store Pick Up</option>
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">&nbsp;</div>
+					</div>
+					<div class="row text-center">
+						<div class="col-md-3">&nbsp;</div>
+						<div class="col-md-3">
+							<input class="btn btn-success" type="submit" value="Save" name="AccountSave">
+						</div>
+						<div class="col-md-3">
+							<input class="btn btn-danger" type="Submit" value="Cancel" name="AccountCancel">
+						</div>
+						<div class="col-md-3">&nbsp;</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
 
 	<div id="CustomerPremium" class="container card text-center" style="display: none;">
 		<div class="card-header">
@@ -456,30 +522,16 @@ if (!isset($_SESSION['Begin_App']) || array_key_exists('reset', $_POST)){
     $counter = 0;
     while($tempEmployeeArray = OCI_Fetch_Array($AccountInitializer->getAllEmployees(), OCI_BOTH)){
         $employeeArray[$counter] = $tempEmployeeArray[0];
-        $employee = $tempEmployeeArray[0];
         $counter++;
     }
     $counter = 0;
     while($tempCustomerArray = OCI_Fetch_Array($AccountInitializer->getAllCustomers(), OCI_BOTH)){
         $customerArray[$counter] = $tempCustomerArray[0];
-        $customer = $tempCustomerArray[0];
         $counter++;
-    }
-
-    
-    while($customerArray = OCI_Fetch_Array($AccountInitializer->getAllCustomers(), OCI_BOTH)){
-
-    }
-    while($employeeArray = OCI_Fetch_Array($AccountInitializer->getAllEmployees(), OCI_BOTH)){
-    	
     }
 
     $_SESSION['customerArray'] = $customerArray;
     $_SESSION['employeeArray'] = $employeeArray;
-
-    echo $_SESSION['customerArray'][0];
-    echo $_SESSION['customerArray'][1];
-
 
     // echo $customerArray[0];
 //$customer should be C0001 or some other
@@ -493,11 +545,11 @@ if (!isset($_SESSION['Begin_App']) || array_key_exists('reset', $_POST)){
 
 }else if($_SESSION['Begin_App'] == 1){
     if($db_conn){
-        if(array_key_exists('logon', $_POST)){
+        if(array_key_exists('selectAccount', $_POST)){
             //echo "loggin on in index.php\n\n";
            /* echo "<p>Logged On: </p>";
             echo "<p>".$_POST["accountNum"]." is the Logged On account </p>";*/
-            $_SESSION["AccountID"] = $_POST["accountNum"];
+            $_SESSION["AccountID"] = $_POST["nameSelect"];
             //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$_SESSION["AccountID"].'</h5></div></div>');
 
 
