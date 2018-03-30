@@ -99,10 +99,10 @@ size="18">
 </form>
 
 <?php
-error_reporting(-1);
+/*error_reporting(-1);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+error_reporting(E_ALL);*/
 
 
 //debugging info
@@ -124,25 +124,32 @@ $SQLConnection = new SQLExecution(); //Executing SQL Statements
 $Utility = new Utility(); //To print
 $AccountInitializer = new AccountInitializer($SQLConnection, $Utility);
 
-echo "before begin app\n\n";
+//echo "before begin app\n\n";
 if (!isset($_SESSION['Begin_App']) || array_key_exists('reset', $_POST)){
     if(array_key_exists('reset', $_POST)){
         $_SESSION['Initialized_table'] = null;
     }
     $_SESSION['Begin_App'] = 1;
-    echo "<p>begin app is now == ".$_SESSION['Begin_App']."</p>";
+    //echo "<p>begin app is now == ".$_SESSION['Begin_App']."</p>";
     $AccountInitializer->start();
-    $customerArray = OCI_Fetch_Array($AccountInitializer->getAllCustomers(), OCI_BOTH);
-    $employeeArray = OCI_Fetch_Array($AccountInitializer->getAllEmployees(), OCI_BOTH);
+    $customerArray = array();
+    $employeeArray = array();
+    $counter = 0;
+    while($tempEmployeeArray = OCI_Fetch_Array($AccountInitializer->getAllEmployees(), OCI_BOTH)){
+        $employeeArray[$counter] = $tempEmployeeArray[0];
+        $employee = $tempEmployeeArray[0];
+        $counter++;
+    }
+    $counter = 0;
+    while($tempCustomerArray = OCI_Fetch_Array($AccountInitializer->getAllCustomers(), OCI_BOTH)){
+        $customerArray[$counter] = $tempCustomerArray[0];
+        $customer = $tempCustomerArray[0];
+        $counter++;
+    }
 
 //$customer should be C0001 or some other
 //Pretend we chose some account in the front end for $customer
     $customer = $customerArray[0];
-
-    print_r($customerArray);
-    echo "<p></p>";
-    echo "<p>Customer '.$customerArray.' </p>";
-    echo "<p>Customer '.$customer.' </p>";
 
     $_SESSION["AccountID"] = $customer;
 
@@ -153,8 +160,8 @@ if (!isset($_SESSION['Begin_App']) || array_key_exists('reset', $_POST)){
     if($db_conn){
         if(array_key_exists('logon', $_POST)){
             //echo "loggin on in index.php\n\n";
-            echo "<p>Logged On: </p>";
-            echo "<p>".$_POST["accountNum"]." is the Logged On account </p>";
+           /* echo "<p>Logged On: </p>";
+            echo "<p>".$_POST["accountNum"]." is the Logged On account </p>";*/
             $_SESSION["AccountID"] = $_POST["accountNum"];
             //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$_SESSION["AccountID"].'</h5></div></div>');
 

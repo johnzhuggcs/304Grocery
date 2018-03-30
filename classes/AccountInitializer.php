@@ -47,7 +47,7 @@ class AccountInitializer
             }
             $this->EmployeeResults = $this->SQLExecution->executePlainSQL("select Employee_ID from Employee");
             $this->CustomerResults = $this->SQLExecution->executePlainSQL("select Account_no from Customer");
-
+            //$this->Utility->printResult($this->CustomerResults);
             OCICommit($db_conn);
 
             if ($_POST && $success) {
@@ -71,6 +71,7 @@ class AccountInitializer
 
     function getAllCustomers(){
         return $this->CustomerResults;
+
     }
 
     function reset(){
