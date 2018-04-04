@@ -709,6 +709,7 @@ function fillProductTable(){
 		td.appendChild(txt);
 		tr.appendChild(td);
 		for (var j = 0; j < 12; j++) {
+		    console.log(productArray_js[i][j])
 			var td = document.createElement("td");
 			var txt = document.createTextNode(productArray_js[i][j]);
 			td.appendChild(txt);
