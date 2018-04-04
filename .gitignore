@@ -4,3 +4,5 @@ cmake-build-debug/
 *.sql
 donnaTest.php
 ConnectionController.php
+oracle-test.php
+test.php
