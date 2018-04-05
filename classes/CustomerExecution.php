@@ -55,7 +55,7 @@ class CustomerExecution
 
         $tempOrderNum = strval($this->orderCounter);
         $tempOrderNum = str_pad($tempOrderNum, 4, '0', STR_PAD_LEFT);
-        $newOrderID = "P" . $tempOrderNum;
+        $newOrderID = "O" . $tempOrderNum;
 
         $tempShippingNum = strval($this->shippingCounter);
         $tempShippingNum = str_pad($tempShippingNum, 4, '0', STR_PAD_LEFT);
@@ -155,6 +155,7 @@ class CustomerExecution
                 ":bind8" => $customerShipping
             );
 
+
             $alltuples = array (
                 $tuple
             );
@@ -205,9 +206,62 @@ class CustomerExecution
             $alltuples = array (
                 $tuple
             );
+
+            $orderTuple = array (
+                //this needs shipping info no
+                ":bind0" => $newOrderID,
+                ":bind1" => '2018-4-6',
+                ":bind2" => null,
+                ":bind3" => "processing",
+                ":bind4" => null,
+                ":bind5" => null,
+                ":bind6" => null,
+                ":bind7" => $_SESSION['AccountID'],
+                ":bind8" => null
+            );
+
+            echo "AccountId should be: ".$_SESSION['AccountID'];
+            echo "\n\n";
+
+            $allOrderstuples = array (
+                $orderTuple
+            );
+
             //this needs order_no in ???
-            $this->SQLExecution->executePlainSQL("Insert into Contains (".$_POST['pid'].", ".$_SESSION["order_no"].")");
-            $allfromCart = $this->SQLExecution->executePlainSQL("select * from Contains WHERE PID = $newOrderID");
+
+            $checkRecord = $this->SQLExecution->executePlainSQL
+            ("select order_no from Order_placedby_shippedwith WHERE order_no = '.$newOrderID.'");;
+            $checkRecordArray = OCI_Fetch_Array($checkRecord, OCI_BOTH);
+            echo "before checkRecordArray";
+            echo "\n\n";
+            if(count($checkRecordArray) <= 1){
+                $this->SQLExecution->executeBoundSQL("insert into Order_placedby_shippedwith values(:bind0, :bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7, :bind8)", $allOrderstuples);
+                echo ('<div class="card container text-center" ><div class="card-body"><h5>"hey im here"</h5></div></div>');
+            }
+            echo count($checkRecordArray);
+            echo "\n\n";
+            echo($checkRecordArray);
+            print_r($checkRecordArray);
+            echo "after checkRecordArray";
+
+            $checkRecord = $this->SQLExecution->executePlainSQL
+            ("select * from Order_placedby_shippedwith");
+            OCICommit($db_conn);
+            echo "after OCICommit";
+            $customerArray = array();
+            $counter = 0;
+            while($checkRecordArray = OCI_Fetch_Array($checkRecord, OCI_BOTH)){
+                $customerArray[$counter] = $checkRecordArray[0];
+                $counter++;
+                echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$checkRecordArray[0].'</h5></div></div>');
+            }
+            echo "after OCICommit";
+            print_r($customerArray);
+
+            $this->Utility->printResult($checkRecord);
+            $this->SQLExecution->executeBoundSQL("insert into Contains values(:bind1, :bind2)", $alltuples);
+            $allfromCart = $this->SQLExecution->executePlainSQL("select * from Contains WHERE order_no = '.$newOrderID.'");
+            OCICommit($db_conn);
             $newCart = $this->Utility->sessionResult($allfromCart);
             $_SESSION['cart'] = $newCart;
 

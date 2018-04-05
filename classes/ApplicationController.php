@@ -22,7 +22,7 @@ class ApplicationController
         $this->SQLExecution = $sqlExecution;
         $this->Utility = $utility;
         $this->accountNoToBool($whichUser);
-        $_SESSION["AccountID"] = $whichUser;
+        //$_SESSION["AccountID"] = $whichUser;
     }
 
     // Takes in account number chosen and determines whether employee or customer
