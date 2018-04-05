@@ -55,7 +55,7 @@ class CustomerExecution
 
         $tempOrderNum = strval($this->orderCounter);
         $tempOrderNum = str_pad($tempOrderNum, 4, '0', STR_PAD_LEFT);
-        $newOrderID = "O" . $tempOrderNum;
+        $newOrderID = "P" . $tempOrderNum;
 
         $tempShippingNum = strval($this->shippingCounter);
         $tempShippingNum = str_pad($tempShippingNum, 4, '0', STR_PAD_LEFT);
@@ -206,7 +206,7 @@ class CustomerExecution
                 $tuple
             );
             //this needs order_no in ???
-            $this->SQLExecution->executeBoundSQL("Insert into Contains values(:bind1,".$_SESSION["order_no"].")", $alltuples);
+            $this->SQLExecution->executePlainSQL("Insert into Contains (".$_POST['pid'].", ".$_SESSION["order_no"].")");
             $allfromCart = $this->SQLExecution->executePlainSQL("select * from Contains WHERE PID = $newOrderID");
             $newCart = $this->Utility->sessionResult($allfromCart);
             $_SESSION['cart'] = $newCart;
