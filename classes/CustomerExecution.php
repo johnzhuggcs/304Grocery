@@ -243,9 +243,20 @@ class CustomerExecution
             $this->SQLExecution->executePlainSQL("insert into Contains (PID, order_no) values('$tempProduct', '$newOrderID')");
             OCICommit($db_conn);
             $orderAllResult = $this->SQLExecution->executePlainSQL("select * from Contains WHERE order_no = '$newOrderID'");
-            $this->Utility->printResult($orderAllResult);
+            //$this->Utility->printResult($orderAllResult);
 
-            $newCart = $this->Utility->sessionResult($orderAllResult);
+            $newCart = array(array());
+
+            $countery = 0;
+            while($tempResultArray = OCI_Fetch_Array($orderAllResult, OCI_BOTH)){
+                for($x = 0; $x< 2; $x++){
+                    $newCart[$countery][$x] = $tempResultArray[$x];
+                }
+
+                $countery++;
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$tempResultArray[0].'</h5></div></div>');
+            }
+            
             $_SESSION['cart'] = $newCart;
 
         }
