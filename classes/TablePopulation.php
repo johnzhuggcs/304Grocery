@@ -14,6 +14,9 @@ class TablePopulation
     private $allDropTables;
     private $Employees;
     private $Customers;
+    private $Product;
+    private $Food;
+    private $deal;
 
     function TablePopulation($sqlExecution){
         $this->SQLExecution = $sqlExecution;
@@ -129,7 +132,7 @@ Order_total DOUBLE precision,
 Payment_method varchar2(10),
 Poins_awarded INTEGER,
 Account_no varchar2(5) NOT NULL,
-Shipping_info_no varchar2(6) NOT NULL,
+Shipping_info_no varchar2(6),
 PRIMARY KEY (order_no),
 FOREIGN KEY (Account_no) REFERENCES Customer,
 FOREIGN KEY (shipping_info_no) REFERENCES Shipping_Info
@@ -217,6 +220,72 @@ FOREIGN KEY (Shipping_info_no) REFERENCES Shipping_Info
             $Customer1, $Customer2, $Customer3
         );
 
+        $Products1 = array(
+            ":bind1" => 'P0001',
+            ":bind2" => 10.00,
+            ":bind3" => '2018-2-1',
+            ":bind4" => 'sandwich',
+            ":bind5" => 20.00,
+            ":bind6" => 'CANADA',
+            ":bind7" => 10,
+            ":bind8" => 'nameA',
+            ":bind9" => 'nike',
+            ":bind10" => 'this is sandwich',
+            ":bind11" => 10,
+            ":bind12" => 'D0001'
+        );
+
+        $Products2 = array(
+            ":bind1" => 'P0002',
+            ":bind2" => 10.00,
+            ":bind3" => '2018-2-1',
+            ":bind4" => 'sandwich',
+            ":bind5" => 20.00,
+            ":bind6" => 'CANADA',
+            ":bind7" => 10,
+            ":bind8" => 'nameA',
+            ":bind9" => 'nike',
+            ":bind10" => 'this is sandwich',
+            ":bind11" => 10,
+            ":bind12" => 'D0001'
+        );
+
+        $Deals1 = array(
+            ":bind1" => 'D0001',
+            ":bind2" => '2018-1-1',
+            ":bind3" => '2018-2-1',
+            ":bind4" => 'url0',
+            ":bind5" => '20%',
+            ":bind6" => 'Y'
+        );
+
+        $this->Deal = array(
+            $Deals1
+        );
+
+        $Food1 = array(
+            ":bind1" => 'P0001',
+            ":bind2" => 100.00,
+            ":bind3" => 'none'
+        );
+
+        $Beverage1 = array(
+            ":bind1" => 'P0002',
+            ":bind2" => 'none',
+            ":bind3" => 250.00
+        );
+
+        $this->Product = array(
+            $Products1,
+            $Products2
+        );
+
+        $this->Food = array(
+            $Food1
+        );
+        $this->Beverage = array(
+            $Beverage1
+        );
     }
 
     function populateAll(){
@@ -234,6 +303,12 @@ FOREIGN KEY (Shipping_info_no) REFERENCES Shipping_Info
 
         $this->SQLExecution->executeBoundSQL("insert into Employee values(:bind1, :bind2)", $this->Employees);
         $this->SQLExecution->executeBoundSQL("insert into Customer values(:bind1, :bind2, :bind3, :bind4, :bind5)", $this->Customers);
+        OCICommit($db_conn);
+        $this->SQLExecution->executeBoundSQL("insert into Deal values(:bind1, :bind2, :bind3, :bind4, :bind5, :bind6)", $this->Deal);
+        $this->SQLExecution->executeBoundSQL("insert into product_discount values(:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7, :bind8, :bind9, :bind10, :bind11, :bind12)", $this->Product);
+        OCICommit($db_conn);
+        $this->SQLExecution->executeBoundSQL("insert into Food values(:bind1, :bind2, :bind3)", $this->Food);
+        $this->SQLExecution->executeBoundSQL("insert into Beverage values(:bind1, :bind2, :bind3)", $this->Beverage);
         OCICommit($db_conn);
     }
 

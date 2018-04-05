@@ -36,6 +36,10 @@ class AccountInitializer
 
                 //echo ('<div class="card container text-center" ><div class="card-body"><h5>Delete Session Variables</h5></div></div>');
                 $_SESSION['customerNo'] = null;
+                $_SESSION['order_no'] = null;
+                $_SESSION['ProductId'] = null;
+                $_SESSION['DID'] = null;
+                $_SESSION['shipping_info_no'] = null;
                 // Create new table...
                 //echo ('<div class="card container text-center" ><div class="card-body"><h5>Create New Table</h5></div></div>');
                 $TablePopulator->populateAll();
@@ -47,7 +51,7 @@ class AccountInitializer
             }
             $this->EmployeeResults = $this->SQLExecution->executePlainSQL("select Employee_ID from Employee");
             $this->CustomerResults = $this->SQLExecution->executePlainSQL("select Account_no from Customer");
-
+            //$this->Utility->printResult($this->CustomerResults);
             OCICommit($db_conn);
 
             if ($_POST && $success) {
@@ -71,12 +75,17 @@ class AccountInitializer
 
     function getAllCustomers(){
         return $this->CustomerResults;
+
     }
 
     function reset(){
         $_SESSION['Initialized_table'] = null;
         $_SESSION['Begin_App'] = null;
         $_SESSION['customerNo'] = null;
+        $_SESSION['order_no'] = null;
+        $_SESSION['ProductId'] = null;
+        $_SESSION['DID'] = null;
+        $_SESSION['shipping_info_no'] = null;
         $TablePopulator = new TablePopulation($this->SQLExecution);
 
         // Drop old table...
