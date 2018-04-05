@@ -141,7 +141,7 @@ function fillCartTableTable(){
 	var tbody = document.createElement("tbody");
 	for (var i = 0 ; i < cartArray_js.length; i++) {
 		var tr = document.createElement('tr');
-		for (var j = 0; j < 12; j++) {
+		for (var j = 0; j < 2; j++) {
 			var td = document.createElement('td');
 			var txt = document.createTextNode(cartArray_js[i][j]);
 			td.appendChild(txt);
