@@ -34,6 +34,18 @@ set_include_path ( "./classes" );
 spl_autoload_register(function ($class) {
 	include 'classes/' . $class . '.php';
 });
+
+
+?>
+
+<script type="text/javascript">
+	var customerArray_js = <?php echo json_encode($_SESSION['customerArray']); ?>;
+	var employeeArray_js = <?php echo json_encode($_SESSION['employeeArray']); ?>;
+	var productArray_js = <?php echo json_encode($_SESSION['products']); ?>;
+    var cartArray_js = <?php echo json_encode($_SESSION['cart']); ?>;
+</script>
+
+<?php
 //class is automatically loaded from ./classes/myclass.php
 
 $success = true;
