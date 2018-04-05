@@ -207,6 +207,10 @@ class CustomerExecution
                 $tuple
             );
 
+            $shipping_info = $this->SQLExecution->executePlainSQL
+            ("Select shipping_info_no from Owns Where Account_no = ".$_SESSION['AccountID']."");
+            $ship = OCI_Fetch_Array($shipping_info);
+
             $orderTuple = array (
                 //this needs shipping info no
                 ":bind0" => $newOrderID,
