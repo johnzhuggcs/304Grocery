@@ -118,8 +118,8 @@ FOREIGN KEY (Account_no) REFERENCES Customer
 Phone_number INTEGER,
  Billing_address varchar2(50),
   Shipping_address varchar2(50),
-   Shipping_method varchar2(10),
-delivery_type varchar2(10),
+   Shipping_method varchar2(20),
+delivery_type varchar2(20),
 PRIMARY KEY(Shipping_info_no)
 )",
 
