@@ -123,10 +123,6 @@ function fillProductTable(){
 
 	for (var i = 0 ; i < productArray_js.length; i++) {
 		var tr = document.createElement('tr');
-		var td = document.createElement('td');
-		var btn = document.createElement("BUTTON");
-		td.appendChild(btn);
-		tr.appendChild(td);
 		for (var j = 0; j < 12; j++) {
 			var td = document.createElement('td');
 			var txt = document.createTextNode(productArray_js[i][j]);
@@ -141,8 +137,6 @@ function fillProductTable(){
 function fillBuyProductTable(){
 	var table = document.getElementById("BuyProductsTable");
 	var tbody = document.createElement("tbody");
-
-
 	for (var i = 0 ; i < productArray_js.length; i++) {
 		var tr = document.createElement('tr');
 		for (var j = 0; j < 12; j++) {

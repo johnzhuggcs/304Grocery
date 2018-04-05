@@ -18,7 +18,6 @@
 					<button class="btn btn-danger fa fa-bars"></button>
 				</a>
 				<div class="dropdown-menu">
-					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenBuyProducts()">Buy Products</button></a>
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="AddProducts()">Add Products</button></a>
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="CustomerPremium()">Customer Premium</button></a>	
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenRestockProducts()">Restock Products</button></a>
@@ -351,6 +350,7 @@
 							<table class="table table-bordered">
 								<thead>
 									<tr>
+										<th>Deal ID</th>
 										<th>Price</th>
 										<th>Expire date</th>
 										<th>Ingredients</th>
@@ -359,6 +359,7 @@
 								</thead> 
 								<tbody>
 									<tr>
+										<td><input class="form-control" type="text" name="DID" ></td>
 										<td><input class="form-control" type="text" name="price" ></td>
 										<td><input class="form-control" type="text" name="expire_date" ></td>
 										<td><input class="form-control" type="text" name="Ingredients" ></td>
@@ -447,7 +448,6 @@
 							<table name="ViewAllProductsTable" id="ViewAllProductsTable" class="table table-bordered">
 								<thead>
 									<tr>
-										<th>Delete</th>
 										<th>ID</th>
 										<th>Price</th>
 										<th>Expire date</th>
