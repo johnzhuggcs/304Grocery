@@ -2,6 +2,8 @@ var user;
 var BuyProductsView;
 
 $(function() { //run on document.ready
+	console.log("document ready");
+
 	if(localStorage.getItem("userType", user) !== undefined){
 		if(localStorage.getItem("userType") == 1){
 			$('#CustomerNav').show();
@@ -29,14 +31,11 @@ $(function() { //run on document.ready
 	}
 
 	$("#userSelect").change(function() { //this occurs when select 1 changes
-		console.log("detect");
 		user =  document.getElementById("userSelect").value;
 		$('#nameSelect')
 		.find('option')
 		.remove();
 		if(user == 1){
-			console.log("Customer");
-			console.log(customerArray_js.length);
 			var sel = document.getElementById('nameSelect');
 			for(var i = 0; i < customerArray_js.length; i++) {
 				var opt = document.createElement('option');
@@ -45,7 +44,6 @@ $(function() { //run on document.ready
 				sel.appendChild(opt);
 			}
 		}else if(user == 2){
-			console.log("Employee");
 			var sel = document.getElementById('nameSelect');
 			for(var i = 0; i < employeeArray_js.length; i++) {
 				var opt = document.createElement('option');
@@ -89,9 +87,13 @@ function createUser(){
 function OpenFilter(){
 	$('#Filter').toggle();
 }
+
 function OpenViewCart(){
+	fillCartTableTable();
+	console.log(cartArray_js);
 	$('#viewCart').toggle();
 }
+
 function closeBuyProduct(){
 	$('#BuyProducts').toggle();
 	localStorage.setItem("BuyProductsView",0);
@@ -133,7 +135,23 @@ function fillProductTable(){
 	table.appendChild(tbody);
 	}
 }
-	
+
+function fillCartTableTable(){
+	var table = document.getElementById("cartTable");
+	var tbody = document.createElement("tbody");
+	for (var i = 0 ; i < cartArray_js.length; i++) {
+		var tr = document.createElement('tr');
+		for (var j = 0; j < 12; j++) {
+			var td = document.createElement('td');
+			var txt = document.createTextNode(cartArray_js[i][j]);
+			td.appendChild(txt);
+			tr.appendChild(td);
+		}
+	tbody.appendChild(tr);
+	table.appendChild(tbody);
+	}
+}
+
 function fillBuyProductTable(){
 	var table = document.getElementById("BuyProductsTable");
 	var tbody = document.createElement("tbody");
