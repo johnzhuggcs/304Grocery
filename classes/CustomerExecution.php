@@ -152,8 +152,9 @@ class CustomerExecution
                 ":bind5" => $_POST['Payment_method'],
                 ":bind6" => $orderTotal[0] * 0.5,
                 ":bind7" => $_SESSION['AccountID'],
-                ":bind8" => $customerShipping
+                ":bind8" => $customerShipping[0]
             );
+
 
             $alltuples = array (
                 $tuple
@@ -205,8 +206,48 @@ class CustomerExecution
             $alltuples = array (
                 $tuple
             );
+
+            $orderTuple = array (
+                //this needs shipping info no
+                ":bind0" => $newOrderID,
+                ":bind1" => '2018-4-6',
+                ":bind2" => null,
+                ":bind3" => "processing",
+                ":bind4" => null,
+                ":bind5" => null,
+                ":bind6" => null,
+                ":bind7" => $_SESSION['AccountID'],
+                ":bind8" => null
+            );
+
+
+
+            $allOrderstuples = array (
+                $orderTuple
+            );
+
             //this needs order_no in ???
-            $this->SQLExecution->executeBoundSQL("Insert into Contains values(:bind1,".$_SESSION["order_no"].")", $alltuples);
+
+            $checkRecord = $this->SQLExecution->executePlainSQL
+            ("select order_no from Order_placedby_shippedwith WHERE order_no = '$newOrderID'");;
+            $checkRecordArray = OCI_Fetch_Array($checkRecord, OCI_BOTH);
+
+            if(count($checkRecordArray) <= 1){
+                $this->SQLExecution->executeBoundSQL("insert into Order_placedby_shippedwith values(:bind0, :bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7, :bind8)", $allOrderstuples);
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>"hey im here"</h5></div></div>');
+                //$_SESSION['order_no'] = $_SESSION['order_no'] +1;
+            }
+
+
+            $tempProduct = $_POST['pid'];
+            $this->SQLExecution->executePlainSQL("insert into Contains (PID, order_no) values('$tempProduct', '$newOrderID')");
+            OCICommit($db_conn);
+            $orderAllResult = $this->SQLExecution->executePlainSQL("select * from Contains WHERE order_no = '$newOrderID'");
+            $this->Utility->printResult($orderAllResult);
+
+            $newCart = $this->Utility->sessionResult($orderAllResult);
+            $_SESSION['cart'] = $newCart;
+
         }
         //select an attribute where the products are lower than selected price
         else if(array_key_exists('select_view', $_POST)){

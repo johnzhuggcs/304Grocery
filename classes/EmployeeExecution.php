@@ -13,6 +13,7 @@ class EmployeeExecution
     private $SQLExecution;
     private $Utility;
     private $ProductId;
+    private $DealId;
     private static $instance;
 
     //Includes all classes
@@ -24,12 +25,21 @@ class EmployeeExecution
         $this->SQLExecution = $sqlExecution;
         $this->Utility = $utility;
 
+
         if (isset($_SESSION['ProductId'])) {
 
             $this->ProductId = $_SESSION['ProductId'];
         } else {
-            $_SESSION['ProductId'] = 2;
+            $_SESSION['ProductId'] = 3;
             $this->ProductId = $_SESSION['ProductId'];
+        }
+
+        if (isset($_SESSION['DID'])) {
+
+            $this->DealId = $_SESSION['DID'];
+        } else {
+            $_SESSION['DID'] = 1;
+            $this->DealId = $_SESSION['DID'];
         }
     }
 
@@ -46,13 +56,17 @@ class EmployeeExecution
         global $db_conn, $success;
         $tempProductNum = strval($this->ProductId);
         $tempProductNum = str_pad($tempProductNum, 4, '0', STR_PAD_LEFT);
-        $newCustomerID = "P" . $tempProductNum;
+        $newProductId = "P" . $tempProductNum;
+
+        $tempDealNum = strval($this->DealId);
+        $tempDealNum = str_pad($tempDealNum, 4, '0', STR_PAD_LEFT);
+        $newDealId = "D" . $tempDealNum;
 
         if (array_key_exists('AddProduct', $_POST)) {
 
             //Getting the values from user and insert data into the table
             $tuple = array(
-                ":bind1" => $_SESSION["ProductId"],
+                ":bind1" => $newProductId,
                 ":bind2" => $_POST['price'],
                 ":bind3" => $_POST['expire_date'],
                 ":bind4" => $_POST['Ingredients'],
@@ -107,7 +121,7 @@ class EmployeeExecution
 
             // Update tuple using data from user
             $tuple = array(
-                ":bind1" => $_POST['id'],
+                ":bind1" => $_POST['PID'],
                 ":bind2" => $_POST['addq']
             );
             $alltuples = array(
@@ -122,7 +136,7 @@ class EmployeeExecution
         } // employee create new deal
         else if (array_key_exists('insertDeal', $_POST)) {
             $tuple = array(
-                ":bind1" => $_POST['DID'],
+                ":bind1" => $newDealId,
                 ":bind2" => $_POST['start_date'],
                 ":bind3" => $_POST['end_date'],
                 ":bind4" => $_POST['shared_link'],
@@ -135,18 +149,9 @@ class EmployeeExecution
             $this->SQLExecution->executeBoundSQL("insert into deal values (:bind1,:bind2,:bind3,:bind4,:bind5,:bind6)", $alltuples);
 
             OCICommit($db_conn);
-        } // employee delete a deal
-        else if (array_key_exists('deleteDeal', $_POST)) {
-            $tuple = array(
-                ":bind1" => $_POST['DID']
-            );
-            $alltuples = array(
-                $tuple
-            );
-            //insert into deal table
-            $this->SQLExecution->executeBoundSQL("delete from product_discount where did=:bind1", $alltuples);
 
-            OCICommit($db_conn);
+            $_SESSION["DID"] = $_SESSION["DID"] + 1;
+
         } // employee delete a deal
         else if (array_key_exists('deleteDeal', $_POST)) {
             $tuple = array(

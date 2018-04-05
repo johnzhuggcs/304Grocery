@@ -22,7 +22,7 @@ class ApplicationController
         $this->SQLExecution = $sqlExecution;
         $this->Utility = $utility;
         $this->accountNoToBool($whichUser);
-        $_SESSION["AccountID"] = $whichUser;
+        //$_SESSION["AccountID"] = $whichUser;
     }
 
     // Takes in account number chosen and determines whether employee or customer
@@ -54,7 +54,7 @@ class ApplicationController
             echo ('<div class="card container text-center" ><div class="card-body"><h5>Waiting</h5></div></div>');
             if(array_key_exists('logoff', $_POST)){
                 echo ('<div class="card container text-center" ><div class="card-body"><h5>Log Off</h5></div></div>');
-                $_SESSION['Begin_App'] = null;
+                $_SESSION['Begin_App'] = 1;
             }
             else if (array_key_exists('reset', $_POST)) {
 

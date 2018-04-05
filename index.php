@@ -24,6 +24,7 @@ session_start();
 	var customerArray_js = <?php echo json_encode($_SESSION['customerArray']); ?>;
 	var employeeArray_js = <?php echo json_encode($_SESSION['employeeArray']); ?>;
 	var productArray_js = <?php echo json_encode($_SESSION['products']); ?>;
+    var cartArray_js = <?php echo json_encode($_SESSION['cart']); ?>;
 </script>
 
 <?php
@@ -46,7 +47,7 @@ $AccountInitializer = new AccountInitializer($SQLConnection, $Utility);
 //echo "before begin app\n\n";
 if (!isset($_SESSION['Begin_App']) || array_key_exists('reset', $_POST)){
     if(array_key_exists('reset', $_POST)){
-        echo ('<div class="card container text-center" ><div class="card-body"><h5>Reset</h5></div></div>');
+        echo ('<div class="card container text-center" ><div class="card-body"><h5>Welcome!</h5></div></div>');
         $_SESSION['Initialized_table'] = null;
     }
     $_SESSION['Begin_App'] = 1;

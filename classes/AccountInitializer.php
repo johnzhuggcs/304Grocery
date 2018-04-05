@@ -36,6 +36,10 @@ class AccountInitializer
 
                 //echo ('<div class="card container text-center" ><div class="card-body"><h5>Delete Session Variables</h5></div></div>');
                 $_SESSION['customerNo'] = null;
+                $_SESSION['order_no'] = null;
+                $_SESSION['ProductId'] = null;
+                $_SESSION['DID'] = null;
+                $_SESSION['shipping_info_no'] = null;
                 // Create new table...
                 //echo ('<div class="card container text-center" ><div class="card-body"><h5>Create New Table</h5></div></div>');
                 $TablePopulator->populateAll();
@@ -78,6 +82,10 @@ class AccountInitializer
         $_SESSION['Initialized_table'] = null;
         $_SESSION['Begin_App'] = null;
         $_SESSION['customerNo'] = null;
+        $_SESSION['order_no'] = null;
+        $_SESSION['ProductId'] = null;
+        $_SESSION['DID'] = null;
+        $_SESSION['shipping_info_no'] = null;
         $TablePopulator = new TablePopulation($this->SQLExecution);
 
         // Drop old table...
