@@ -132,7 +132,7 @@ Order_total DOUBLE precision,
 Payment_method varchar2(10),
 Poins_awarded INTEGER,
 Account_no varchar2(5) NOT NULL,
-Shipping_info_no varchar2(6) NOT NULL,
+Shipping_info_no varchar2(6),
 PRIMARY KEY (order_no),
 FOREIGN KEY (Account_no) REFERENCES Customer,
 FOREIGN KEY (shipping_info_no) REFERENCES Shipping_Info

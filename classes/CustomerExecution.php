@@ -152,7 +152,7 @@ class CustomerExecution
                 ":bind5" => $_POST['Payment_method'],
                 ":bind6" => $orderTotal[0] * 0.5,
                 ":bind7" => $_SESSION['AccountID'],
-                ":bind8" => $customerShipping
+                ":bind8" => $customerShipping[0]
             );
 
 
@@ -207,10 +207,6 @@ class CustomerExecution
                 $tuple
             );
 
-            $shipping_info = $this->SQLExecution->executePlainSQL
-            ("Select shipping_info_no from Owns Where Account_no = ".$_SESSION['AccountID']."");
-            $ship = OCI_Fetch_Array($shipping_info);
-
             $orderTuple = array (
                 //this needs shipping info no
                 ":bind0" => $newOrderID,
@@ -224,8 +220,7 @@ class CustomerExecution
                 ":bind8" => null
             );
 
-            echo "AccountId should be: ".$_SESSION['AccountID'];
-            echo "\n\n";
+
 
             $allOrderstuples = array (
                 $orderTuple
@@ -234,39 +229,23 @@ class CustomerExecution
             //this needs order_no in ???
 
             $checkRecord = $this->SQLExecution->executePlainSQL
-            ("select order_no from Order_placedby_shippedwith WHERE order_no = '.$newOrderID.'");;
+            ("select order_no from Order_placedby_shippedwith WHERE order_no = '$newOrderID'");;
             $checkRecordArray = OCI_Fetch_Array($checkRecord, OCI_BOTH);
-            echo "before checkRecordArray";
-            echo "\n\n";
+
             if(count($checkRecordArray) <= 1){
                 $this->SQLExecution->executeBoundSQL("insert into Order_placedby_shippedwith values(:bind0, :bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7, :bind8)", $allOrderstuples);
-                echo ('<div class="card container text-center" ><div class="card-body"><h5>"hey im here"</h5></div></div>');
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>"hey im here"</h5></div></div>');
+                //$_SESSION['order_no'] = $_SESSION['order_no'] +1;
             }
-            echo count($checkRecordArray);
-            echo "\n\n";
-            echo($checkRecordArray);
-            print_r($checkRecordArray);
-            echo "after checkRecordArray";
 
-            $checkRecord = $this->SQLExecution->executePlainSQL
-            ("select * from Order_placedby_shippedwith");
-            OCICommit($db_conn);
-            echo "after OCICommit";
-            $customerArray = array();
-            $counter = 0;
-            while($checkRecordArray = OCI_Fetch_Array($checkRecord, OCI_BOTH)){
-                $customerArray[$counter] = $checkRecordArray[0];
-                $counter++;
-                echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$checkRecordArray[0].'</h5></div></div>');
-            }
-            echo "after OCICommit";
-            print_r($customerArray);
 
-            $this->Utility->printResult($checkRecord);
-            $this->SQLExecution->executeBoundSQL("insert into Contains values(:bind1, :bind2)", $alltuples);
-            $allfromCart = $this->SQLExecution->executePlainSQL("select * from Contains WHERE order_no = '.$newOrderID.'");
+            $tempProduct = $_POST['pid'];
+            $this->SQLExecution->executePlainSQL("insert into Contains (PID, order_no) values('$tempProduct', '$newOrderID')");
             OCICommit($db_conn);
-            $newCart = $this->Utility->sessionResult($allfromCart);
+            $orderAllResult = $this->SQLExecution->executePlainSQL("select * from Contains WHERE order_no = '$newOrderID'");
+            $this->Utility->printResult($orderAllResult);
+
+            $newCart = $this->Utility->sessionResult($orderAllResult);
             $_SESSION['cart'] = $newCart;
 
         }
