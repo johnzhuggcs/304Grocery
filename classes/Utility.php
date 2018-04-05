@@ -70,7 +70,7 @@ class Utility
         while($tempResultArray = OCI_Fetch_Array($result, OCI_BOTH)){
             $resultArray[$counter] = $tempResultArray[0];
             $counter++;
-            //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$tempResultArray[0].'</h5></div></div>');
+            echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$tempResultArray[0].'</h5></div></div>');
         }
 
         //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$resultArray.'</h5></div></div>');

@@ -207,6 +207,10 @@ class CustomerExecution
             );
             //this needs order_no in ???
             $this->SQLExecution->executeBoundSQL("Insert into Contains values(:bind1,".$_SESSION["order_no"].")", $alltuples);
+            $allfromCart = $this->SQLExecution->executePlainSQL("select * from Contains WHERE PID = $newOrderID");
+            $newCart = $this->Utility->sessionResult($allfromCart);
+            $_SESSION['cart'] = $newCart;
+
         }
         //select an attribute where the products are lower than selected price
         else if(array_key_exists('select_view', $_POST)){
