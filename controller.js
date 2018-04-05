@@ -57,6 +57,7 @@ $(function() { //run on document.ready
 	});
 
 	fillProductTable();
+	fillBuyProductTable();
 });
 
 function AddProducts() {
@@ -114,18 +115,36 @@ function resetLS() {
 	delete localStorage.clear();
 }
 
-	
+
 function fillProductTable(){
-	var table = document.getElementById("BuyProductsTable");
+	var table = document.getElementById("ViewAllProductsTable");
 	var tbody = document.createElement("tbody");
 
 
 	for (var i = 0 ; i < productArray_js.length; i++) {
 		var tr = document.createElement('tr');
 		var td = document.createElement('td');
-		var txt = document.createTextNode('<input class="form-control" type="text" name="volume">');
-		td.appendChild(txt);
+		var btn = document.createElement("BUTTON");
+		td.appendChild(btn);
 		tr.appendChild(td);
+		for (var j = 0; j < 12; j++) {
+			var td = document.createElement('td');
+			var txt = document.createTextNode(productArray_js[i][j]);
+			td.appendChild(txt);
+			tr.appendChild(td);
+		}
+	tbody.appendChild(tr);
+	table.appendChild(tbody);
+	}
+}
+	
+function fillBuyProductTable(){
+	var table = document.getElementById("BuyProductsTable");
+	var tbody = document.createElement("tbody");
+
+
+	for (var i = 0 ; i < productArray_js.length; i++) {
+		var tr = document.createElement('tr');
 		for (var j = 0; j < 12; j++) {
 			var td = document.createElement('td');
 			var txt = document.createTextNode(productArray_js[i][j]);
