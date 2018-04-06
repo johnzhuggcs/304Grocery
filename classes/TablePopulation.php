@@ -114,12 +114,12 @@ FOREIGN KEY (Account_no) REFERENCES Customer
 
 
 "create TABLE Shipping_info
-        (Shipping_info_no varchar2(6),
-Phone_number INTEGER,
- Billing_address varchar2(50),
-  Shipping_address varchar2(50),
-   Shipping_method varchar2(10),
-delivery_type varchar2(10),
+        (Shipping_info_no varchar2(6) NOT NULL,
+Phone_number INTEGER NOT NULL,
+ Billing_address varchar2(100) NOT NULL,
+  Shipping_address varchar2(100) NOT NULL,
+   Shipping_method varchar2(20) NOT NULL,
+delivery_type varchar2(20),
 PRIMARY KEY(Shipping_info_no)
 )",
 

@@ -81,7 +81,7 @@ class CustomerExecution
 
             $shippingArray = array(
                 ":bind0" => $_SESSION['AccountID'],
-                ":bind1" => $tempShippingNum
+                ":bind1" => $newShippingID
             );
 
             $bigShippingTuple = array(
@@ -105,13 +105,14 @@ class CustomerExecution
             //get orginal price
             $original_price = $this->SQLExecution->executePlainSQL
             ("Select sum(price) from Product_discount p,Contain c,Order_placedby_shippedwith os 
-					Where p.pid = c.pid and c.Order_no=os.Order_no and os.Order_no =".$newOrderID."");
+					Where p.pid = c.pid and c.Order_no=os.Order_no and os.Order_no ='$newOrderID'");
             $price = OCI_Fetch_Array($original_price);
 
             //get shipping info no
             //here needs customer id
+            $tempAccount = $_SESSION['AccountID'];
             $shipping_info = $this->SQLExecution->executePlainSQL
-            ("Select shipping_info_no from Owns Where Account_no = ".$_SESSION['AccountID']."");
+            ("Select shipping_info_no from Owns Where Account_no = '$tempAccount'");
             $ship = OCI_Fetch_Array($shipping_info);
 
             if($price>100){
@@ -176,24 +177,26 @@ class CustomerExecution
         } else if(array_key_exists('update_shipping_address', $_POST)){
             $tuple = array (
                 ":bind1" => $_POST['new_address'],
-                ":bind2" => $newShippingID
+                ":bind2" => $_POST['shipping_info_no'] //this is from inputted in POST, not $_SESSION
             );
             $alltuples = array (
                 $tuple
             );
-
-            $tempCustomerArray = $this->SQLExecution->executePlainSQL("select Shipping_info from owns where Account_no = ".$_SESSION['AccountID']."");
+            $tempAccount = $_SESSION['AccountID'];
+            $tempShippingForm = $_POST['shipping_info_no'];
+            $tempCustomerArray = $this->SQLExecution->executePlainSQL("select Shipping_info_no from owns where Account_no = '$tempAccount'");
             $tempCustomer = OCI_Fetch_Array($tempCustomerArray, OCI_BOTH);
             ;
-
-            $this->SQLExecution->executePlainSQL("update Shipping_info set shipping_address=".$_POST['new_address']." where shipping_info_no=$tempCustomer[0]");
-
+            $tempAddress = $_POST['new_address'];
+            $this->SQLExecution->executePlainSQL("update Shipping_info set shipping_address='$tempAddress' where shipping_info_no='$tempShippingForm'");
+            OCICommit($db_conn);
             // Modify Customer Premium qualification
         } else if(array_key_exists('modify_prem', $_POST)){
 
+            $tempAccount = $_SESSION['AccountID'];
             //TODO: must do on specific customer
-            $this->SQLExecution->executePlainSQL("Update Customer set Premium = 1 where Reward_Points >= 1000 and Account_no = ".$_SESSION['AccountID']." ");
-            $this->SQLExecution->executePlainSQL("Update Customer set Premium = 0 where Reward_Points < 1000 and Account_no = ".$_SESSION['AccountID']."");
+            $this->SQLExecution->executePlainSQL("Update Customer set Premium = 1 where Reward_Points >= 1000 and Account_no = '$tempAccount' ");
+            $this->SQLExecution->executePlainSQL("Update Customer set Premium = 0 where Reward_Points < 1000 and Account_no = '$tempAccount'");
 
 
             // Select product into shopping cart

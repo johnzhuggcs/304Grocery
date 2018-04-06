@@ -39,6 +39,7 @@ class AccountInitializer
                 $_SESSION['order_no'] = null;
                 $_SESSION['ProductId'] = null;
                 $_SESSION['DID'] = null;
+                $_SESSION['cart'] = null;
                 $_SESSION['shipping_info_no'] = null;
                 // Create new table...
                 //echo ('<div class="card container text-center" ><div class="card-body"><h5>Create New Table</h5></div></div>');
@@ -84,6 +85,7 @@ class AccountInitializer
         $_SESSION['customerNo'] = null;
         $_SESSION['order_no'] = null;
         $_SESSION['ProductId'] = null;
+        $_SESSION['cart'] = null;
         $_SESSION['DID'] = null;
         $_SESSION['shipping_info_no'] = null;
         $TablePopulator = new TablePopulation($this->SQLExecution);

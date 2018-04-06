@@ -55,6 +55,45 @@ class ApplicationController
             if(array_key_exists('logoff', $_POST)){
                 echo ('<div class="card container text-center" ><div class="card-body"><h5>Log Off</h5></div></div>');
                 $_SESSION['Begin_App'] = 1;
+                $AccountInitializer = new AccountInitializer($this->SQLExecution, $this->Utility);
+                $AccountInitializer->start();
+
+                $employeeArray = array();
+                $counter = 0;
+                while($tempResultArray = OCI_Fetch_Array($AccountInitializer->getAllEmployees(), OCI_BOTH)){
+                    $employeeArray[$counter] = $tempResultArray[0];
+                    $counter++;
+                    //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$tempResultArray[0].'</h5></div></div>');
+                }
+
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$resultArray.'</h5></div></div>');
+
+                $customerArray = array();
+                $counter = 0;
+                while($tempResultArray = OCI_Fetch_Array($AccountInitializer->getAllCustomers(), OCI_BOTH)){
+                    $customerArray[$counter] = $tempResultArray[0];
+                    $counter++;
+                    //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$tempResultArray[0].'</h5></div></div>');
+                }
+
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$resultArray.'</h5></div></div>');
+
+                $_SESSION['customerArray'] = $customerArray;
+                $_SESSION['employeeArray'] = $employeeArray;
+
+
+
+                /*echo "<script type=\'text/javascript\'>
+	var customerArray_js =";
+                echo "<?php echo json_encode($_SESSION['customerArray']);?>";
+	echo "var employeeArray_js =";
+	echo "<?php echo json_encode($_SESSION['employeeArray']); ?>";
+	echo "var productArray_js =";
+                echo "<?php json_encode($_SESSION['products']);?>";
+    echo "var cartArray_js =";
+                echo "<?php json_encode($_SESSION['cart']);?>";
+    echo "</script>";*/
+
             }
             else if (array_key_exists('reset', $_POST)) {
 
@@ -102,6 +141,10 @@ class ApplicationController
                 $this->Utility->printResult($employeeResult);
                 $orderAllResult = $this->SQLExecution->executePlainSQL("select * from Order_placedby_shippedwith");
                 $this->Utility->printResult($orderAllResult);
+                $shippingInfoOnlyResult = $this->SQLExecution->executePlainSQL("select * from Shipping_info");
+                $this->Utility->printResult($shippingInfoOnlyResult);
+                $shippingInfowithCustomer = $this->SQLExecution->executePlainSQL("select * from owns");
+                $this->Utility->printResult($shippingInfowithCustomer);
                 OCICommit($db_conn);
                 header("location: index.php");
             }
