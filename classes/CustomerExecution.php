@@ -99,7 +99,7 @@ class CustomerExecution
             $_SESSION["shipping_info_no"] = $_SESSION["shipping_info_no"]+1;
             OCICommit($db_conn);
 
-            $shippingAllResult = $this->SQLExecution->executePlainSQL("select Shipping_info.Shipping_info_no, Shipping_info.Phone_number, Shipping_info.Billing_address, Shipping_info.Shipping_address, Shipping_info.delivery_type from owns INNER JOIN Shipping_info ON Shipping_info.Shipping_info_no = owns.Shipping_info_no WHERE owns.Account_no = '$tempAccount'");
+            $shippingAllResult = $this->SQLExecution->executePlainSQL("select Shipping_info.Shipping_info_no, Shipping_info.Phone_number, Shipping_info.Billing_address, Shipping_info.Shipping_address, Shipping_info.delivery_type, Shipping_info.Shipping_method from owns INNER JOIN Shipping_info ON Shipping_info.Shipping_info_no = owns.Shipping_info_no WHERE owns.Account_no = '$tempAccount'");
             //$this->Utility->printResult($orderAllResult);
 
             $newShipping = array(array());
@@ -231,7 +231,7 @@ class CustomerExecution
             $this->SQLExecution->executePlainSQL("update Shipping_info set shipping_address='$tempAddress' where shipping_info_no='$tempShippingForm'");
             OCICommit($db_conn);
 
-            $shippingAllResult = $this->SQLExecution->executePlainSQL("select Shipping_info.Shipping_info_no, Shipping_info.Phone_number, Shipping_info.Billing_address, Shipping_info.Shipping_address, Shipping_info.delivery_type from owns INNER JOIN Shipping_info ON Shipping_info.Shipping_info_no = owns.Shipping_info_no WHERE owns.Account_no = '$tempAccount'");
+            $shippingAllResult = $this->SQLExecution->executePlainSQL("select Shipping_info.Shipping_info_no, Shipping_info.Phone_number, Shipping_info.Billing_address, Shipping_info.Shipping_address, Shipping_info.delivery_type, Shipping_info.Shipping_method from owns INNER JOIN Shipping_info ON Shipping_info.Shipping_info_no = owns.Shipping_info_no WHERE owns.Account_no = '$tempAccount'");
             //$this->Utility->printResult($orderAllResult);
 
             $newShipping = array(array());
