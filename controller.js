@@ -57,7 +57,19 @@ $(function() { //run on document.ready
 	fillProductTable();
 	fillBuyProductTable();
 });
-
+function OpenDeleteProducts(){
+	fillDeleteProductsTable();
+	$('#DeleteProducts').toggle();
+}
+function OpenAddDeal(){
+	$('#addDeal').toggle();
+}
+function OpenViewDeal(){
+	$('#viewDeal').toggle();
+}
+function OpenUpdateDeal(){
+	$('#updateDeal').toggle();
+}
 function AddProducts() {
 	$('#addProducts').toggle();
 }
@@ -144,6 +156,22 @@ function fillCartTableTable(){
 		for (var j = 0; j < 2; j++) {
 			var td = document.createElement('td');
 			var txt = document.createTextNode(cartArray_js[i][j]);
+			td.appendChild(txt);
+			tr.appendChild(td);
+		}
+	tbody.appendChild(tr);
+	table.appendChild(tbody);
+	}
+}
+
+function fillDeleteProductsTable(){
+	var table = document.getElementById("DeleteProductsTable");
+	var tbody = document.createElement("tbody");
+	for (var i = 0 ; i < productArray_js.length; i++) {
+		var tr = document.createElement('tr');
+		for (var j = 0; j < 12; j++) {
+			var td = document.createElement('td');
+			var txt = document.createTextNode(productArray_js[i][j]);
 			td.appendChild(txt);
 			tr.appendChild(td);
 		}

@@ -19,9 +19,13 @@
 				</a>
 				<div class="dropdown-menu">
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="AddProducts()">Add Products</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenDeleteProducts()">Delete Products</button></a>
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="CustomerPremium()">Customer Premium</button></a>	
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenRestockProducts()">Restock Products</button></a>
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenAccount()">Account</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenAddDeal()">Add Deal</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenViewDeal()">View Deal</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenUpdateDeal()">Update Deal</button></a>
 				</div>
 			</li>
 			<li id="CustomerNav" class="nav-item dropdown" style="display: none;">
@@ -36,6 +40,7 @@
 					</form>
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenViewCart()">View Cart</button></a>
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenShippingInfo()">Shipping Info</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="CustomerPremium()">Customer Premium</button></a>	
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenUpdateShippingInfo()">Update Shipping Info</button></a>
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenFilter()">Filter Attribute</button></a>
 				</div>
@@ -112,7 +117,7 @@
 
 	<div id="Filter" class="card container" style="display: none;" >
 		<div class="card-header">
-			<h4>Create User</h4>
+			<h4>Filter Products</h4>
 		</div>
 		<div class="card-body">
 			<form method="POST" action="index.php">
@@ -207,7 +212,7 @@
 
 	<div id="UpdateShippingInfo" class="card container" style="display: none;" >
 		<div class="card-header">
-			<h4>Add Shipping Info</h4>
+			<h4>Update Shipping Info</h4>
 		</div>
 		<div class="card-body">
 			<form method="POST" action="index.php">
@@ -332,6 +337,129 @@
 				<div class="row">
 					<div class="col-md-12">
 						<input class="btn btn-primary" type="submit" value="Submit" name="modify_prem">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div id="addDeal" class="container card text-center" style="display: none;">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-md-12">
+					<h4>Add Deal </h4>
+				</div>
+			</div>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="row">
+					<div class="col-md-4">
+						<h4>Start Date</h4>
+					</div>
+					<div class="col-md-4">
+						<h4>End Date</h4>
+					</div>
+					<div class="col-md-4">
+						<h4>Shared Link</h4>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<input class="form-control" type="text" name="start_date">
+					</div>
+					<div class="col-md-4">
+						<input class="form-control" type="text" name="end_date">
+					</div>
+					<div class="col-md-4">
+						<input class="form-control" type="text" name="shared_link">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<h4>Discount</h4>
+					</div>
+					<div class="col-md-6">
+						<h4>Premium Only</h4>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<input class="form-control" type="text" name="discount">
+					</div>
+					<div class="col-md-6">
+						<input class="form-control" type="text" name="Premium_only">
+					</div>
+				</div>
+				<div class="row">
+						<div class="col-md-12">&nbsp;</div>
+					</div>
+				<div class="row">
+					<div class="col-md-12">
+						<input class="btn btn-primary" type="submit" value="Submit" name="insertDeal">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div id="viewDeal" class="container card text-center" style="display: none;">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-md-12">
+					<h4>Delete Deal </h4>
+				</div>
+			</div>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="row">
+					<div class="col-md-2">
+						<h4>Deal ID</h4>
+					</div>
+					<div class="col-md-7">
+						<input class="form-control" type="text" name="DID">
+					</div>
+					<div class="col-md-3">
+						<input class="btn btn-primary" type="submit" value="Delete" name="deleteDeal">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div id="updateDeal" class="container card text-center" style="display: none;">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-md-12">
+					<h4>Update Deal </h4>
+				</div>
+			</div>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="row">
+					<div class="col-md-6">
+						<h4>Old Deal ID</h4>
+					</div>
+					<div class="col-md-6">
+						<h4>New Deal ID</h4>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<input class="form-control" type="text" name="new_did">
+					</div>
+					<div class="col-md-6">
+						<input class="form-control" type="text" name="old_did">
+					</div>
+				</div>
+				<div class="row">
+						<div class="col-md-12">&nbsp;</div>
+					</div>
+				<div class="row">
+					<div class="col-md-12">
+						<input class="btn btn-primary" type="submit" value="Submit" name="update_deal">
 					</div>
 				</div>
 			</form>
@@ -481,20 +609,78 @@
 						<table class="table table-bordered">
 							<thead>
 								<tr>
-									<th>ID</th>
+									<th>Product ID</th>
 									<th>Added Quantity</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr>
-									<td><input class="form-control" type="text" name="id" ></td>
+									<td><input class="form-control" type="text" name="pid" ></td>
 									<td><input class="form-control" type="text" name="addq" ></td>
 								</tr>
 							</tbody>
 						</table>
 
-						<input class="btn btn-primary" type="submit" value="update" name="RestockProductSubmit">
+						<input class="btn btn-primary" type="submit" value="update" name="restock">
 					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="DeleteProducts" class="card container text-center" style="display: none;" >
+		<div class="card-header">
+			<h4>Delete Products</h4>
+		</div>
+		<div class="card-body">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12" style="overflow-x: auto;">
+						<table name="DeleteProductsTable" id="DeleteProductsTable" class="table table-bordered">
+							<thead>
+								<tr>
+									<th>ID</th>
+									<th>Price</th>
+									<th>Expire date</th>
+									<th>Ingredients</th>
+									<th>Carbon Footprint</th>
+									<th>Origin</th>
+									<th>Stock_quantity</th>
+									<th>Name</th>
+									<th>Brand</th>
+									<th>description</th>
+									<th>Reward Points</th>
+									<th>Deal ID</th>
+								</tr>
+							</thead>
+						</table>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">&nbsp;</div>
+			</div>
+			<form method="POST" action="index.php">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-2">
+							<h4>PID</h4>
+						</div>
+						<div class="col-md-6">
+							<input class="form-control" type="text" name="pid">
+						</div>
+						<div class="col-md-4">
+							<input type="submit" value="Delete" class="btn btn-danger" name="deleteProduct">
+						</div>
+					</div>
+				</div>
+			</form>
+			<div class="row">
+				<div class="col-md-12">&nbsp;</div>
+			</div>
+			<div class="row text-center">
+				<div class="col-md-12">
+					<input class="btn btn-danger" type="Submit" value="Close" onclick="closeBuyProduct()">
 				</div>
 			</div>
 		</div>
@@ -542,7 +728,7 @@
 							<input class="form-control" type="text" name="pid">
 						</div>
 						<div class="col-md-4">
-							<input type="submit" class="btn btn-primary" name="add_to_cart">
+							<input type="submit" value="Add to Cart" class="btn btn-primary" name="add_to_cart">
 						</div>
 					</div>
 				</div>
@@ -567,21 +753,12 @@
 				<div class="container">
 					<div class="row">
 						<div class="col-md-4">
-							<h5>Date:</h5>
-						</div>
-						<div class="col-md-8">
-							<input class="form-control" type="text"  name="order_date">
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">
 							<h5>Purchase Method:</h5>
 						</div>
 						<div class="col-md-8">
 							<select class="form-control" name="Payment_method">
 								<option>Visa</option>
 								<option>Mastercard</option>
-								<option>American Express</option>
 								<option>PayPal</option>
 							</select>
 						</div>
