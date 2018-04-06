@@ -26,6 +26,8 @@
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenAddDeal()">Add Deal</button></a>
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenViewDeal()">View Deal</button></a>
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenUpdateDeal()">Update Deal</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenAverageBrand()">Average Brand</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenAverageItem()">Average Item</button></a>
 				</div>
 			</li>
 			<li id="CustomerNav" class="nav-item dropdown" style="display: none;">
@@ -50,6 +52,20 @@
 			</li>
 		</ul>
 		<ul class="navbar-nav ml-auto">
+			<li class="nav-item ">
+				<a class="nav-link">
+					<form method="POST" action="index.php">
+						<input class="btn btn-primary" type="submit" value="Item All Order" name="item_all_order">
+					</form>
+				</a>
+			</li>
+			<li class="nav-item ">
+				<a class="nav-link">
+					<form method="POST" action="index.php">
+						<input class="btn btn-primary" type="submit" value="Popular Item" name="item_popular" > 
+					</form>
+				</a>
+			</li>
 			<li class="nav-item ">
 				<a class="nav-link">
 					<form method="POST" action="index.php">
@@ -337,6 +353,60 @@
 				<div class="row">
 					<div class="col-md-12">
 						<input class="btn btn-primary" type="submit" value="Submit" name="modify_prem">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div id="averageItem" class="container card text-center" style="display: none;">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-md-12">
+					<h4>Average Price by Item </h4>
+				</div>
+			</div>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="row">
+					<div class="col-md-4">
+						<h4>Item:</h4>
+					</div>
+					<div class="col-md-8">
+						<input class="form-control" type="text" name="BOUND">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<input class="btn btn-primary" type="submit" value="Submit" name="item_price_bound">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<div id="averageBrand" class="container card text-center" style="display: none;">
+		<div class="card-header">
+			<div class="row">
+				<div class="col-md-12">
+					<h4>Average Price by Brand</h4> 
+				</div>
+			</div>
+		</div>
+		<div class="card-body">
+			<form method="POST" action="index.php">
+				<div class="row">
+					<div class="col-md-4">
+						<h4>Brand:</h4>
+					</div>
+					<div class="col-md-8">
+						<input class="form-control" type="text" name="BOUND">
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<input class="btn btn-primary" type="submit" value="Submit" name="brand_price_bound">
 					</div>
 				</div>
 			</form>
