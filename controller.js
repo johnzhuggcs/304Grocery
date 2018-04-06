@@ -55,7 +55,6 @@ $(function() { //run on document.ready
 	fillProductTable();
 	fillBuyProductTable();
 	console.log(shippingArray_js);
-	console.log(placedOrderArray_js);
 });
 
 function OpenAverageBrand(){
@@ -65,6 +64,11 @@ function OpenAverageBrand(){
 function OpenViewOrders(){
 	fillPlacedOrderTable();
 	$('#viewOrders').toggle();
+}
+
+function OpenViewShipping(){
+	fillShippingTable();
+	$('#viewShipping').toggle();
 }
 
 function OpenAverageItem(){
