@@ -55,6 +55,31 @@ class ApplicationController
             if(array_key_exists('logoff', $_POST)){
                 echo ('<div class="card container text-center" ><div class="card-body"><h5>Log Off</h5></div></div>');
                 $_SESSION['Begin_App'] = 1;
+                $AccountInitializer = new AccountInitializer($this->SQLExecution, $this->Utility);
+                $AccountInitializer->start();
+
+                $employeeArray = array();
+                $counter = 0;
+                while($tempResultArray = OCI_Fetch_Array($AccountInitializer->getAllEmployees(), OCI_BOTH)){
+                    $employeeArray[$counter] = $tempResultArray[0];
+                    $counter++;
+                    //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$tempResultArray[0].'</h5></div></div>');
+                }
+
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$resultArray.'</h5></div></div>');
+
+                $customerArray = array();
+                $counter = 0;
+                while($tempResultArray = OCI_Fetch_Array($AccountInitializer->getAllCustomers(), OCI_BOTH)){
+                    $customerArray[$counter] = $tempResultArray[0];
+                    $counter++;
+                    //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$tempResultArray[0].'</h5></div></div>');
+                }
+
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$resultArray.'</h5></div></div>');
+
+                $_SESSION['customerArray'] = $customerArray;
+                $_SESSION['employeeArray'] = $employeeArray;
             }
             else if (array_key_exists('reset', $_POST)) {
 
