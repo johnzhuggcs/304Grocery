@@ -43,6 +43,8 @@ spl_autoload_register(function ($class) {
 	var employeeArray_js = <?php echo json_encode($_SESSION['employeeArray']); ?>;
 	var productArray_js = <?php echo json_encode($_SESSION['products']); ?>;
     var cartArray_js = <?php echo json_encode($_SESSION['cart']); ?>;
+    var placedOrderArray_js = <?php echo json_encode($_SESSION['placed_order']); ?>;
+    var shippingArray_js = <?php echo json_encode($_SESSION['shipping_addresses']); ?>;
 </script>
 
 <?php

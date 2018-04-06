@@ -98,6 +98,25 @@ class CustomerExecution
             $_SESSION["shipping_info_no"] = $_SESSION["shipping_info_no"]+1;
             OCICommit($db_conn);
 
+            $shippingAllResult = $this->SQLExecution->executePlainSQL("select Shipping_info.Shipping_info_no, Shipping_info.Phone_number, Shipping_info.Billing_address, Shipping_info.Shipping_address, Shipping_info.delivery_type from owns INNER JOIN Shipping_info ON Shipping_info.Shipping_info_no = owns.Shipping_info_no WHERE owns.Account_no = '$tempAccount'");
+            //$this->Utility->printResult($orderAllResult);
+
+            $newShipping = array(array());
+
+            //$this->Utility->printResult($shippingAllResult);
+            $countery = 0;
+            while($tempResultArray = OCI_Fetch_Array($shippingAllResult, OCI_BOTH)){
+                for($x = 0; $x< 6; $x++){
+                    $newShipping[$countery][$x] = $tempResultArray[$x];
+                }
+
+                $countery++;
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$tempResultArray[0].'</h5></div></div>');
+            }
+
+            $_SESSION['shipping_addresses'] = $newShipping;
+
+
             // place order
         } else if(array_key_exists('place_order', $_POST)){
 
@@ -175,6 +194,23 @@ class CustomerExecution
             $_SESSION["order_no"] = $_SESSION["order_no"]+1;
             OCICommit($db_conn);
 
+            $orderAllResult = $this->SQLExecution->executePlainSQL("select * from Order_placedby_shippedwith WHERE Account_no = '$tempAccount'");
+            //$this->Utility->printResult($orderAllResult);
+
+            $newOrder = array(array());
+
+            $countery = 0;
+            while($tempResultArray = OCI_Fetch_Array($orderAllResult, OCI_BOTH)){
+                for($x = 0; $x< 2; $x++){
+                    $newOrder[$countery][$x] = $tempResultArray[$x];
+                }
+
+                $countery++;
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$tempResultArray[0].'</h5></div></div>');
+            }
+
+            $_SESSION['placed_order'] = $newOrder;
+
             //update shipping address
 
         } else if(array_key_exists('update_shipping_address', $_POST)){
@@ -193,6 +229,25 @@ class CustomerExecution
             $tempAddress = $_POST['new_address'];
             $this->SQLExecution->executePlainSQL("update Shipping_info set shipping_address='$tempAddress' where shipping_info_no='$tempShippingForm'");
             OCICommit($db_conn);
+
+            $shippingAllResult = $this->SQLExecution->executePlainSQL("select Shipping_info.Shipping_info_no, Shipping_info.Phone_number, Shipping_info.Billing_address, Shipping_info.Shipping_address, Shipping_info.delivery_type from owns INNER JOIN Shipping_info ON Shipping_info.Shipping_info_no = owns.Shipping_info_no WHERE owns.Account_no = '$tempAccount'");
+            //$this->Utility->printResult($orderAllResult);
+
+            $newShipping = array(array());
+
+            //$this->Utility->printResult($shippingAllResult);
+            $countery = 0;
+            while($tempResultArray = OCI_Fetch_Array($shippingAllResult, OCI_BOTH)){
+                for($x = 0; $x< 6; $x++){
+                    $newShipping[$countery][$x] = $tempResultArray[$x];
+                }
+
+                $countery++;
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$tempResultArray[0].'</h5></div></div>');
+            }
+
+            $_SESSION['shipping_addresses'] = $newShipping;
+
             // Modify Customer Premium qualification
         } else if(array_key_exists('modify_prem', $_POST)){
 
