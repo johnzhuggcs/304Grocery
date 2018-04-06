@@ -51,10 +51,26 @@ $(function() { //run on document.ready
 			}
 		}
 	});
+	if(productArray_js != null){
+		fillProductTable();
+	}
+	if(productArray_js != null){
+		fillBuyProductTable();
+	}
+	if(placedOrderArray_js != null){
+		fillPlacedOrderTable();
+	}
+	if(shippingArray_js != null){
+		fillShippingTable();
+	}
+	if(productArray_js != null){
+		fillDeleteProductsTable();
+	}
+	if(cartArray_js != null){
+		fillCartTableTable();
+	}
 
-	fillProductTable();
-	fillBuyProductTable();
-	console.log(shippingArray_js);
+
 });
 
 function OpenAverageBrand(){
@@ -62,12 +78,10 @@ function OpenAverageBrand(){
 }
 
 function OpenViewOrders(){
-	fillPlacedOrderTable();
 	$('#viewOrders').toggle();
 }
 
 function OpenViewShipping(){
-	fillShippingTable();
 	$('#viewShipping').toggle();
 }
 
@@ -76,7 +90,6 @@ function OpenAverageItem(){
 }
 
 function OpenDeleteProducts(){
-	fillDeleteProductsTable();
 	$('#DeleteProducts').toggle();
 }
 function OpenAddDeal(){
@@ -119,8 +132,6 @@ function OpenFilter(){
 }
 
 function OpenViewCart(){
-	fillCartTableTable();
-	console.log(cartArray_js);
 	$('#viewCart').toggle();
 }
 
