@@ -88,6 +88,7 @@ class CustomerExecution
                 $shippingArray
             );
 
+            $tempAccount = $_SESSION['AccountID'];
             //insert into ship info table
             $this->SQLExecution->executeBoundSQL("insert into shipping_info values (:bind0,:bind1,:bind2,:bind3,:bind4,:bind5)", $alltuples);
             //insert into owns table

@@ -282,6 +282,21 @@ FOREIGN KEY (Shipping_info_no) REFERENCES Shipping_Info
             ":bind12" => 'D0001'
         );
 
+        $Products4 = array(
+            ":bind1" => 'P0004',
+            ":bind2" => 10.00,
+            ":bind3" => '2018-2-1',
+            ":bind4" => 'sandwich',
+            ":bind5" => 20.00,
+            ":bind6" => 'CANADA',
+            ":bind7" => 10,
+            ":bind8" => 'nameA',
+            ":bind9" => 'addidas',
+            ":bind10" => 'this is sandwich',
+            ":bind11" => 10,
+            ":bind12" => 'D0001'
+        );
+
         $Deals1 = array(
             ":bind1" => 'D0001',
             ":bind2" => '2018-1-1',

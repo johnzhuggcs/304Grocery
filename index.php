@@ -123,8 +123,10 @@ if (!isset($_SESSION['Begin_App']) || array_key_exists('reset', $_POST)){
         }else
         if(array_key_exists('selectAccount', $_POST)){
             //echo "loggin on in index.php\n\n";
-            echo "<p>Logged On: </p>";
-            echo "<p>".$_POST["nameSelect"]." is the Logged On account </p>";
+            echo ('<div class="card container text-center" ><div class="card-body"><h5>Logged On</h5></div></div>');
+            //echo "<p>Logged On: </p>";
+            //echo ('<div class="card container text-center" ><div class="card-body"><h5>".$_POST["nameSelect"]." is the Logged On accoun</h5></div></div>');
+            //echo "<p>".$_POST["nameSelect"]." is the Logged On account </p>";
             $_SESSION["AccountID"] = $_POST["nameSelect"];
 
             echo ('<div class="card container text-center" ><div class="card-body"><h5>Waiting</h5></div></div>');

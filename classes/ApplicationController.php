@@ -58,7 +58,7 @@ class ApplicationController
 
 
         if ($db_conn) {
-            echo ('<div class="card container text-center" ><div class="card-body"><h5>Waiting</h5></div></div>');
+            //echo ('<div class="card container text-center" ><div class="card-body"><h5>Waiting</h5></div></div>');
             if(array_key_exists('logoff', $_POST)){
                 echo ('<div class="card container text-center" ><div class="card-body"><h5>Log Off</h5></div></div>');
                 $_SESSION['Begin_App'] = 1;
@@ -109,7 +109,7 @@ class ApplicationController
                 $AccountInitializer->reset();
 
             } else if (array_key_exists('getProducts', $_POST)){
-                echo ('<div class="card container text-center" ><div class="card-body"><h5>Waiting</h5></div></div>');
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>Waiting</h5></div></div>');
                 $productResult = $this->SQLExecution->executePlainSQL("select * from product_discount");
                 OCICommit($db_conn);
                 //echo ('<div class="card container text-center" ><div class="card-body"><h5>Waiting</h5></div></div>');
@@ -141,7 +141,7 @@ class ApplicationController
             if ($_POST && $success) {
                 //POST-REDIRECT-GET -- See http://en.wikipedia.org/wiki/Post/Redirect/Get
                 $employeeResult = $this->SQLExecution->executePlainSQL("select * from Employee");
-                $this->Utility->printResult($employeeResult);
+                $this->Utility->printEmployee($employeeResult);
                 $customerResult = $this->SQLExecution->executePlainSQL("select * from Customer");
                 $this->Utility->printCustomer($customerResult);
                 $employeeResult = $this->SQLExecution->executePlainSQL("select * from product_discount");
@@ -149,16 +149,16 @@ class ApplicationController
                 $orderAllResult = $this->SQLExecution->executePlainSQL("select * from Order_placedby_shippedwith");
                 $this->Utility->printResult($orderAllResult);
                 $shippingInfoOnlyResult = $this->SQLExecution->executePlainSQL("select * from Shipping_info");
-                $this->Utility->printResult($shippingInfoOnlyResult);
+                $this->Utility->printShipping($shippingInfoOnlyResult);
                 $shippingInfowithCustomer = $this->SQLExecution->executePlainSQL("select * from owns");
-                $this->Utility->printResult($shippingInfowithCustomer);
+                $this->Utility->printShippingOwns($shippingInfowithCustomer);
                 OCICommit($db_conn);
                 header("location: index.php");
             }
             else {
                 // Select data...
                 $employeeResult = $this->SQLExecution->executePlainSQL("select * from Employee");
-                $this->Utility->printResult($employeeResult);
+                $this->Utility->printEmployee($employeeResult);
                 $customerResult = $this->SQLExecution->executePlainSQL("select * from Customer");
                 $this->Utility->printCustomer($customerResult);
                 $employeeResult = $this->SQLExecution->executePlainSQL("select * from product_discount");
@@ -166,9 +166,9 @@ class ApplicationController
                 $orderAllResult = $this->SQLExecution->executePlainSQL("select * from Order_placedby_shippedwith");
                 $this->Utility->printResult($orderAllResult);
                 $shippingInfoOnlyResult = $this->SQLExecution->executePlainSQL("select * from Shipping_info");
-                $this->Utility->printResult($shippingInfoOnlyResult);
+                $this->Utility->printShipping($shippingInfoOnlyResult);
                 $shippingInfowithCustomer = $this->SQLExecution->executePlainSQL("select * from owns");
-                $this->Utility->printResult($shippingInfowithCustomer);
+                $this->Utility->printShippingOwns($shippingInfowithCustomer);
                 OCICommit($db_conn);
             }
 
