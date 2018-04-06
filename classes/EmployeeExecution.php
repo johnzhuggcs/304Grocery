@@ -30,7 +30,7 @@ class EmployeeExecution
 
             $this->ProductId = $_SESSION['ProductId'];
         } else {
-            $_SESSION['ProductId'] = 3;
+            $_SESSION['ProductId'] = 5;
             $this->ProductId = $_SESSION['ProductId'];
         }
 
@@ -63,7 +63,7 @@ class EmployeeExecution
         $newDealId = "D" . $tempDealNum;
 
         if (array_key_exists('AddProduct', $_POST)) {
-
+            //echo "we are in add products";
             //Getting the values from user and insert data into the table
             $tuple = array(
                 ":bind1" => $newProductId,
@@ -77,28 +77,66 @@ class EmployeeExecution
                 ":bind9" => $_POST['brand'],
                 ":bind10" => $_POST['description'],
                 ":bind11" => $_POST['reward_points'],
-                ":bind12" => $_POST['DID'],
-                ":bind13" => $_POST['category'],
-                ":bind14" => $_POST['Weight'],
-                ":bind15" => $_POST['Allergies'],
-                ":bind16" => $_POST['Volume'],
-                ":bind17" => $_POST['instruction']
+                ":bind12" => $_POST['DID']
 
             );
 
             $alltuples = array(
                 $tuple
             );
-            $this->SQLExecution->executeBoundSQL("insert into product values (:bind1,:bind2,:bind3,:bind4,:bind5,:bind6,:bind7,:bind8,:bind9,:bind10,:bind11,:bind12)", $alltuples);
+
+            $foodtuple = array(
+                ":bind1" => $newProductId,
+                ":bind14" => $_POST['Weight'],
+                ":bind15" => $_POST['Allergies']
+            );
+            $bigfoodtuple = array(
+                $foodtuple
+            );
+
+            $beveragetuple = array(
+                ":bind1" => $newProductId,
+                ":bind15" => $_POST['Allergies'],
+                ":bind16" => $_POST['Volume']
+            );
+
+            $bigbeveragetuple = array(
+                $beveragetuple
+            );
+
+            $personaltuple = array(
+                ":bind1" => $newProductId,
+                ":bind16" => $_POST['instruction']
+            );
+
+            $bigpersonaltuple = array(
+                $personaltuple
+            );
+
+            $price = $_POST['price'];
+            $expireDate = $_POST['expire_date'];
+            $Ingredients = $_POST['Ingredients'];
+            $carbonFootprint = $_POST['carbon_footprint'];
+            $origin = $_POST['origin'];
+            $stockQuantity = $_POST['stock_quantity'];
+            $name = $_POST['name'];
+            $brand = $_POST['brand'];
+            $description = $_POST['description'];
+            $rewardPoints = $_POST['reward_points'];
+            $did = $_POST['DID'];
+
+            $this->SQLExecution->executePlainSQL("insert into product_discount (PID, price, expire_date, Ingredients, carbon_footprint, origin, stock_quantity, name, brand, description, reward_points, DID) values ($newProductId, $price, $expireDate, $Ingredients, $carbonFootprint, $origin, $stockQuantity, $name, $brand, $description, $rewardPoints, $did)");
+
+            //$this->SQLExecution->executeBoundSQL("insert into product_discount values (:bind1,:bind2,:bind3,:bind4,:bind5,:bind6,:bind7,:bind8,:bind9,:bind10,:bind11,:bind12)", $alltuples);
             switch ($_POST['category']) {
                 case "food":
-                    $this->SQLExecution->executeBoundSQL("insert into food values (:bind1,:bind14,:bind15)", $alltuples);
+                    $this->SQLExecution->executeBoundSQL("insert into food values (:bind1,:bind14,:bind15)", $bigfoodtuple);
                     break;
                 case "beverage":
-                    $this->SQLExecution->executeBoundSQL("insert into beverage values (:bind1,:bind15,:bind16)", $alltuples);
+                    $this->SQLExecution->executeBoundSQL("insert into beverage values (:bind1,:bind15,:bind16)", $bigbeveragetuple);
                     break;
                 case "personal_care":
-                    $this->SQLExecution->executeBoundSQL("insert into beverage values (:bind1,:bind17)", $alltuples);
+                    $this->SQLExecution->executeBoundSQL("insert into beverage values (:bind1,:bind17)", $bigpersonaltuple);
 
             }
             $_SESSION["ProductId"] = $_SESSION["ProductId"] + 1;
@@ -114,8 +152,65 @@ class EmployeeExecution
             $alltuples = array(
                 $tuple
             );
-            $this->SQLExecution->executeBoundSQL("delete from product_discount where pid=:bind1", $alltuples);
+
+            $tempProductID = $_POST['PID'];
+            //echo $tempProductID;
+
+            $checkRecordBeverage = $this->SQLExecution->executePlainSQL
+            ("select PID from Beverage WHERE PID = '$tempProductID'");;
+            $checkRecordArray = OCI_Fetch_Array($checkRecordBeverage, OCI_BOTH);
+
+            if(count($checkRecordArray) > 1){
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>"Beverage"</h5></div></div>');
+                $this->SQLExecution->executePlainSQL("delete from Beverage where PID = '$tempProductID'");
+                $this->SQLExecution->executePlainSQL("delete from product_discount where PID = '$tempProductID'");
+
+                //$_SESSION['order_no'] = $_SESSION['order_no'] +1;
+            }else{
+                $checkRecordFood = $this->SQLExecution->executePlainSQL
+                ("select PID from Food WHERE PID = '$tempProductID'");;
+                $checkRecordArray = OCI_Fetch_Array($checkRecordFood, OCI_BOTH);
+
+                if(count($checkRecordArray) > 1){
+                    //echo ('<div class="card container text-center" ><div class="card-body"><h5>"Food"</h5></div></div>');
+                    $this->SQLExecution->executePlainSQL("delete from Food where PID = '$tempProductID'");
+                    $this->SQLExecution->executePlainSQL("delete from product_discount where PID = '$tempProductID'");
+                    //echo ('<div class="card container text-center" ><div class="card-body"><h5>"hey im here"</h5></div></div>');
+                    //$_SESSION['order_no'] = $_SESSION['order_no'] +1;
+                }else{
+                    $checkRecordPersonal = $this->SQLExecution->executePlainSQL
+                    ("select PID from PersonalCare WHERE order_no = '$tempProductID'");;
+                    $checkRecordArray = OCI_Fetch_Array($checkRecordPersonal, OCI_BOTH);
+
+                    if(count($checkRecordArray) > 1){
+                        //echo ('<div class="card container text-center" ><div class="card-body"><h5>"Personal"</h5></div></div>');
+                        $this->SQLExecution->executePlainSQL("delete from PersonalCare where PID = '$tempProductID'");
+                        $this->SQLExecution->executePlainSQL("delete from product_discount where PID = '$tempProductID'");
+                        //echo ('<div class="card container text-center" ><div class="card-body"><h5>"hey im here"</h5></div></div>');
+                        //$_SESSION['order_no'] = $_SESSION['order_no'] +1;
+                    }
+                }
+            }
+
+            $this->SQLExecution->executePlainSQL("delete from product_discount where PID = '$tempProductID'");
             OCICommit($db_conn);
+            $productResult = $this->SQLExecution->executePlainSQL("select * from product_discount");
+            OCICommit($db_conn);
+            //echo ('<div class="card container text-center" ><div class="card-body"><h5>Waiting</h5></div></div>');
+
+            $productArray = array();
+            $counter = 0;
+            while($tempResultArray = OCI_Fetch_Array($productResult, OCI_BOTH)){
+                $productArrayX = array();
+
+                for($x = 0; $x< 12; $x++){
+                    $productArray[$counter][$x] = $tempResultArray[$x];
+                }
+                $counter++;
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$tempResultArray[0].'</h5></div></div>');
+            }
+
+            $_SESSION['products'] = $productArray;
         } // restock product quantity
         else if (array_key_exists('restock', $_POST)) {
 
@@ -176,10 +271,11 @@ class EmployeeExecution
         } //find the most popular item / most purchased item
         else if (array_key_exists('item_popular', $_POST)) {
             $result = $this->SQLExecution->executeBoundSQL("select PID, name from product_discount p where p.PID = (select PID from Contains group by PID HAVING count(order_no) >= all (select count(order_no) from Contains group by PID))");
-            echo "<br> The item in every order is: <br>";
+            /*echo "<br> The item in every order is: <br>";
             while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
                 echo "<tr><td>" . $row["PID"] . "</td><td>" . $row["name"] . "</td></tr>";
-            }
+            }*/
+            $this->Utility->printPopular($result);
             OCICommit($db_conn);
         } //find the most expensive / cheapest  / average price item
         else if (array_key_exists('item_price_bound', $_POST)) {

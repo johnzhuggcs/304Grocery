@@ -19,21 +19,28 @@ class ApplicationController
 
     function ApplicationController($sqlExecution, $utility, $whichUser){
 
+        //echo ('<div class="card container text-center" ><div class="card-body"><h5>Create App Control</h5></div></div>');
         $this->SQLExecution = $sqlExecution;
         $this->Utility = $utility;
+        //echo ('<div class="card container text-center" ><div class="card-body"><h5>Create App Control</h5></div></div>');
         $this->accountNoToBool($whichUser);
+        //echo ('<div class="card container text-center" ><div class="card-body"><h5>Create App Control</h5></div></div>');
         //$_SESSION["AccountID"] = $whichUser;
     }
 
     // Takes in account number chosen and determines whether employee or customer
     private function accountNoToBool($whichUser){
-        $cOrE = substr($whichUser, 0);
+        //echo ('<div class="card container text-center" ><div class="card-body"><h5>Create App Control</h5></div></div>');
+        $cOrE = substr($whichUser, 0, 1);
+        //echo $cOrE;
         switch($cOrE){ //If = 1, it is Employee, if = 0, it is Customer
             case "C":
                 $this->EmployeeOrCustomer = 0;
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>This Customer</h5></div></div>');
                 break;
             case "E":
                 $this->EmployeeOrCustomer = 1;
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>This Employee</h5></div></div>');
                 break;
         }
 
@@ -97,7 +104,7 @@ class ApplicationController
             }
             else if (array_key_exists('reset', $_POST)) {
 
-                echo ('<div class="card container text-center" ><div class="card-body"><h5>Waiting</h5></div></div>');
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>Waiting</h5></div></div>');
                 $AccountInitializer = new AccountInitializer($this->SQLExecution, $this->Utility);
                 $AccountInitializer->reset();
 
@@ -105,16 +112,16 @@ class ApplicationController
                 echo ('<div class="card container text-center" ><div class="card-body"><h5>Waiting</h5></div></div>');
                 $productResult = $this->SQLExecution->executePlainSQL("select * from product_discount");
                 OCICommit($db_conn);
-                echo ('<div class="card container text-center" ><div class="card-body"><h5>Waiting</h5></div></div>');
+                //echo ('<div class="card container text-center" ><div class="card-body"><h5>Waiting</h5></div></div>');
 
                 $productArray = array();
                 $counter = 0;
                 while($tempResultArray = OCI_Fetch_Array($productResult, OCI_BOTH)){
                     $productArrayX = array();
-                    for($x = 0; $x < sizeof($tempResultArray); $x++){
-                        $productArrayX[$x] = $tempResultArray[$x];
+
+                    for($x = 0; $x< 12; $x++){
+                        $productArray[$counter][$x] = $tempResultArray[$x];
                     }
-                    $productArray[$counter] = $productArrayX;
                     $counter++;
                     //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$tempResultArray[0].'</h5></div></div>');
                 }
@@ -136,7 +143,7 @@ class ApplicationController
                 $employeeResult = $this->SQLExecution->executePlainSQL("select * from Employee");
                 $this->Utility->printResult($employeeResult);
                 $customerResult = $this->SQLExecution->executePlainSQL("select * from Customer");
-                $this->Utility->printResult($customerResult);
+                $this->Utility->printCustomer($customerResult);
                 $employeeResult = $this->SQLExecution->executePlainSQL("select * from product_discount");
                 $this->Utility->printResult($employeeResult);
                 $orderAllResult = $this->SQLExecution->executePlainSQL("select * from Order_placedby_shippedwith");
@@ -153,11 +160,15 @@ class ApplicationController
                 $employeeResult = $this->SQLExecution->executePlainSQL("select * from Employee");
                 $this->Utility->printResult($employeeResult);
                 $customerResult = $this->SQLExecution->executePlainSQL("select * from Customer");
-                $this->Utility->printResult($customerResult);
-                $productResult = $this->SQLExecution->executePlainSQL("select * from product_discount");
-                $this->Utility->printResult($productResult);
+                $this->Utility->printCustomer($customerResult);
+                $employeeResult = $this->SQLExecution->executePlainSQL("select * from product_discount");
+                $this->Utility->printResult($employeeResult);
                 $orderAllResult = $this->SQLExecution->executePlainSQL("select * from Order_placedby_shippedwith");
                 $this->Utility->printResult($orderAllResult);
+                $shippingInfoOnlyResult = $this->SQLExecution->executePlainSQL("select * from Shipping_info");
+                $this->Utility->printResult($shippingInfoOnlyResult);
+                $shippingInfowithCustomer = $this->SQLExecution->executePlainSQL("select * from owns");
+                $this->Utility->printResult($shippingInfowithCustomer);
                 OCICommit($db_conn);
             }
 
