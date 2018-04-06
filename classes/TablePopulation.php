@@ -18,6 +18,10 @@ class TablePopulation
     private $Food;
     private $Beverage;
     private $Personal;
+    private $Orders;
+    private $Shipping;
+    private $Contains;
+    private $owns;
     private $deal;
 
     function TablePopulation($sqlExecution){
@@ -298,11 +302,21 @@ FOREIGN KEY (Shipping_info_no) REFERENCES Shipping_Info
         $Shipping1 = array (
             //this needs shipping info no
             ":bind0" => 'S0000',
-            ":bind1" => $_POST['Phone_number'],
-            ":bind2" => $_POST['Billing_address'],
-            ":bind3" => $_POST['Shipping_address'],
-            ":bind4" => $_POST['Shipping_method'],
-            ":bind5" => $_POST['delivery_type']
+            ":bind1" => '6049999999',
+            ":bind2" => '4501 W 99th Avenue',
+            ":bind3" => '4501 W 99th Avenue',
+            ":bind4" => 'Express',
+            ":bind5" => 'Home Delivery'
+        );
+
+        $Owns1 = array(
+            ":bind0" => 'C0001',
+            ":bind1" => 'S0000'
+        );
+
+        $Contains1 = array(
+            ":bind0" => 'P0001',
+            ":bind1" => 'O0000'
         );
 
         $Deals1 = array(
@@ -352,6 +366,22 @@ FOREIGN KEY (Shipping_info_no) REFERENCES Shipping_Info
         $this->Personal = array(
             $Personal1
         );
+
+        $this->Orders = array(
+            $Order1
+        );
+
+        $this->Shipping = array(
+            $Shipping1
+        );
+
+        $this->owns = array(
+            $Owns1
+        );
+
+        $this->Contains = array(
+            $Contains1
+        );
     }
 
     function populateAll(){
@@ -375,6 +405,14 @@ FOREIGN KEY (Shipping_info_no) REFERENCES Shipping_Info
         OCICommit($db_conn);
         $this->SQLExecution->executeBoundSQL("insert into Food values(:bind1, :bind2, :bind3)", $this->Food);
         $this->SQLExecution->executeBoundSQL("insert into Beverage values(:bind1, :bind2, :bind3)", $this->Beverage);
+        $this->SQLExecution->executeBoundSQL("insert into PersonalCare values(:bind1, :bind2)", $this->Personal);
+        OCICommit($db_conn);
+        $this->SQLExecution->executeBoundSQL("insert into Shipping_info values(:bind0, :bind1, :bind2, :bind3, :bind4, :bind5)", $this->Shipping);
+        OCICommit($db_conn);
+        $this->SQLExecution->executeBoundSQL("insert into owns values(:bind0, :bind1)", $this->owns);
+        OCICommit($db_conn);
+        $this->SQLExecution->executeBoundSQL("insert into Order_placedby_shippedwith values(:bind1, :bind2, :bind3, :bind4, :bind5, :bind6, :bind7, :bind8, :bind9)", $this->Orders);
+        $this->SQLExecution->executeBoundSQL("insert into Contains values(:bind0, :bind1)", $this->Contains);
         OCICommit($db_conn);
     }
 
