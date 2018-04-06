@@ -16,6 +16,8 @@ class TablePopulation
     private $Customers;
     private $Product;
     private $Food;
+    private $Beverage;
+    private $Personal;
     private $deal;
 
     function TablePopulation($sqlExecution){
@@ -39,7 +41,7 @@ class TablePopulation
 start_date date,
 end_date date,
 shared_link varchar2(40),
-discount varchar2(10),
+discount DOUBLE precision,
 Premium_only varchar2(1),
 PRIMARY KEY (DID)
 )",
@@ -250,12 +252,42 @@ FOREIGN KEY (Shipping_info_no) REFERENCES Shipping_Info
             ":bind12" => 'D0001'
         );
 
+        $Products3 = array(
+            ":bind1" => 'P0003',
+            ":bind2" => 10.00,
+            ":bind3" => '2018-2-1',
+            ":bind4" => 'sandwich',
+            ":bind5" => 20.00,
+            ":bind6" => 'CANADA',
+            ":bind7" => 10,
+            ":bind8" => 'nameA',
+            ":bind9" => 'nike',
+            ":bind10" => 'this is sandwich',
+            ":bind11" => 10,
+            ":bind12" => 'D0001'
+        );
+
+        $Products4 = array(
+            ":bind1" => 'P0004',
+            ":bind2" => 10.00,
+            ":bind3" => '2018-2-1',
+            ":bind4" => 'sandwich',
+            ":bind5" => 20.00,
+            ":bind6" => 'CANADA',
+            ":bind7" => 10,
+            ":bind8" => 'nameA',
+            ":bind9" => 'addidas',
+            ":bind10" => 'this is sandwich',
+            ":bind11" => 10,
+            ":bind12" => 'D0001'
+        );
+
         $Deals1 = array(
             ":bind1" => 'D0001',
             ":bind2" => '2018-1-1',
             ":bind3" => '2018-2-1',
             ":bind4" => 'url0',
-            ":bind5" => '20%',
+            ":bind5" => 0.2,
             ":bind6" => 'Y'
         );
 
@@ -275,9 +307,16 @@ FOREIGN KEY (Shipping_info_no) REFERENCES Shipping_Info
             ":bind3" => 250.00
         );
 
+        $Personal1 = array(
+            ":bind1" => 'P0002',
+            ":bind2" => 'none',
+        );
+
         $this->Product = array(
             $Products1,
-            $Products2
+            $Products2,
+            $Products3,
+            $Products4
         );
 
         $this->Food = array(
@@ -285,6 +324,10 @@ FOREIGN KEY (Shipping_info_no) REFERENCES Shipping_Info
         );
         $this->Beverage = array(
             $Beverage1
+        );
+
+        $this->Personal = array(
+            $Personal1
         );
     }
 

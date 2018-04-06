@@ -126,7 +126,7 @@ class CustomerExecution
             ("Select sum(price) from Product_discount p,Contains c,Order_placedby_shippedwith os 
 					Where p.pid = c.pid and c.Order_no=os.Order_no and os.Order_no ='$newOrderID'");
             $price = OCI_Fetch_Array($original_price);
-            print_r($price);
+            //print_r($price);
             //get shipping info no
             //here needs customer id
             $tempAccount = $_SESSION['AccountID'];

@@ -118,7 +118,7 @@ if (!isset($_SESSION['Begin_App']) || array_key_exists('reset', $_POST)){
             $_SESSION['Begin_App'] = 2;
             //$productResult = $this->SQLExecution->executePlainSQL("select * from product_discount");
             //$_SESSION['products'] = $this->Utility->sessionResult($productResult);
-            $ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, $_SESSION["AccountID"]);//controls the application, checks when to create table/execute sql queriess
+            $ApplicationController = new ApplicationController($SQLConnection, $Utility, $_SESSION["AccountID"]);//controls the application, checks when to create table/execute sql queriess
             $ApplicationController->start();
         }else
         if(array_key_exists('selectAccount', $_POST)){
@@ -129,7 +129,7 @@ if (!isset($_SESSION['Begin_App']) || array_key_exists('reset', $_POST)){
 
             echo ('<div class="card container text-center" ><div class="card-body"><h5>Waiting</h5></div></div>');
             $_SESSION['Begin_App'] = 2;
-            $ApplicationController = ApplicationController::getApplicationInstance($SQLConnection, $Utility, $_SESSION["AccountID"]);//controls the application, checks when to create table/execute sql queriess
+            $ApplicationController = new ApplicationController($SQLConnection, $Utility, $_SESSION["AccountID"]);//controls the application, checks when to create table/execute sql queriess
             $ApplicationController->start();
         }
     }else{
@@ -195,4 +195,6 @@ The two arguments are the connection and SQL query. */
     var employeeArray_js = <?php echo json_encode($_SESSION['employeeArray']); ?>;
     var productArray_js = <?php echo json_encode($_SESSION['products']); ?>;
     var cartArray_js = <?php echo json_encode($_SESSION['cart']); ?>;
+    var placedOrderArray_js = <?php echo json_encode($_SESSION['placed_order']); ?>;
+    var shippingArray_js = <?php echo json_encode($_SESSION['shipping_addresses']); ?>;
 </script>
