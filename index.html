@@ -45,6 +45,7 @@
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="CustomerPremium()">Customer Premium</button></a>	
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenUpdateShippingInfo()">Update Shipping Info</button></a>
 					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenFilter()">Filter Attribute</button></a>
+					<a class="dropdown-item nav-link"><button class="btn btn-primary" onclick="OpenViewOrders()">View Orders</button></a>
 				</div>
 			</li>
 			<li id="createUser">
@@ -860,6 +861,38 @@
 					<div class="col-md-3">&nbsp;</div>
 				</div>
 			</form>
+		</div>
+	</div>
+
+	<div id="viewOrders" class="card container" style="display: none;" >
+		<div class="card-header text-center">
+			<h4>Veiw Orders</h4>
+		</div>
+		<div class="card-body">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12" style="overflow-x: auto;">
+							<table name="PlacedOrderTable" id="PlacedOrderTable" class="table table-bordered">
+								<thead>
+									<tr>
+										<th>Order Number</th>
+										<th>Order Date</th>
+									</tr>
+								</thead> 
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+						<div class="col-md-12">&nbsp;</div>
+				</div>
+				<div class="row text-center">
+					<div class="col-md-3">&nbsp;</div>
+					<div class="col-md-6">
+						<button class="btn btn-danger" onclick="OpenViewOrders()">Close</button>
+					</div>
+					<div class="col-md-3">&nbsp;</div>
+				</div>
 		</div>
 	</div>
 </body>

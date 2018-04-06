@@ -2,8 +2,6 @@ var user;
 var BuyProductsView;
 
 $(function() { //run on document.ready
-	console.log("document ready");
-
 	if(localStorage.getItem("userType", user) !== undefined){
 		if(localStorage.getItem("userType") == 1){
 			$('#CustomerNav').show();
@@ -56,10 +54,17 @@ $(function() { //run on document.ready
 
 	fillProductTable();
 	fillBuyProductTable();
+	console.log(shippingArray_js);
+	console.log(placedOrderArray_js);
 });
 
 function OpenAverageBrand(){
 	$('#averageBrand').toggle();
+}
+
+function OpenViewOrders(){
+	fillPlacedOrderTable();
+	$('#viewOrders').toggle();
 }
 
 function OpenAverageItem(){
@@ -204,3 +209,36 @@ function fillBuyProductTable(){
 	table.appendChild(tbody);
 	}
 }
+
+function fillPlacedOrderTable(){
+	var table = document.getElementById("PlacedOrderTable");
+	var tbody = document.createElement("tbody");
+	for (var i = 0 ; i < placedOrderArray_js.length; i++) {
+		var tr = document.createElement('tr');
+		for (var j = 0; j < placedOrderArray_js[i].length; j++) {
+			var td = document.createElement('td');
+			var txt = document.createTextNode(placedOrderArray_js[i][j]);
+			td.appendChild(txt);
+			tr.appendChild(td);
+		}
+	tbody.appendChild(tr);
+	table.appendChild(tbody);
+	}
+}
+
+function fillShippingTable(){
+	var table = document.getElementById("ShippingTable");
+	var tbody = document.createElement("tbody");
+	for (var i = 0 ; i < shippingArray_js.length; i++) {
+		var tr = document.createElement('tr');
+		for (var j = 0; j < shippingArray_js[i].length; j++) {
+			var td = document.createElement('td');
+			var txt = document.createTextNode(shippingArray_js[i][j]);
+			td.appendChild(txt);
+			tr.appendChild(td);
+		}
+	tbody.appendChild(tr);
+	table.appendChild(tbody);
+	}
+}
+
