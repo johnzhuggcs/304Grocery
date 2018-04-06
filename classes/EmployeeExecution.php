@@ -258,18 +258,20 @@ class EmployeeExecution
             //insert into deal table
             $this->SQLExecution->executeBoundSQL("delete from product_discount where did=:bind1", $alltuples);
             OCICommit($db_conn);
-        } //find the item in every order
+        } //find the item in every order, finding the one that is present in all order, for customer to know what item is "necessary"
         else if (array_key_exists('item_all_order', $_POST)) {
             $result = $this->SQLExecution->executePlainSQL("select PID, name from product_discount p where p.PID = (Select PID from Product_discount where PID not in (SELECT PID FROM ((select order_no,PID from (select PID from product_discount) cross join (select order_no from Contains)) Minus (select order_no, PID from Contains))))");
 
-            echo "<br> The item in every order is: <br>";
+            /*echo "<br> The item in every order is: <br>";
             while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
                 echo "<tr><td>" . $row["PID"] . "</td><td>" . $row["name"] . "</td></tr>";
-            }
+            }*/
+            $this->Utility->printPopular($result);
             OCICommit($db_conn);
 
         } //find the most popular item / most purchased item
         else if (array_key_exists('item_popular', $_POST)) {
+
             $result = $this->SQLExecution->executeBoundSQL("select PID, name from product_discount p where p.PID = (select PID from Contains group by PID HAVING count(order_no) >= all (select count(order_no) from Contains group by PID))");
             /*echo "<br> The item in every order is: <br>";
             while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
