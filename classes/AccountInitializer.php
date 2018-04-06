@@ -88,6 +88,7 @@ class AccountInitializer
         $_SESSION['cart'] = null;
         $_SESSION['DID'] = null;
         $_SESSION['shipping_info_no'] = null;
+
         $TablePopulator = new TablePopulation($this->SQLExecution);
 
         // Drop old table...

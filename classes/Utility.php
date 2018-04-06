@@ -63,6 +63,54 @@ class Utility
 
     }
 
+
+    function printOrder($result) { //prints results from a select statement
+        echo('<div class="card container text-center" >
+		<div class="card-body">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12" style="overflow-x: auto;">
+							<table class="table table-bordered" >
+								<thead>
+									<tr>
+										<th>Order ID</th>
+										<th>Order Date</th>
+										<th>Free Shipping?</th>
+										<th>Status</th>
+										<th>Order Total</th>
+										<th>Payment method</th>
+										<th>Points awarded</th>
+										<th>Account Number</th>
+										<th>Shipping Info</th>
+									</tr>
+								</thead>');
+
+        while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+
+            echo('<tbody>
+            <tr>
+		<td>' . $row[0] . '</td>
+		<td>' . $row[1] . '</td>
+		<td>' . $row[2] . '</td>
+		<td>' . $row[3] . '</td>
+		<td>' . $row[4] . '</td>
+		<td>' . $row[5] . '</td>
+		<td>' . $row[6] . '</td>
+		<td>' . $row[7] . '</td>
+		<td>' . $row[8] . '</td>
+		</tr>'); //or just use "echo $row[0]"
+        }
+        echo('</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+		</div>
+	</div>');
+
+    }
+
+
     function printShipping($result) { //prints results from a select statement
         echo('<div class="card container text-center" >
 		<div class="card-body">
@@ -104,6 +152,7 @@ class Utility
     }
 
     function printCustomer($result) { //prints results from a select statement
+
         echo('<div class="card container text-center" >
 		<div class="card-body">
 				<div class="container">
@@ -143,6 +192,40 @@ class Utility
 
 
     function printPopular($result) { //prints results from a select statement
+    echo ('<div class="card container text-center" ><div class="card-body"><h5>Most Popular Items</h5></div></div>');
+    echo('<div class="card container text-center" >
+		<div class="card-body">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-12" style="overflow-x: auto;">
+							<table class="table table-bordered" >
+								<thead>
+									<tr>
+										<th>Product ID</th>
+										<th>Product Name</th>
+									</tr>
+								</thead>');
+
+    while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+
+        echo('<tbody>
+            <tr>
+		<td>' . $row[0] . '</td>
+		<td>' . $row[1] . '</td>
+		</tr>'); //or just use "echo $row[0]"
+    }
+    echo('</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+		</div>
+	</div>');
+
+}
+
+    function printDivision($result) { //prints results from a select statement
+        echo ('<div class="card container text-center" ><div class="card-body"><h5>Product purchased in every order!</h5></div></div>');
         echo('<div class="card container text-center" >
 		<div class="card-body">
 				<div class="container">
@@ -173,7 +256,6 @@ class Utility
 	</div>');
 
     }
-
     function printShippingOwns($result) { //prints results from a select statement
         echo('<div class="card container text-center" >
 		<div class="card-body">

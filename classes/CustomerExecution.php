@@ -155,11 +155,11 @@ class CustomerExecution
 
             $customerShipping = array();
             $counter = 0;
-            while($tempResultArray = OCI_Fetch_Array($shipping_info, OCI_BOTH)){
+            /*while($tempResultArray = OCI_Fetch_Array($shipping_info, OCI_BOTH)){
                 $customerShipping[$counter] = $tempResultArray[0];
                 $counter++;
                 //echo ('<div class="card container text-center" ><div class="card-body"><h5>'.$tempResultArray[0].'</h5></div></div>');
-            }
+            }*/
 
 
 
@@ -180,12 +180,13 @@ class CustomerExecution
                 $tuple
             );
 
+            $tempShip = $ship[0];
             $tempPayment = $_POST['Payment_method'];
             $tempOrderTotal = $price[0];
             $tempPoints = $price[0]*0.5;
             $tempAccount = $_SESSION['AccountID'];
             $this->SQLExecution->executePlainSQL
-            ("update Order_placedby_shippedwith Set Free_shipping = '$freeshipping', Payment_method = '$tempPayment', Points_awarded = '$tempPoints', order_total = '$tempOrderTotal' ");
+            ("update Order_placedby_shippedwith Set Free_shipping = '$freeshipping', Payment_method = '$tempPayment', Points_awarded = '$tempPoints', order_total = '$tempOrderTotal', shipping_info_no = '$tempShip' ");
 
             //update stock_quantity after decrement
             //needs order no ???
@@ -330,6 +331,23 @@ class CustomerExecution
             $_SESSION['select_view']= $this->SQLExecution->executePlainSQL("select $bind1 from product_discount where price< $bind2");
             //print result
 
+            OCICommit($db_conn);
+        }
+        else if (array_key_exists('item_all_order', $_POST)) {
+            $result = $this->SQLExecution->executePlainSQL("select PID, name from product_discount p where p.PID = (Select PID from Product_discount where PID not in (SELECT PID FROM ((select order_no,PID from (select PID from product_discount) cross join (select order_no from Contains)) Minus (select order_no, PID from Contains))))");
+
+            $this->Utility->printDivision($result);
+            OCICommit($db_conn);
+
+        } //find the most popular item / most purchased item
+        else if (array_key_exists('item_popular', $_POST)) {
+
+            $result = $this->SQLExecution->executeBoundSQL("select PID, name from product_discount p where p.PID = (select PID from Contains group by PID HAVING count(order_no) >= all (select count(order_no) from Contains group by PID))");
+            /*echo "<br> The item in every order is: <br>";
+            while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
+                echo "<tr><td>" . $row["PID"] . "</td><td>" . $row["name"] . "</td></tr>";
+            }*/
+            $this->Utility->printPopular($result);
             OCICommit($db_conn);
         }
 

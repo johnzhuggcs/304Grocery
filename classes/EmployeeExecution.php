@@ -262,11 +262,7 @@ class EmployeeExecution
         else if (array_key_exists('item_all_order', $_POST)) {
             $result = $this->SQLExecution->executePlainSQL("select PID, name from product_discount p where p.PID = (Select PID from Product_discount where PID not in (SELECT PID FROM ((select order_no,PID from (select PID from product_discount) cross join (select order_no from Contains)) Minus (select order_no, PID from Contains))))");
 
-            /*echo "<br> The item in every order is: <br>";
-            while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
-                echo "<tr><td>" . $row["PID"] . "</td><td>" . $row["name"] . "</td></tr>";
-            }*/
-            $this->Utility->printPopular($result);
+            $this->Utility->printDivision($result);
             OCICommit($db_conn);
 
         } //find the most popular item / most purchased item

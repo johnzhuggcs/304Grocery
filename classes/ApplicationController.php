@@ -147,7 +147,7 @@ class ApplicationController
                 $employeeResult = $this->SQLExecution->executePlainSQL("select * from product_discount");
                 $this->Utility->printResult($employeeResult);
                 $orderAllResult = $this->SQLExecution->executePlainSQL("select * from Order_placedby_shippedwith");
-                $this->Utility->printResult($orderAllResult);
+                $this->Utility->printOrder($orderAllResult);
                 $shippingInfoOnlyResult = $this->SQLExecution->executePlainSQL("select * from Shipping_info");
                 $this->Utility->printShipping($shippingInfoOnlyResult);
                 $shippingInfowithCustomer = $this->SQLExecution->executePlainSQL("select * from owns");
@@ -164,7 +164,7 @@ class ApplicationController
                 $employeeResult = $this->SQLExecution->executePlainSQL("select * from product_discount");
                 $this->Utility->printResult($employeeResult);
                 $orderAllResult = $this->SQLExecution->executePlainSQL("select * from Order_placedby_shippedwith");
-                $this->Utility->printResult($orderAllResult);
+                $this->Utility->printOrder($orderAllResult);
                 $shippingInfoOnlyResult = $this->SQLExecution->executePlainSQL("select * from Shipping_info");
                 $this->Utility->printShipping($shippingInfoOnlyResult);
                 $shippingInfowithCustomer = $this->SQLExecution->executePlainSQL("select * from owns");
