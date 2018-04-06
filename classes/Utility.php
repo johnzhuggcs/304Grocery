@@ -77,6 +77,7 @@ class Utility
 										<th>Billing Address</th>
 										<th>Shipping Address</th>
 										<th>Delivery Type</th>
+										<th>Shipping Method</th>
 									</tr>
 								</thead>');
 
@@ -89,6 +90,7 @@ class Utility
 		<td>' . $row[2] . '</td>
 		<td>' . $row[3] . '</td>
 		<td>' . $row[4] . '</td>
+		<td>' . $row[5] . '</td>
 		</tr>'); //or just use "echo $row[0]"
         }
         echo('</tbody>

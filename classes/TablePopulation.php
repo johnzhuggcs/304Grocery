@@ -282,19 +282,27 @@ FOREIGN KEY (Shipping_info_no) REFERENCES Shipping_Info
             ":bind12" => 'D0001'
         );
 
-        $Products4 = array(
-            ":bind1" => 'P0004',
-            ":bind2" => 10.00,
-            ":bind3" => '2018-2-1',
-            ":bind4" => 'sandwich',
-            ":bind5" => 20.00,
-            ":bind6" => 'CANADA',
-            ":bind7" => 10,
-            ":bind8" => 'nameA',
-            ":bind9" => 'addidas',
-            ":bind10" => 'this is sandwich',
-            ":bind11" => 10,
-            ":bind12" => 'D0001'
+
+        $Order1 = array(
+            ":bind1" => 'O0000',
+            ":bind2" => '2018-4-6',
+            ":bind3" => 1,
+            ":bind4" => 'processing',
+            ":bind5" => 10.00,
+            ":bind6" => 'Visa',
+            ":bind7" => 5.00,
+            ":bind8" => 'C0001',
+            ":bind9" => 'S0000',
+        );
+
+        $Shipping1 = array (
+            //this needs shipping info no
+            ":bind0" => 'S0000',
+            ":bind1" => $_POST['Phone_number'],
+            ":bind2" => $_POST['Billing_address'],
+            ":bind3" => $_POST['Shipping_address'],
+            ":bind4" => $_POST['Shipping_method'],
+            ":bind5" => $_POST['delivery_type']
         );
 
         $Deals1 = array(

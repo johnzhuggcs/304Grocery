@@ -28,7 +28,7 @@ class CustomerExecution
 
             $this->shippingCounter = $_SESSION['shipping_info_no'];
         } else {
-            $_SESSION['shipping_info_no'] = 0;
+            $_SESSION['shipping_info_no'] = 1;
             $this->shippingCounter = $_SESSION['shipping_info_no'];
         }
 
