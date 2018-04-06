@@ -80,6 +80,20 @@ class ApplicationController
 
                 $_SESSION['customerArray'] = $customerArray;
                 $_SESSION['employeeArray'] = $employeeArray;
+
+
+
+                /*echo "<script type=\'text/javascript\'>
+	var customerArray_js =";
+                echo "<?php echo json_encode($_SESSION['customerArray']);?>";
+	echo "var employeeArray_js =";
+	echo "<?php echo json_encode($_SESSION['employeeArray']); ?>";
+	echo "var productArray_js =";
+                echo "<?php json_encode($_SESSION['products']);?>";
+    echo "var cartArray_js =";
+                echo "<?php json_encode($_SESSION['cart']);?>";
+    echo "</script>";*/
+
             }
             else if (array_key_exists('reset', $_POST)) {
 
@@ -127,6 +141,10 @@ class ApplicationController
                 $this->Utility->printResult($employeeResult);
                 $orderAllResult = $this->SQLExecution->executePlainSQL("select * from Order_placedby_shippedwith");
                 $this->Utility->printResult($orderAllResult);
+                $shippingInfoOnlyResult = $this->SQLExecution->executePlainSQL("select * from Shipping_info");
+                $this->Utility->printResult($shippingInfoOnlyResult);
+                $shippingInfowithCustomer = $this->SQLExecution->executePlainSQL("select * from owns");
+                $this->Utility->printResult($shippingInfowithCustomer);
                 OCICommit($db_conn);
                 header("location: index.php");
             }

@@ -188,3 +188,9 @@ The two arguments are the connection and SQL query. */
      Default mode is OCI_BOTH.  */
      ?>
 
+<script type="text/javascript">
+    var customerArray_js = <?php echo json_encode($_SESSION['customerArray']); ?>;
+    var employeeArray_js = <?php echo json_encode($_SESSION['employeeArray']); ?>;
+    var productArray_js = <?php echo json_encode($_SESSION['products']); ?>;
+    var cartArray_js = <?php echo json_encode($_SESSION['cart']); ?>;
+</script>
