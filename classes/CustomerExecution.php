@@ -104,10 +104,10 @@ class CustomerExecution
             //here needs order_no ???
             //get orginal price
             $original_price = $this->SQLExecution->executePlainSQL
-            ("Select sum(price) from Product_discount p,Contain c,Order_placedby_shippedwith os 
+            ("Select sum(price) from Product_discount p,Contains c,Order_placedby_shippedwith os 
 					Where p.pid = c.pid and c.Order_no=os.Order_no and os.Order_no ='$newOrderID'");
             $price = OCI_Fetch_Array($original_price);
-
+            print_r($price);
             //get shipping info no
             //here needs customer id
             $tempAccount = $_SESSION['AccountID'];
@@ -115,7 +115,7 @@ class CustomerExecution
             ("Select shipping_info_no from Owns Where Account_no = '$tempAccount'");
             $ship = OCI_Fetch_Array($shipping_info);
 
-            if($price>100){
+            if($price[0]>100){
                 $freeshipping = 1;
                 //needs both cid and order no
 
@@ -146,7 +146,7 @@ class CustomerExecution
             $tuple = array (
                 //this needs shipping info no
                 ":bind0" => $newOrderID,
-                ":bind1" => 18-04-04,
+                ":bind1" => '2018-4-6',
                 ":bind2" => $freeshipping,
                 ":bind3" => "processing",
                 ":bind4" => $orderTotal[0],
@@ -156,13 +156,16 @@ class CustomerExecution
                 ":bind8" => $customerShipping[0]
             );
 
-
             $alltuples = array (
                 $tuple
             );
 
-            $this->SQLExecution->executeBoundSQL
-            ("insert into Order_placedby_shippedwith values(:bind0,:bind1,:bind2,:bind3,:bind4,:bind5, :bind6, :bind7, :bind8, :bind9)", $alltuples);
+            $tempPayment = $_POST['Payment_method'];
+            $tempOrderTotal = $price[0];
+            $tempPoints = $price[0]*0.5;
+            $tempAccount = $_SESSION['AccountID'];
+            $this->SQLExecution->executePlainSQL
+            ("update Order_placedby_shippedwith Set Free_shipping = '$freeshipping', Payment_method = '$tempPayment', Points_awarded = '$tempPoints', order_total = '$tempOrderTotal' ");
 
             //update stock_quantity after decrement
             //needs order no ???
