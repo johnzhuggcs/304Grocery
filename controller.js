@@ -57,6 +57,15 @@ $(function() { //run on document.ready
 	fillProductTable();
 	fillBuyProductTable();
 });
+
+function OpenAverageBrand(){
+	$('#averageBrand').toggle();
+}
+
+function OpenAverageItem(){
+	$('#averageItem').toggle();
+}
+
 function OpenDeleteProducts(){
 	fillDeleteProductsTable();
 	$('#DeleteProducts').toggle();
