@@ -342,12 +342,13 @@ class CustomerExecution
         } //find the most popular item / most purchased item
         else if (array_key_exists('item_popular', $_POST)) {
 
-            $result = $this->SQLExecution->executeBoundSQL("select PID, name from product_discount p where p.PID = (select PID from Contains group by PID HAVING count(order_no) >= all (select count(order_no) from Contains group by PID))");
+            $popularresult = $this->SQLExecution->executeBoundSQL("select PID, name from product_discount p where p.PID = (select PID from Contains group by PID HAVING count(order_no) >= all (select count(order_no) from Contains group by PID))");
             /*echo "<br> The item in every order is: <br>";
             while ($row = OCI_Fetch_Array($result, OCI_BOTH)) {
                 echo "<tr><td>" . $row["PID"] . "</td><td>" . $row["name"] . "</td></tr>";
             }*/
-            $this->Utility->printPopular($result);
+            print_r($popularresult);
+            $this->Utility->printPopular($popularresult);
             OCICommit($db_conn);
         }
 
